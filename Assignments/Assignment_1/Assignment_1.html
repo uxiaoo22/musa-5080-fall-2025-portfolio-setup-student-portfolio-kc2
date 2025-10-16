@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Xiao Yu">
+<meta name="dcterms.date" content="2025-10-16">
+
+<title>Assignment 1: Census Data Quality for Policy Decisions – Xiao Yu - MUSA 5080 Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Xiao Yu - MUSA 5080 Portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-weekly-notes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Weekly Notes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/">
+ <span class="dropdown-text">All Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-01-notes.html">
+ <span class="dropdown-text">Week 1 Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-02-notes.html">
+ <span class="dropdown-text">Week 2 Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-03-notes.html">
+ <span class="dropdown-text">Week 3 Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-04-notes.html">
+ <span class="dropdown-text">Week 4 Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-05-notes.html">
+ <span class="dropdown-text">Week 5 Notes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-labs" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Labs</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
+        <li>
+    <a class="dropdown-item" href="../../labs/lab_0/script">
+ <span class="dropdown-text">Lab 0: dplyr Basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../labs/lab1/week-03/script/week3_lab_exercise.html">
+ <span class="dropdown-text">Lab 1</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="../../Assignments/Assignment_1/Assignment_1.html">
+ <span class="dropdown-text">Assignment 1: Census Data Exploration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Assignments/Assignment_2/Yu_Xiao_Assignment2.html">
+ <span class="dropdown-text">Assignment 2: Spatial Analysis and Visualization</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#assignment-overview" id="toc-assignment-overview" class="nav-link active" data-scroll-target="#assignment-overview">Assignment Overview</a>
+  <ul class="collapse">
+  <li><a href="#scenario" id="toc-scenario" class="nav-link" data-scroll-target="#scenario">Scenario</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#submission-instructions" id="toc-submission-instructions" class="nav-link" data-scroll-target="#submission-instructions">Submission Instructions</a></li>
+  </ul></li>
+  <li><a href="#part-1-portfolio-integration" id="toc-part-1-portfolio-integration" class="nav-link" data-scroll-target="#part-1-portfolio-integration">Part 1: Portfolio Integration</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#part-2-county-level-resource-assessment" id="toc-part-2-county-level-resource-assessment" class="nav-link" data-scroll-target="#part-2-county-level-resource-assessment">Part 2: County-Level Resource Assessment</a>
+  <ul class="collapse">
+  <li><a href="#data-retrieval" id="toc-data-retrieval" class="nav-link" data-scroll-target="#data-retrieval">2.1 Data Retrieval</a></li>
+  <li><a href="#data-quality-assessment" id="toc-data-quality-assessment" class="nav-link" data-scroll-target="#data-quality-assessment">2.2 Data Quality Assessment</a></li>
+  <li><a href="#high-uncertainty-counties" id="toc-high-uncertainty-counties" class="nav-link" data-scroll-target="#high-uncertainty-counties">2.3 High Uncertainty Counties</a></li>
+  </ul></li>
+  <li><a href="#part-3-neighborhood-level-analysis" id="toc-part-3-neighborhood-level-analysis" class="nav-link" data-scroll-target="#part-3-neighborhood-level-analysis">Part 3: Neighborhood-Level Analysis</a>
+  <ul class="collapse">
+  <li><a href="#focus-area-selection" id="toc-focus-area-selection" class="nav-link" data-scroll-target="#focus-area-selection">3.1 Focus Area Selection</a></li>
+  <li><a href="#tract-level-demographics" id="toc-tract-level-demographics" class="nav-link" data-scroll-target="#tract-level-demographics">3.2 Tract-Level Demographics</a></li>
+  <li><a href="#demographic-analysis" id="toc-demographic-analysis" class="nav-link" data-scroll-target="#demographic-analysis">3.3 Demographic Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-4-comprehensive-data-quality-evaluation" id="toc-part-4-comprehensive-data-quality-evaluation" class="nav-link" data-scroll-target="#part-4-comprehensive-data-quality-evaluation">Part 4: Comprehensive Data Quality Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#moe-analysis-for-demographic-variables" id="toc-moe-analysis-for-demographic-variables" class="nav-link" data-scroll-target="#moe-analysis-for-demographic-variables">4.1 MOE Analysis for Demographic Variables</a></li>
+  <li><a href="#pattern-analysis" id="toc-pattern-analysis" class="nav-link" data-scroll-target="#pattern-analysis">4.2 Pattern Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-5-policy-recommendations" id="toc-part-5-policy-recommendations" class="nav-link" data-scroll-target="#part-5-policy-recommendations">Part 5: Policy Recommendations</a>
+  <ul class="collapse">
+  <li><a href="#analysis-integration-and-professional-summary" id="toc-analysis-integration-and-professional-summary" class="nav-link" data-scroll-target="#analysis-integration-and-professional-summary">5.1 Analysis Integration and Professional Summary</a></li>
+  <li><a href="#specific-recommendations" id="toc-specific-recommendations" class="nav-link" data-scroll-target="#specific-recommendations">6.3 Specific Recommendations</a></li>
+  <li><a href="#questions-for-further-investigation" id="toc-questions-for-further-investigation" class="nav-link" data-scroll-target="#questions-for-further-investigation">Questions for Further Investigation</a></li>
+  </ul></li>
+  <li><a href="#technical-notes" id="toc-technical-notes" class="nav-link" data-scroll-target="#technical-notes">Technical Notes</a>
+  <ul class="collapse">
+  <li><a href="#submission-checklist" id="toc-submission-checklist" class="nav-link" data-scroll-target="#submission-checklist">Submission Checklist</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 1: Census Data Quality for Policy Decisions</h1>
+<p class="subtitle lead">Evaluating Data Reliability for Algorithmic Decision-Making</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Xiao Yu </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 16, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="assignment-overview" class="level1">
+<h1>Assignment Overview</h1>
+<section id="scenario" class="level2">
+<h2 class="anchored" data-anchor-id="scenario">Scenario</h2>
+<p>You are a data analyst for the <strong>Texas Department of Human Services</strong>. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.</p>
+<p>Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.</p>
+</section>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Apply dplyr functions to real census data for policy analysis</li>
+<li>Evaluate data quality using margins of error</li>
+<li>Connect technical analysis to algorithmic decision-making</li>
+<li>Identify potential equity implications of data reliability issues</li>
+<li>Create professional documentation for policy stakeholders</li>
+</ul>
+</section>
+<section id="submission-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="submission-instructions">Submission Instructions</h2>
+<p><strong>Submit by posting your updated portfolio link on Canvas.</strong> Your assignment should be accessible at <code>your-portfolio-url/assignments/assignment_1/</code></p>
+<p>Make sure to update your <code>_quarto.yml</code> navigation to include this assignment under an “Assignments” menu.</p>
+</section>
+</section>
+<section id="part-1-portfolio-integration" class="level1">
+<h1>Part 1: Portfolio Integration</h1>
+<p>Create this assignment in your portfolio repository under an <code>assignments/assignment_1/</code> folder structure. Update your navigation menu to include:</p>
+<pre><code>- text: Assignments
+  menu:
+    - href: assignments/assignment_1/your_file_name.qmd
+      text: "Assignment 1: Census Data Exploration"</code></pre>
+<p>If there is a special character like comma, you need use double quote mark so that the quarto can identify this as text</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required packages (hint: you need tidycensus, tidyverse, and knitr)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set your Census API key</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">census_api_key</span>(<span class="st">"ec702835845a134b4376c60759aa72ce62f6df59"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your state for analysis - assign it to a variable called my_state</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>my_state <span class="ot">&lt;-</span> <span class="st">"Texas"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>State Selection:</strong> I have chosen <strong>Texas</strong> for this analysis because it is a large and diverse state with both urban and rural counties. This mix allows me to compare how data quality varies across different community types, which is important for evaluating equity and potential algorithmic bias.</p>
+</section>
+<section id="part-2-county-level-resource-assessment" class="level1">
+<h1>Part 2: County-Level Resource Assessment</h1>
+<section id="data-retrieval" class="level2">
+<h2 class="anchored" data-anchor-id="data-retrieval">2.1 Data Retrieval</h2>
+<p><strong>Your Task:</strong> Use <code>get_acs()</code> to retrieve county-level data for your chosen state.</p>
+<p><strong>Requirements:</strong> - Geography: county level - Variables: median household income (B19013_001) and total population (B01003_001)<br>
+- Year: 2022 - Survey: acs5 - Output format: wide</p>
+<p><strong>Hint:</strong> Remember to give your variables descriptive names using the <code>variables = c(name = "code")</code> syntax.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your get_acs() code here</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>county_data_2022 <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"county"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pop =</span> <span class="st">"B01003_001"</span>,       <span class="co"># Total population</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_household_income =</span> <span class="st">"B19013_001"</span>   <span class="co"># Median household income</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> <span class="st">"TX"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="st">"wide"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean the county names to remove state name and "County" </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>county_data_2022 <span class="ot">&lt;-</span> county_data_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">county_name =</span> <span class="fu">str_remove</span>(NAME, <span class="st">", Texas"</span>))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(county_data_2022)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  GEOID NAME   total_popE total_popM med_household_incomeE med_household_incomeM
+  &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;                 &lt;dbl&gt;                 &lt;dbl&gt;
+1 48001 Ander…      58077         NA                 57445                  4562
+2 48003 Andre…      18362         NA                 86458                 16116
+3 48005 Angel…      86608         NA                 57055                  2484
+4 48007 Arans…      24048         NA                 58168                  6458
+5 48009 Arche…       8649         NA                 69954                  8482
+6 48011 Armst…       1912        145                 70417                 14574
+# ℹ 1 more variable: county_name &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="data-quality-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-assessment">2.2 Data Quality Assessment</h2>
+<p><strong>Your Task:</strong> Calculate margin of error percentages and create reliability categories.</p>
+<p><strong>Requirements:</strong> - Calculate MOE percentage: (margin of error / estimate) * 100 - Create reliability categories: - High Confidence: MOE &lt; 5% - Moderate Confidence: MOE 5-10%<br>
+- Low Confidence: MOE &gt; 10% - Create a flag for unreliable estimates (MOE &gt; 10%)</p>
+<p><strong>Hint:</strong> Use <code>mutate()</code> with <code>case_when()</code> for the categories.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MOE percentage and reliability categories using mutate()</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>TX_county_reliability <span class="ot">&lt;-</span> county_data_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_income_moe_pct =</span> (med_household_incomeM <span class="sc">/</span> med_household_incomeE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_income_confi =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      med_income_moe_pct <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"High Confidence (&lt;5%)"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      med_income_moe_pct <span class="sc">&gt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> med_income_moe_pct <span class="sc">&lt;</span><span class="dv">10</span> <span class="sc">~</span> <span class="st">"Moderate Confidence (5% - 10%)"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      med_income_moe_pct <span class="sc">&gt;</span> <span class="dv">10</span>  <span class="sc">~</span> <span class="st">"Low Confidence (&gt;10%)"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> ),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">unreliable_income =</span> med_income_moe_pct <span class="sc">&gt;=</span> <span class="dv">10</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary showing count of counties in each reliability category</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>TX_reliability_summary <span class="ot">&lt;-</span> TX_county_reliability <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(med_income_confi) <span class="sc">%&gt;%</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n <span class="sc">/</span> <span class="fu">sum</span>(n), <span class="dv">1</span>))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the summary table</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  TX_reliability_summary,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Texas county-level median household income reliability (ACS 2022)"</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Reliability Category"</span>, <span class="st">"Count"</span>, <span class="st">"Percentage"</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>),</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">full_width =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">"center"</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Texas county-level median household income reliability (ACS 2022)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Reliability Category</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Count</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">22.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">44.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">32.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use count() and mutate() to add percentages</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="high-uncertainty-counties" class="level2">
+<h2 class="anchored" data-anchor-id="high-uncertainty-counties">2.3 High Uncertainty Counties</h2>
+<p><strong>Your Task:</strong> Identify the 5 counties with the highest MOE percentages.</p>
+<p><strong>Requirements:</strong> - Sort by MOE percentage (highest first) - Select the top 5 counties - Display: county name, median income, margin of error, MOE percentage, reliability category - Format as a professional table using <code>kable()</code></p>
+<p><strong>Hint:</strong> Use <code>arrange()</code>, <code>slice()</code>, and <code>select()</code> functions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create table of top 5 counties by MOE percentage</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>TX_high_uncertainty <span class="ot">&lt;-</span> TX_county_reliability <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med_income_moe_pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">County =</span> county_name,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span> <span class="ot">=</span> med_household_incomeE,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Margin of Error ($)</span><span class="st">`</span> <span class="ot">=</span> med_household_incomeM,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span> <span class="ot">=</span> med_income_moe_pct,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reliability =</span> med_income_confi</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Format numbers for professional output</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dollar</span>(<span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span>),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Margin of Error ($)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dollar</span>(<span class="st">`</span><span class="at">Margin of Error ($)</span><span class="st">`</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span>, <span class="dv">1</span>), <span class="st">"%"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Format as table with kable() - include appropriate column names and caption</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  TX_high_uncertainty,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Top 5 Texas Counties by Margin of Error in Median Household Income (ACS 2022)"</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>)  <span class="co"># set column alignment</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small">
+<caption>Top 5 Texas Counties by Margin of Error in Median Household Income (ACS 2022)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median Income ($)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Margin of Error ($)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MOE (%)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Reliability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Jeff Davis County</td>
+<td style="text-align: right;">$38,125</td>
+<td style="text-align: right;">$25,205</td>
+<td style="text-align: right;">66.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Culberson County</td>
+<td style="text-align: right;">$35,924</td>
+<td style="text-align: right;">$18,455</td>
+<td style="text-align: right;">51.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">King County</td>
+<td style="text-align: right;">$59,375</td>
+<td style="text-align: right;">$29,395</td>
+<td style="text-align: right;">49.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kinney County</td>
+<td style="text-align: right;">$52,386</td>
+<td style="text-align: right;">$23,728</td>
+<td style="text-align: right;">45.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dimmit County</td>
+<td style="text-align: right;">$27,374</td>
+<td style="text-align: right;">$12,374</td>
+<td style="text-align: right;">45.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Data Quality Commentary:</strong></p>
+<p>The five Texas counties with the highest margins of error in median household income estimates—Jeff Davis, Culberson, King, Kinney, and Dimmit—show MOE percentages ranging from 45% to 66%. Such extreme levels indicate that ACS estimates for these areas are highly unreliable. The primary causes are small populations, limited survey samples, and income variability that magnifies error. If used directly in algorithmic decision-making, these data could misclassify community needs and distort funding priorities. Policymakers should instead supplement ACS data with administrative or tax records, or require manual review, to ensure fair and accurate resource allocation.</p>
+</section>
+</section>
+<section id="part-3-neighborhood-level-analysis" class="level1">
+<h1>Part 3: Neighborhood-Level Analysis</h1>
+<section id="focus-area-selection" class="level2">
+<h2 class="anchored" data-anchor-id="focus-area-selection">3.1 Focus Area Selection</h2>
+<p><strong>Your Task:</strong> Select 2-3 counties from your reliability analysis for detailed tract-level study.</p>
+<p><strong>Strategy:</strong> Choose counties that represent different reliability levels (e.g., 1 high confidence, 1 moderate, 1 low confidence) to compare how data quality varies.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use filter() to select 2-3 counties from your county_reliability data</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the selected counties in a variable called selected_counties</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>selected_counties <span class="ot">&lt;-</span> TX_county_reliability <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(med_household_incomeE <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35924</span>, <span class="dv">27374</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(med_income_moe_pct, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">County =</span> county_name,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span> <span class="ot">=</span> med_household_incomeE,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reliability =</span> med_income_confi</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the selected counties with their key characteristics</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Show: county name, median income, MOE percentage, reliability category</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the selected counties</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  selected_counties,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Selected Texas Counties for Tract-Level Analysis"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>, <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<caption>Selected Texas Counties for Tract-Level Analysis</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median Income ($)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MOE (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Reliability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Culberson County</td>
+<td style="text-align: right;">35924</td>
+<td style="text-align: right;">51.4</td>
+<td style="text-align: right;">Low Confidence (&gt;10%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dimmit County</td>
+<td style="text-align: right;">27374</td>
+<td style="text-align: right;">45.2</td>
+<td style="text-align: right;">Low Confidence (&gt;10%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Comment on the output:</strong>Culberson and Dimmit Counties were selected as examples of Low Confidence data. Their high MOE values reflect the challenges of using ACS estimates in small, rural counties.</p>
+</section>
+<section id="tract-level-demographics" class="level2">
+<h2 class="anchored" data-anchor-id="tract-level-demographics">3.2 Tract-Level Demographics</h2>
+<p><strong>Your Task:</strong> Get demographic data for census tracts in your selected counties.</p>
+<p><strong>Requirements:</strong> - Geography: tract level - Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001) - Use the same state and year as before - Output format: wide - <strong>Challenge:</strong> You’ll need county codes, not names. Look at the GEOID patterns in your county data for hints.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define your race/ethnicity variables with descriptive names</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>race_vars <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"tract"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"acs5"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">white =</span> <span class="st">"B03002_003"</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">black =</span> <span class="st">"B03002_004"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">hisp_latinx =</span> <span class="st">"B03002_012"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pop =</span> <span class="st">"B03002_001"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> <span class="st">"TX"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">county =</span> <span class="fu">c</span>(<span class="st">"109"</span>, <span class="st">"127"</span>),  <span class="co"># Culberson = 48109, Dimmit = 48127</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="st">"wide"</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Use get_acs() to retrieve tract-level data</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: You may need to specify county codes in the county parameter</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentage of each group using mutate()</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create percentages for white, Black, and Hispanic populations</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>race_vars <span class="ot">&lt;-</span> race_vars <span class="sc">%&gt;%</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_white =</span> <span class="dv">100</span> <span class="sc">*</span> whiteE <span class="sc">/</span> total_popE,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_black =</span> <span class="dv">100</span> <span class="sc">*</span> blackE <span class="sc">/</span> total_popE,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_hispanic =</span> <span class="dv">100</span> <span class="sc">*</span> hisp_latinxE <span class="sc">/</span> total_popE,</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split NAME on semicolon to extract tract and county</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">tract_name =</span> <span class="fu">sapply</span>(<span class="fu">strsplit</span>(NAME, <span class="st">";"</span>), <span class="cf">function</span>(x) <span class="fu">trimws</span>(x[<span class="dv">1</span>])),</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">county_name =</span> <span class="fu">sapply</span>(<span class="fu">strsplit</span>(NAME, <span class="st">";"</span>), <span class="cf">function</span>(x) <span class="fu">trimws</span>(x[<span class="dv">2</span>])) <span class="sc">%&gt;%</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">str_remove</span>(<span class="st">" County"</span>)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect first few rows</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(race_vars <span class="sc">%&gt;%</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>       <span class="fu">select</span>(tract_name, county_name, pct_white, pct_black, pct_hispanic))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  tract_name           county_name pct_white pct_black pct_hispanic
+  &lt;chr&gt;                &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+1 Census Tract 9503    Culberson       11.4      0.183         81.3
+2 Census Tract 9502.01 Dimmit           7.39     0.242         91.7
+3 Census Tract 9502.02 Dimmit          17.2      1.56          77.2
+4 Census Tract 9504    Dimmit           4.20     0.156         93.8</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add readable tract and county name columns using str_extract() or similar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="demographic-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="demographic-analysis">3.3 Demographic Analysis</h2>
+<p><strong>Your Task:</strong> Analyze the demographic patterns in your selected areas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the tract with the highest percentage of Hispanic/Latino residents</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use arrange() and slice() to get the top tract</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>top_hispanic_tract <span class="ot">&lt;-</span> race_vars <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pct_hispanic)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Tract =</span> tract_name,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">County =</span> county_name,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Hispanic %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(pct_hispanic <span class="sc">/</span> <span class="dv">100</span>, <span class="at">accuracy =</span> <span class="fl">0.1</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(top_hispanic_tract,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Tract with Highest Hispanic/Latino Population"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"l"</span>, <span class="st">"r"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<caption>Tract with Highest Hispanic/Latino Population</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Tract</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hispanic %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9504</td>
+<td style="text-align: left;">Dimmit</td>
+<td style="text-align: right;">93.8%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average demographics by county using group_by() and summarize()</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show: number of tracts, average percentage for each racial/ethnic group</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>county_summary <span class="ot">&lt;-</span> race_vars <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(county_name) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Number of Tracts</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Avg. White %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">mean</span>(pct_white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="dv">100</span>, <span class="at">accuracy =</span> <span class="fl">0.1</span>),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Avg. Black %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">mean</span>(pct_black, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="dv">100</span>, <span class="at">accuracy =</span> <span class="fl">0.1</span>),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Avg. Hispanic %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">mean</span>(pct_hispanic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="dv">100</span>, <span class="at">accuracy =</span> <span class="fl">0.1</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a nicely formatted table of your results using kable()</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  county_summary,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Average Demographic Composition by County"</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<caption>Average Demographic Composition by County</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">county_name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Number of Tracts</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg. White %</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg. Black %</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg. Hispanic %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Culberson</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.4%</td>
+<td style="text-align: right;">0.2%</td>
+<td style="text-align: right;">81.3%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dimmit</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9.6%</td>
+<td style="text-align: right;">0.7%</td>
+<td style="text-align: right;">87.6%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="part-4-comprehensive-data-quality-evaluation" class="level1">
+<h1>Part 4: Comprehensive Data Quality Evaluation</h1>
+<section id="moe-analysis-for-demographic-variables" class="level2">
+<h2 class="anchored" data-anchor-id="moe-analysis-for-demographic-variables">4.1 MOE Analysis for Demographic Variables</h2>
+<p><strong>Your Task:</strong> Examine margins of error for demographic variables to see if some communities have less reliable data.</p>
+<p><strong>Requirements:</strong> - Calculate MOE percentages for each demographic variable - Flag tracts where any demographic variable has MOE &gt; 15% - Create summary statistics</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MOE percentages for white, Black, and Hispanic variables</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use the same formula as before (margin/estimate * 100)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a flag for tracts with high MOE on any demographic variable</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use logical operators (| for OR) in an ifelse() statement</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>demo_moe <span class="ot">&lt;-</span> race_vars <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">white_moe_pct =</span> (whiteM <span class="sc">/</span> whiteE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">black_moe_pct =</span> (blackM <span class="sc">/</span> blackE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">hispanic_moe_pct =</span> (hisp_latinxM <span class="sc">/</span> hisp_latinxE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Flag tracts where any demographic MOE &gt; 15%</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">high_moe_flag =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      white_moe_pct <span class="sc">&gt;</span> <span class="dv">15</span> <span class="sc">|</span> black_moe_pct <span class="sc">&gt;</span> <span class="dv">15</span> <span class="sc">|</span> hispanic_moe_pct <span class="sc">&gt;</span> <span class="dv">15</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>, <span class="cn">FALSE</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary statistics showing how many tracts have data quality issues</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>moe_summary_county <span class="ot">&lt;-</span> demo_moe <span class="sc">%&gt;%</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(county_name) <span class="sc">%&gt;%</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_tracts =</span> <span class="fu">n</span>(),</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">high_moe_tracts =</span> <span class="fu">sum</span>(high_moe_flag, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_high_moe =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(high_moe_flag, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  moe_summary_county,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"**MOE Summary by County (ACS 2022)**"</span>,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"County"</span>, <span class="st">"Total Tracts"</span>, <span class="st">"High MOE Tracts"</span>, <span class="st">"Percent High MOE (%)"</span>),</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"r"</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>,</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>                <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<caption>**MOE Summary by County (ACS 2022)**</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Total Tracts</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">High MOE Tracts</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Percent High MOE (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Culberson</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dimmit</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="pattern-analysis">4.2 Pattern Analysis</h2>
+<p><strong>Your Task:</strong> Investigate whether data quality problems are randomly distributed or concentrated in certain types of communities.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group tracts by whether they have high MOE issues</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average characteristics for each group:</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - population size, demographic percentages</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Group tracts by whether they have high MOE issues</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>moe_patterns <span class="ot">&lt;-</span> demo_moe <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(high_moe_flag <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>   <span class="co"># keep only high-MOE tracts</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(county_name) <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Population Average</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(total_popE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">0</span>),</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">% White Avg</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(pct_white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">% Black Avg</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(pct_black, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">% LatinX Avg</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(pct_hispanic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Tracts Quantity</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  moe_patterns,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"**High-MOE Tracts by County (ACS 2022)**"</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"r"</span>),</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"County"</span>, <span class="st">"Population Average"</span>, <span class="st">"% White Avg"</span>, <span class="st">"% Black Avg"</span>, <span class="st">"% LatinX Avg"</span>, <span class="st">"Tracts Quantity"</span>),</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>,</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>**High-MOE Tracts by County (ACS 2022)**</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Population Average</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">% White Avg</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">% Black Avg</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">% LatinX Avg</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tracts Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Culberson</td>
+<td style="text-align: center;">2181</td>
+<td style="text-align: center;">11.42</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">81.34</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dimmit</td>
+<td style="text-align: center;">2891</td>
+<td style="text-align: center;">9.60</td>
+<td style="text-align: center;">0.65</td>
+<td style="text-align: center;">87.57</td>
+<td style="text-align: right;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use group_by() and summarize() to create this comparison</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a professional table showing the patterns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Pattern Analysis:</strong> High MOE tracts are found in small, rural counties with low populations and high Hispanic/Latino shares.These factors reduce ACS reliability, meaning minority and rural communities face greater risk of being misrepresented in algorithmic decisions.</p>
+</section>
+</section>
+<section id="part-5-policy-recommendations" class="level1">
+<h1>Part 5: Policy Recommendations</h1>
+<section id="analysis-integration-and-professional-summary" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-integration-and-professional-summary">5.1 Analysis Integration and Professional Summary</h2>
+<p><strong>Your Task:</strong> Write an executive summary that integrates findings from all four analyses.</p>
+<p><strong>Executive Summary Requirements:</strong> 1. <strong>Overall Pattern Identification</strong>: What are the systematic patterns across all your analyses? 2. <strong>Equity Assessment</strong>: Which communities face the greatest risk of algorithmic bias based on your findings? 3. <strong>Root Cause Analysis</strong>: What underlying factors drive both data quality issues and bias risk? 4. <strong>Strategic Recommendations</strong>: What should the Department implement to address these systematic issues?</p>
+<p><strong>Executive Summary:</strong></p>
+<p>Looking at ACS 2022 data for Texas, we see that data quality isn’t the same everywhere. Larger, urban counties usually have solid numbers, while smaller rural counties often have very high margins of error. In some places, the income data is so uncertain that it’s hard to use with confidence.</p>
+<p>The biggest risk shows up in rural, Hispanic-majority counties like Dimmit and Culberson. These areas often have the highest uncertainty, which means if an algorithm used this data directly, the results could shortchange the very communities that need the most support.</p>
+<p>The main reason for this problem is how the ACS survey works. Small populations naturally create bigger sampling errors, and rural or minority communities may also face challenges like language barriers or low response rates. That makes their numbers less reliable.</p>
+<p>To make decisions fairer, a tiered approach makes sense. Counties with strong data can go into the algorithm as-is. Counties with moderate-quality data should be monitored, and counties with weak data should get extra checks or even manual review. Over time, improving census participation in rural and minority communities would help fix the root of the problem.</p>
+</section>
+<section id="specific-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="specific-recommendations">6.3 Specific Recommendations</h2>
+<p><strong>Your Task:</strong> Create a decision framework for algorithm implementation.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary table using your county reliability data</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Include: county name, median income, MOE percentage, reliability category</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a new column with algorithm recommendations using case_when():</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># - High Confidence: "Safe for algorithmic decisions"</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - Moderate Confidence: "Use with caution - monitor outcomes"  </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># - Low Confidence: "Requires manual review or additional data"</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>TX_recommendations <span class="ot">&lt;-</span> TX_county_reliability <span class="sc">%&gt;%</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(county_name, med_household_incomeE, med_income_moe_pct, med_income_confi) <span class="sc">%&gt;%</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dollar</span>(med_household_incomeE),</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(med_income_moe_pct <span class="sc">/</span> <span class="dv">100</span>, <span class="at">accuracy =</span> <span class="fl">0.1</span>),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Recommendation =</span> <span class="fu">case_when</span>(</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>      med_income_confi <span class="sc">==</span> <span class="st">"High Confidence (&lt;5%)"</span> <span class="sc">~</span> <span class="st">"✅ Safe for algorithmic decisions"</span>,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>      med_income_confi <span class="sc">==</span> <span class="st">"Moderate Confidence (5% - 10%)"</span> <span class="sc">~</span> <span class="st">"⚠️ Use with caution – monitor outcomes"</span>,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>      med_income_confi <span class="sc">==</span> <span class="st">"Low Confidence (&gt;10%)"</span> <span class="sc">~</span> <span class="st">"❌ Requires manual review or extra data"</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Check data"</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(county_name, <span class="st">`</span><span class="at">Median Income ($)</span><span class="st">`</span>, <span class="st">`</span><span class="at">MOE (%)</span><span class="st">`</span>, med_income_confi, Recommendation)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Format as a professional table with kable()</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  TX_recommendations,</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"**County-Level Reliability and Algorithm Recommendations (ACS 2022)**"</span>,</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"County"</span>, <span class="st">"Median Income ($)"</span>, <span class="st">"MOE (%)"</span>, <span class="st">"Reliability"</span>, <span class="st">"Recommendation"</span>),</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">escape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>, <span class="st">"l"</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"center"</span>,</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>                <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>**County-Level Reliability and Algorithm Recommendations (ACS 2022)**</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">County</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median Income ($)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MOE (%)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Reliability</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Anderson County</td>
+<td style="text-align: right;">$57,445</td>
+<td style="text-align: right;">7.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Andrews County</td>
+<td style="text-align: right;">$86,458</td>
+<td style="text-align: right;">18.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Angelina County</td>
+<td style="text-align: right;">$57,055</td>
+<td style="text-align: right;">4.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Aransas County</td>
+<td style="text-align: right;">$58,168</td>
+<td style="text-align: right;">11.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Archer County</td>
+<td style="text-align: right;">$69,954</td>
+<td style="text-align: right;">12.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Armstrong County</td>
+<td style="text-align: right;">$70,417</td>
+<td style="text-align: right;">20.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Atascosa County</td>
+<td style="text-align: right;">$67,442</td>
+<td style="text-align: right;">6.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Austin County</td>
+<td style="text-align: right;">$73,556</td>
+<td style="text-align: right;">6.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Bailey County</td>
+<td style="text-align: right;">$69,830</td>
+<td style="text-align: right;">18.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Bandera County</td>
+<td style="text-align: right;">$70,965</td>
+<td style="text-align: right;">8.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Bastrop County</td>
+<td style="text-align: right;">$80,151</td>
+<td style="text-align: right;">6.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Baylor County</td>
+<td style="text-align: right;">$52,716</td>
+<td style="text-align: right;">25.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Bee County</td>
+<td style="text-align: right;">$50,283</td>
+<td style="text-align: right;">10.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Bell County</td>
+<td style="text-align: right;">$62,858</td>
+<td style="text-align: right;">2.8%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Bexar County</td>
+<td style="text-align: right;">$67,275</td>
+<td style="text-align: right;">1.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Blanco County</td>
+<td style="text-align: right;">$79,717</td>
+<td style="text-align: right;">9.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Borden County</td>
+<td style="text-align: right;">$80,625</td>
+<td style="text-align: right;">24.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Bosque County</td>
+<td style="text-align: right;">$63,868</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Bowie County</td>
+<td style="text-align: right;">$56,628</td>
+<td style="text-align: right;">4.1%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Brazoria County</td>
+<td style="text-align: right;">$91,972</td>
+<td style="text-align: right;">3.3%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Brazos County</td>
+<td style="text-align: right;">$57,562</td>
+<td style="text-align: right;">3.5%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Brewster County</td>
+<td style="text-align: right;">$47,747</td>
+<td style="text-align: right;">11.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Briscoe County</td>
+<td style="text-align: right;">$35,446</td>
+<td style="text-align: right;">27.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Brooks County</td>
+<td style="text-align: right;">$30,566</td>
+<td style="text-align: right;">33.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Brown County</td>
+<td style="text-align: right;">$53,792</td>
+<td style="text-align: right;">4.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Burleson County</td>
+<td style="text-align: right;">$71,745</td>
+<td style="text-align: right;">6.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Burnet County</td>
+<td style="text-align: right;">$71,482</td>
+<td style="text-align: right;">8.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Caldwell County</td>
+<td style="text-align: right;">$66,779</td>
+<td style="text-align: right;">7.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Calhoun County</td>
+<td style="text-align: right;">$62,267</td>
+<td style="text-align: right;">9.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Callahan County</td>
+<td style="text-align: right;">$63,906</td>
+<td style="text-align: right;">3.6%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Cameron County</td>
+<td style="text-align: right;">$47,435</td>
+<td style="text-align: right;">3.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Camp County</td>
+<td style="text-align: right;">$53,968</td>
+<td style="text-align: right;">7.6%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Carson County</td>
+<td style="text-align: right;">$83,199</td>
+<td style="text-align: right;">4.5%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Cass County</td>
+<td style="text-align: right;">$54,303</td>
+<td style="text-align: right;">6.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Castro County</td>
+<td style="text-align: right;">$59,886</td>
+<td style="text-align: right;">17.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Chambers County</td>
+<td style="text-align: right;">$106,103</td>
+<td style="text-align: right;">8.3%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Cherokee County</td>
+<td style="text-align: right;">$56,971</td>
+<td style="text-align: right;">8.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Childress County</td>
+<td style="text-align: right;">$56,063</td>
+<td style="text-align: right;">29.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Clay County</td>
+<td style="text-align: right;">$75,227</td>
+<td style="text-align: right;">7.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Cochran County</td>
+<td style="text-align: right;">$41,597</td>
+<td style="text-align: right;">17.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Coke County</td>
+<td style="text-align: right;">$40,230</td>
+<td style="text-align: right;">13.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Coleman County</td>
+<td style="text-align: right;">$51,034</td>
+<td style="text-align: right;">7.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Collin County</td>
+<td style="text-align: right;">$113,255</td>
+<td style="text-align: right;">1.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Collingsworth County</td>
+<td style="text-align: right;">$52,045</td>
+<td style="text-align: right;">22.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Colorado County</td>
+<td style="text-align: right;">$63,352</td>
+<td style="text-align: right;">8.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Comal County</td>
+<td style="text-align: right;">$93,744</td>
+<td style="text-align: right;">2.8%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Comanche County</td>
+<td style="text-align: right;">$57,383</td>
+<td style="text-align: right;">13.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Concho County</td>
+<td style="text-align: right;">$55,750</td>
+<td style="text-align: right;">27.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Cooke County</td>
+<td style="text-align: right;">$66,374</td>
+<td style="text-align: right;">8.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Coryell County</td>
+<td style="text-align: right;">$63,281</td>
+<td style="text-align: right;">3.6%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Cottle County</td>
+<td style="text-align: right;">$47,625</td>
+<td style="text-align: right;">37.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Crane County</td>
+<td style="text-align: right;">$71,364</td>
+<td style="text-align: right;">32.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Crockett County</td>
+<td style="text-align: right;">$64,103</td>
+<td style="text-align: right;">34.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Crosby County</td>
+<td style="text-align: right;">$50,268</td>
+<td style="text-align: right;">10.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Culberson County</td>
+<td style="text-align: right;">$35,924</td>
+<td style="text-align: right;">51.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Dallam County</td>
+<td style="text-align: right;">$71,969</td>
+<td style="text-align: right;">9.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Dallas County</td>
+<td style="text-align: right;">$70,732</td>
+<td style="text-align: right;">0.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Dawson County</td>
+<td style="text-align: right;">$45,268</td>
+<td style="text-align: right;">27.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Deaf Smith County</td>
+<td style="text-align: right;">$51,942</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Delta County</td>
+<td style="text-align: right;">$68,491</td>
+<td style="text-align: right;">27.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Denton County</td>
+<td style="text-align: right;">$104,180</td>
+<td style="text-align: right;">1.3%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">DeWitt County</td>
+<td style="text-align: right;">$61,100</td>
+<td style="text-align: right;">7.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Dickens County</td>
+<td style="text-align: right;">$46,638</td>
+<td style="text-align: right;">13.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Dimmit County</td>
+<td style="text-align: right;">$27,374</td>
+<td style="text-align: right;">45.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Donley County</td>
+<td style="text-align: right;">$51,711</td>
+<td style="text-align: right;">12.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Duval County</td>
+<td style="text-align: right;">$50,697</td>
+<td style="text-align: right;">20.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Eastland County</td>
+<td style="text-align: right;">$52,902</td>
+<td style="text-align: right;">12.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Ector County</td>
+<td style="text-align: right;">$70,566</td>
+<td style="text-align: right;">4.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Edwards County</td>
+<td style="text-align: right;">$40,809</td>
+<td style="text-align: right;">27.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Ellis County</td>
+<td style="text-align: right;">$93,248</td>
+<td style="text-align: right;">2.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">El Paso County</td>
+<td style="text-align: right;">$55,417</td>
+<td style="text-align: right;">1.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Erath County</td>
+<td style="text-align: right;">$59,654</td>
+<td style="text-align: right;">6.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Falls County</td>
+<td style="text-align: right;">$45,172</td>
+<td style="text-align: right;">15.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Fannin County</td>
+<td style="text-align: right;">$65,835</td>
+<td style="text-align: right;">6.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Fayette County</td>
+<td style="text-align: right;">$72,881</td>
+<td style="text-align: right;">5.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Fisher County</td>
+<td style="text-align: right;">$60,461</td>
+<td style="text-align: right;">8.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Floyd County</td>
+<td style="text-align: right;">$49,321</td>
+<td style="text-align: right;">9.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Foard County</td>
+<td style="text-align: right;">$41,944</td>
+<td style="text-align: right;">20.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Fort Bend County</td>
+<td style="text-align: right;">$109,987</td>
+<td style="text-align: right;">2.6%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Franklin County</td>
+<td style="text-align: right;">$67,915</td>
+<td style="text-align: right;">4.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Freestone County</td>
+<td style="text-align: right;">$55,902</td>
+<td style="text-align: right;">10.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Frio County</td>
+<td style="text-align: right;">$56,042</td>
+<td style="text-align: right;">30.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Gaines County</td>
+<td style="text-align: right;">$73,299</td>
+<td style="text-align: right;">13.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Galveston County</td>
+<td style="text-align: right;">$83,913</td>
+<td style="text-align: right;">2.8%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Garza County</td>
+<td style="text-align: right;">$56,215</td>
+<td style="text-align: right;">35.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Gillespie County</td>
+<td style="text-align: right;">$70,162</td>
+<td style="text-align: right;">8.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Glasscock County</td>
+<td style="text-align: right;">$112,188</td>
+<td style="text-align: right;">27.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Goliad County</td>
+<td style="text-align: right;">$58,125</td>
+<td style="text-align: right;">25.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Gonzales County</td>
+<td style="text-align: right;">$64,255</td>
+<td style="text-align: right;">8.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Gray County</td>
+<td style="text-align: right;">$54,563</td>
+<td style="text-align: right;">7.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Grayson County</td>
+<td style="text-align: right;">$66,608</td>
+<td style="text-align: right;">3.6%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Gregg County</td>
+<td style="text-align: right;">$63,811</td>
+<td style="text-align: right;">3.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Grimes County</td>
+<td style="text-align: right;">$63,484</td>
+<td style="text-align: right;">9.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Guadalupe County</td>
+<td style="text-align: right;">$88,111</td>
+<td style="text-align: right;">3.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hale County</td>
+<td style="text-align: right;">$50,721</td>
+<td style="text-align: right;">9.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hall County</td>
+<td style="text-align: right;">$43,873</td>
+<td style="text-align: right;">11.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hamilton County</td>
+<td style="text-align: right;">$54,890</td>
+<td style="text-align: right;">17.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hansford County</td>
+<td style="text-align: right;">$62,350</td>
+<td style="text-align: right;">19.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hardeman County</td>
+<td style="text-align: right;">$60,455</td>
+<td style="text-align: right;">15.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hardin County</td>
+<td style="text-align: right;">$70,164</td>
+<td style="text-align: right;">5.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Harris County</td>
+<td style="text-align: right;">$70,789</td>
+<td style="text-align: right;">0.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Harrison County</td>
+<td style="text-align: right;">$63,427</td>
+<td style="text-align: right;">4.8%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hartley County</td>
+<td style="text-align: right;">$78,065</td>
+<td style="text-align: right;">27.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Haskell County</td>
+<td style="text-align: right;">$52,786</td>
+<td style="text-align: right;">16.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hays County</td>
+<td style="text-align: right;">$79,990</td>
+<td style="text-align: right;">3.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hemphill County</td>
+<td style="text-align: right;">$67,798</td>
+<td style="text-align: right;">27.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Henderson County</td>
+<td style="text-align: right;">$59,778</td>
+<td style="text-align: right;">4.3%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hidalgo County</td>
+<td style="text-align: right;">$49,371</td>
+<td style="text-align: right;">2.3%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hill County</td>
+<td style="text-align: right;">$60,669</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hockley County</td>
+<td style="text-align: right;">$53,283</td>
+<td style="text-align: right;">7.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hood County</td>
+<td style="text-align: right;">$80,013</td>
+<td style="text-align: right;">4.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hopkins County</td>
+<td style="text-align: right;">$63,766</td>
+<td style="text-align: right;">5.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Houston County</td>
+<td style="text-align: right;">$51,043</td>
+<td style="text-align: right;">10.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Howard County</td>
+<td style="text-align: right;">$67,243</td>
+<td style="text-align: right;">6.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hudspeth County</td>
+<td style="text-align: right;">$35,163</td>
+<td style="text-align: right;">23.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hunt County</td>
+<td style="text-align: right;">$66,885</td>
+<td style="text-align: right;">4.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hutchinson County</td>
+<td style="text-align: right;">$62,211</td>
+<td style="text-align: right;">7.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Irion County</td>
+<td style="text-align: right;">$54,708</td>
+<td style="text-align: right;">17.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Jack County</td>
+<td style="text-align: right;">$58,861</td>
+<td style="text-align: right;">13.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Jackson County</td>
+<td style="text-align: right;">$67,176</td>
+<td style="text-align: right;">17.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Jasper County</td>
+<td style="text-align: right;">$48,818</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Jeff Davis County</td>
+<td style="text-align: right;">$38,125</td>
+<td style="text-align: right;">66.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Jefferson County</td>
+<td style="text-align: right;">$57,294</td>
+<td style="text-align: right;">2.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Jim Hogg County</td>
+<td style="text-align: right;">$42,292</td>
+<td style="text-align: right;">13.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Jim Wells County</td>
+<td style="text-align: right;">$46,626</td>
+<td style="text-align: right;">12.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Johnson County</td>
+<td style="text-align: right;">$77,058</td>
+<td style="text-align: right;">3.1%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Jones County</td>
+<td style="text-align: right;">$59,361</td>
+<td style="text-align: right;">10.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Karnes County</td>
+<td style="text-align: right;">$57,798</td>
+<td style="text-align: right;">14.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Kaufman County</td>
+<td style="text-align: right;">$84,075</td>
+<td style="text-align: right;">4.1%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Kendall County</td>
+<td style="text-align: right;">$104,196</td>
+<td style="text-align: right;">8.3%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Kenedy County</td>
+<td style="text-align: right;">$45,455</td>
+<td style="text-align: right;">25.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Kent County</td>
+<td style="text-align: right;">$68,553</td>
+<td style="text-align: right;">15.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Kerr County</td>
+<td style="text-align: right;">$66,713</td>
+<td style="text-align: right;">6.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Kimble County</td>
+<td style="text-align: right;">$62,386</td>
+<td style="text-align: right;">22.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">King County</td>
+<td style="text-align: right;">$59,375</td>
+<td style="text-align: right;">49.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Kinney County</td>
+<td style="text-align: right;">$52,386</td>
+<td style="text-align: right;">45.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Kleberg County</td>
+<td style="text-align: right;">$52,487</td>
+<td style="text-align: right;">9.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Knox County</td>
+<td style="text-align: right;">$48,750</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Lamar County</td>
+<td style="text-align: right;">$58,246</td>
+<td style="text-align: right;">4.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Lamb County</td>
+<td style="text-align: right;">$54,519</td>
+<td style="text-align: right;">8.6%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Lampasas County</td>
+<td style="text-align: right;">$73,269</td>
+<td style="text-align: right;">7.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">La Salle County</td>
+<td style="text-align: right;">$62,798</td>
+<td style="text-align: right;">26.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Lavaca County</td>
+<td style="text-align: right;">$58,530</td>
+<td style="text-align: right;">7.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Lee County</td>
+<td style="text-align: right;">$66,448</td>
+<td style="text-align: right;">10.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Leon County</td>
+<td style="text-align: right;">$57,363</td>
+<td style="text-align: right;">12.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Liberty County</td>
+<td style="text-align: right;">$59,605</td>
+<td style="text-align: right;">6.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Limestone County</td>
+<td style="text-align: right;">$53,102</td>
+<td style="text-align: right;">7.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Lipscomb County</td>
+<td style="text-align: right;">$71,625</td>
+<td style="text-align: right;">12.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Live Oak County</td>
+<td style="text-align: right;">$55,949</td>
+<td style="text-align: right;">18.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Llano County</td>
+<td style="text-align: right;">$64,241</td>
+<td style="text-align: right;">8.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Loving County</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Check data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Lubbock County</td>
+<td style="text-align: right;">$61,911</td>
+<td style="text-align: right;">3.5%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Lynn County</td>
+<td style="text-align: right;">$52,996</td>
+<td style="text-align: right;">7.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">McCulloch County</td>
+<td style="text-align: right;">$53,214</td>
+<td style="text-align: right;">16.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">McLennan County</td>
+<td style="text-align: right;">$59,781</td>
+<td style="text-align: right;">3.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">McMullen County</td>
+<td style="text-align: right;">$60,313</td>
+<td style="text-align: right;">41.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Madison County</td>
+<td style="text-align: right;">$65,768</td>
+<td style="text-align: right;">9.6%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Marion County</td>
+<td style="text-align: right;">$48,040</td>
+<td style="text-align: right;">5.0%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Martin County</td>
+<td style="text-align: right;">$70,217</td>
+<td style="text-align: right;">27.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Mason County</td>
+<td style="text-align: right;">$77,583</td>
+<td style="text-align: right;">15.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Matagorda County</td>
+<td style="text-align: right;">$56,412</td>
+<td style="text-align: right;">6.3%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Maverick County</td>
+<td style="text-align: right;">$48,497</td>
+<td style="text-align: right;">10.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Medina County</td>
+<td style="text-align: right;">$73,060</td>
+<td style="text-align: right;">4.0%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Menard County</td>
+<td style="text-align: right;">$40,945</td>
+<td style="text-align: right;">17.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Midland County</td>
+<td style="text-align: right;">$90,123</td>
+<td style="text-align: right;">5.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Milam County</td>
+<td style="text-align: right;">$56,985</td>
+<td style="text-align: right;">5.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Mills County</td>
+<td style="text-align: right;">$59,315</td>
+<td style="text-align: right;">9.3%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Mitchell County</td>
+<td style="text-align: right;">$49,869</td>
+<td style="text-align: right;">12.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Montague County</td>
+<td style="text-align: right;">$63,336</td>
+<td style="text-align: right;">8.6%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Montgomery County</td>
+<td style="text-align: right;">$95,946</td>
+<td style="text-align: right;">3.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Moore County</td>
+<td style="text-align: right;">$59,041</td>
+<td style="text-align: right;">6.5%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Morris County</td>
+<td style="text-align: right;">$51,532</td>
+<td style="text-align: right;">6.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Motley County</td>
+<td style="text-align: right;">$66,528</td>
+<td style="text-align: right;">8.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Nacogdoches County</td>
+<td style="text-align: right;">$51,153</td>
+<td style="text-align: right;">4.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Navarro County</td>
+<td style="text-align: right;">$56,261</td>
+<td style="text-align: right;">7.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Newton County</td>
+<td style="text-align: right;">$38,871</td>
+<td style="text-align: right;">16.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Nolan County</td>
+<td style="text-align: right;">$47,437</td>
+<td style="text-align: right;">7.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Nueces County</td>
+<td style="text-align: right;">$64,027</td>
+<td style="text-align: right;">2.3%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Ochiltree County</td>
+<td style="text-align: right;">$62,240</td>
+<td style="text-align: right;">17.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Oldham County</td>
+<td style="text-align: right;">$71,103</td>
+<td style="text-align: right;">11.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Orange County</td>
+<td style="text-align: right;">$71,910</td>
+<td style="text-align: right;">7.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Palo Pinto County</td>
+<td style="text-align: right;">$65,242</td>
+<td style="text-align: right;">4.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Panola County</td>
+<td style="text-align: right;">$58,205</td>
+<td style="text-align: right;">18.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Parker County</td>
+<td style="text-align: right;">$95,721</td>
+<td style="text-align: right;">3.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Parmer County</td>
+<td style="text-align: right;">$65,575</td>
+<td style="text-align: right;">13.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Pecos County</td>
+<td style="text-align: right;">$59,325</td>
+<td style="text-align: right;">17.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Polk County</td>
+<td style="text-align: right;">$57,315</td>
+<td style="text-align: right;">5.2%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Potter County</td>
+<td style="text-align: right;">$47,974</td>
+<td style="text-align: right;">4.0%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Presidio County</td>
+<td style="text-align: right;">$29,012</td>
+<td style="text-align: right;">24.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Rains County</td>
+<td style="text-align: right;">$60,291</td>
+<td style="text-align: right;">10.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Randall County</td>
+<td style="text-align: right;">$78,038</td>
+<td style="text-align: right;">3.5%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Reagan County</td>
+<td style="text-align: right;">$70,319</td>
+<td style="text-align: right;">12.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Real County</td>
+<td style="text-align: right;">$46,842</td>
+<td style="text-align: right;">33.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Red River County</td>
+<td style="text-align: right;">$44,583</td>
+<td style="text-align: right;">9.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Reeves County</td>
+<td style="text-align: right;">$57,487</td>
+<td style="text-align: right;">22.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Refugio County</td>
+<td style="text-align: right;">$54,304</td>
+<td style="text-align: right;">4.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Roberts County</td>
+<td style="text-align: right;">$62,667</td>
+<td style="text-align: right;">14.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Robertson County</td>
+<td style="text-align: right;">$59,410</td>
+<td style="text-align: right;">17.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Rockwall County</td>
+<td style="text-align: right;">$121,303</td>
+<td style="text-align: right;">3.8%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Runnels County</td>
+<td style="text-align: right;">$55,424</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Rusk County</td>
+<td style="text-align: right;">$61,661</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Sabine County</td>
+<td style="text-align: right;">$47,061</td>
+<td style="text-align: right;">16.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">San Augustine County</td>
+<td style="text-align: right;">$45,888</td>
+<td style="text-align: right;">9.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">San Jacinto County</td>
+<td style="text-align: right;">$54,839</td>
+<td style="text-align: right;">13.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">San Patricio County</td>
+<td style="text-align: right;">$63,842</td>
+<td style="text-align: right;">6.9%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">San Saba County</td>
+<td style="text-align: right;">$54,087</td>
+<td style="text-align: right;">16.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Schleicher County</td>
+<td style="text-align: right;">$53,774</td>
+<td style="text-align: right;">15.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Scurry County</td>
+<td style="text-align: right;">$58,932</td>
+<td style="text-align: right;">21.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Shackelford County</td>
+<td style="text-align: right;">$60,924</td>
+<td style="text-align: right;">14.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Shelby County</td>
+<td style="text-align: right;">$49,231</td>
+<td style="text-align: right;">10.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Sherman County</td>
+<td style="text-align: right;">$66,169</td>
+<td style="text-align: right;">27.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Smith County</td>
+<td style="text-align: right;">$69,053</td>
+<td style="text-align: right;">3.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Somervell County</td>
+<td style="text-align: right;">$87,899</td>
+<td style="text-align: right;">33.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Starr County</td>
+<td style="text-align: right;">$35,979</td>
+<td style="text-align: right;">8.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Stephens County</td>
+<td style="text-align: right;">$44,712</td>
+<td style="text-align: right;">18.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Sterling County</td>
+<td style="text-align: right;">$63,558</td>
+<td style="text-align: right;">22.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Stonewall County</td>
+<td style="text-align: right;">$66,591</td>
+<td style="text-align: right;">32.5%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Sutton County</td>
+<td style="text-align: right;">$56,778</td>
+<td style="text-align: right;">22.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Swisher County</td>
+<td style="text-align: right;">$40,290</td>
+<td style="text-align: right;">13.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Tarrant County</td>
+<td style="text-align: right;">$78,872</td>
+<td style="text-align: right;">1.0%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Taylor County</td>
+<td style="text-align: right;">$61,806</td>
+<td style="text-align: right;">3.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Terrell County</td>
+<td style="text-align: right;">$52,813</td>
+<td style="text-align: right;">21.0%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Terry County</td>
+<td style="text-align: right;">$42,694</td>
+<td style="text-align: right;">10.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Throckmorton County</td>
+<td style="text-align: right;">$55,221</td>
+<td style="text-align: right;">21.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Titus County</td>
+<td style="text-align: right;">$57,634</td>
+<td style="text-align: right;">8.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Tom Green County</td>
+<td style="text-align: right;">$67,215</td>
+<td style="text-align: right;">4.7%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Travis County</td>
+<td style="text-align: right;">$92,731</td>
+<td style="text-align: right;">1.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Trinity County</td>
+<td style="text-align: right;">$51,165</td>
+<td style="text-align: right;">11.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Tyler County</td>
+<td style="text-align: right;">$50,898</td>
+<td style="text-align: right;">10.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Upshur County</td>
+<td style="text-align: right;">$60,456</td>
+<td style="text-align: right;">7.7%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Upton County</td>
+<td style="text-align: right;">$55,284</td>
+<td style="text-align: right;">21.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Uvalde County</td>
+<td style="text-align: right;">$55,000</td>
+<td style="text-align: right;">15.3%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Val Verde County</td>
+<td style="text-align: right;">$57,250</td>
+<td style="text-align: right;">8.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Van Zandt County</td>
+<td style="text-align: right;">$62,334</td>
+<td style="text-align: right;">8.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Victoria County</td>
+<td style="text-align: right;">$66,308</td>
+<td style="text-align: right;">3.6%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Walker County</td>
+<td style="text-align: right;">$47,193</td>
+<td style="text-align: right;">6.3%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Waller County</td>
+<td style="text-align: right;">$71,643</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Ward County</td>
+<td style="text-align: right;">$70,771</td>
+<td style="text-align: right;">12.6%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Washington County</td>
+<td style="text-align: right;">$70,043</td>
+<td style="text-align: right;">9.4%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Webb County</td>
+<td style="text-align: right;">$59,984</td>
+<td style="text-align: right;">3.1%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Wharton County</td>
+<td style="text-align: right;">$59,712</td>
+<td style="text-align: right;">6.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Wheeler County</td>
+<td style="text-align: right;">$58,158</td>
+<td style="text-align: right;">14.2%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Wichita County</td>
+<td style="text-align: right;">$58,862</td>
+<td style="text-align: right;">3.2%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Wilbarger County</td>
+<td style="text-align: right;">$50,769</td>
+<td style="text-align: right;">18.4%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Willacy County</td>
+<td style="text-align: right;">$42,839</td>
+<td style="text-align: right;">13.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Williamson County</td>
+<td style="text-align: right;">$102,851</td>
+<td style="text-align: right;">1.4%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Wilson County</td>
+<td style="text-align: right;">$89,708</td>
+<td style="text-align: right;">4.9%</td>
+<td style="text-align: left;">High Confidence (&lt;5%)</td>
+<td style="text-align: left;">✅ Safe for algorithmic decisions |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Winkler County</td>
+<td style="text-align: right;">$89,155</td>
+<td style="text-align: right;">16.1%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Wise County</td>
+<td style="text-align: right;">$85,385</td>
+<td style="text-align: right;">6.1%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Wood County</td>
+<td style="text-align: right;">$61,748</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Yoakum County</td>
+<td style="text-align: right;">$80,317</td>
+<td style="text-align: right;">8.8%</td>
+<td style="text-align: left;">Moderate Confidence (5% - 10%)</td>
+<td style="text-align: left;">⚠️ Use with caution – monitor outcomes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Young County</td>
+<td style="text-align: right;">$65,565</td>
+<td style="text-align: right;">16.9%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Zapata County</td>
+<td style="text-align: right;">$35,061</td>
+<td style="text-align: right;">10.7%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Zavala County</td>
+<td style="text-align: right;">$49,243</td>
+<td style="text-align: right;">28.8%</td>
+<td style="text-align: left;">Low Confidence (&gt;10%)</td>
+<td style="text-align: left;">❌ Requires manual review or extra data |</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Key Recommendations:</strong></p>
+<p><strong>Your Task:</strong> Use your analysis results to provide specific guidance to the department.</p>
+<ol type="1">
+<li><p><strong>Counties suitable for immediate algorithmic implementation:</strong> High-confidence counties such as Bexar, Dallas, Travis, Williamson, and Collin have strong data quality (MOE &lt;5%). These counties are large, urban, and well-sampled, making them reliable for algorithm-driven funding and planning decisions.</p></li>
+<li><p><strong>Counties requiring additional oversight:</strong> Moderate-confidence counties like Anderson, Bastrop, Caldwell, and Wise fall in the 5–10% MOE range. Algorithms may be used here, but outcomes should be monitored regularly with human oversight to check for misallocations.</p></li>
+<li><p><strong>Counties needing alternative approaches:</strong> Low-confidence counties such as Dimmit, Culberson, Jeff Davis, King, and Kinney have very high MOEs (&gt;10%, sometimes above 40–60%). These areas need manual review, supplemental surveys, or local administrative data to ensure fair resource distribution.</p></li>
+</ol>
+</section>
+<section id="questions-for-further-investigation" class="level2">
+<h2 class="anchored" data-anchor-id="questions-for-further-investigation">Questions for Further Investigation</h2>
+<ol type="1">
+<li>Are high-MOE counties geographically clustered (e.g., along the border or in rural west Texas), and does this spatial pattern affect equity?</li>
+<li>How do data quality issues change over time — are counties improving or declining in reliability across ACS cycles?</li>
+<li>Do certain demographic groups (Hispanic, Black, rural populations) consistently face higher MOEs, and what targeted outreach could improve data collection?</li>
+</ol>
+</section>
+</section>
+<section id="technical-notes" class="level1">
+<h1>Technical Notes</h1>
+<p><strong>Data Sources:</strong></p>
+<ul>
+<li>U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates</li>
+<li>Retrieved via tidycensus R package on 09/29/2025</li>
+</ul>
+<p><strong>Reproducibility:</strong></p>
+<ul>
+<li>All analysis conducted in R version 2025.05.1+513 (2025.05.1+513)</li>
+<li>Census API key required for replication</li>
+<li>Complete code and documentation available at: https://musa-5080-fall-2025.github.io/portfolio-setup-uxiaoo22/</li>
+</ul>
+<p><strong>Methodology Notes:</strong></p>
+<ul>
+<li>Focused on Texas counties using ACS 2022 5-year data. Variables selected: median household income, total population, and race/ethnicity (tract level).</li>
+<li>Cleaned county names by removing state suffixes for readability.</li>
+<li>Categorized margins of error (MOE) into High, Moderate, Low confidence levels for analysis clarity.</li>
+<li>Selected counties (Culberson and Dimmit) for tract-level study to highlight data reliability challenges</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>ACS data for small, rural counties often carries large MOEs, limiting reliability.</li>
+<li>Analysis restricted to Texas counties; findings may not generalize to other states.</li>
+<li>Reliance on 5-year estimates improves stability but masks short-term trends.</li>
+<li>MOE thresholds (&lt;5%, 5–10%, &gt;10%) are heuristic and may oversimplify nuanced reliability issues</li>
+</ul>
+<hr>
+<section id="submission-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="submission-checklist">Submission Checklist</h2>
+<p>Before submitting your portfolio link on Canvas:</p>
+<ul>
+<li>[☑ ] All code chunks run without errors</li>
+<li>[☑ ] All “[Fill this in]” prompts have been completed</li>
+<li>[☑ ] Tables are properly formatted and readable</li>
+<li>[☑ ] Executive summary addresses all four required components</li>
+<li>[☑ ] Portfolio navigation includes this assignment</li>
+<li>[☑ ] Census API key is properly set</li>
+<li>[☑ ] Document renders correctly to HTML</li>
+</ul>
+<p><strong>Remember:</strong> Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at <code>your-portfolio-url/assignments/assignment_1/your_file_name.html</code></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
