@@ -1,0 +1,45 @@
+---
+title: "Week 3 Notes"
+date: "2025-09-022"
+---
+
+## Key Concepts Learned
+- [List main concepts from lecture]
+-- Anscombe’s Quartet and the limits of summary statistics
+-- Visualization in policy context
+-- Connection to algorithmic bias and data ethics
+-- ggplot2 fundamentals
+-- Aesthetic mappings and geoms
+-- Live demonstration
+-- EDA workflow and principles
+-- Understanding distributions and relationships
+-- Critical focus: Data quality and uncertainty
+
+- [Technical skills covered]
+ggplot(data = your_data) +   aes(x = variable1, y = variable2) +   geom_something() +   additional_layers()
+
+## Coding Techniques
+- [New R functions or approaches]
+
+
+- [Quarto features learned]
+
+
+## Questions & Challenges
+- [What I didn't fully understand]
+
+
+- [Areas needing more practice]
+
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+-- Summary statistics can hide critical patterns
+-- Outliers may represent important communities
+-- Relationships aren’t always linear
+-- Visual inspection reveals data quality issues
+
+## Reflection
+- [What was most interesting]
+
+- [How I'll apply this knowledge]

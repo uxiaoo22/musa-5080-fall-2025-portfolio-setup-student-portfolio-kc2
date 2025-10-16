@@ -1,0 +1,245 @@
+---
+title: "Week 5 Notes"
+date: "2025-10-06"
+---
+
+---
+title: "Week 5 Notes"
+date: "2025-10-06"
+---
+
+## The General Problem
+
+We observe data such as **counties, income, population, and education**.  
+We believe there’s some relationship between these variables.
+
+**Statistical learning** refers to the set of methods for estimating that relationship.
+
+---
+
+## Formalizing the Relationship
+
+For any quantitative response *Y* and predictors *X₁, X₂, … Xₚ*:
+
+$$
+Y = f(X) + \epsilon
+$$
+
+Where:
+- **f** = the systematic information X provides about Y  
+- **ε** = random error (irreducible)
+
+---
+
+## What is *f*?
+
+*f* represents the **true relationship** between predictors and the outcome.  
+It’s fixed but unknown — the core object we aim to estimate.
+
+**Example:**
+- *Y* = median income  
+- *X* = population, education, poverty rate  
+- *f* = how these factors systematically relate to income
+
+---
+
+## Why Estimate *f*?
+
+Two key purposes of statistical learning:
+
+1. **Prediction**
+   - Estimate *Y* for new or missing observations  
+   - Focus on **accuracy** rather than explanation  
+
+2. **Inference**
+   - Understand **how X affects Y**  
+   - Identify which predictors are most important  
+   - Focus on **interpreting relationships**
+
+---
+
+## How Do We Estimate *f*?
+
+### Parametric Methods
+- Assume a specific form for *f* (e.g., linear)
+- Reduce the problem to estimating parameters
+- Easier to interpret but limited by assumptions  
+
+### Non-Parametric Methods
+- Make fewer assumptions about *f*
+- More flexible but harder to interpret and require more data
+
+**Key difference:**  
+Parametric = structure first, then estimate  
+Non-parametric = data first, let the shape emerge
+
+---
+
+## Parametric Approach: Linear Regression
+
+We assume a **linear relationship** between *X* and *Y*:
+
+$$
+Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
+$$
+
+Our goal is to estimate the coefficients (β’s) using **Ordinary Least Squares (OLS)** — the method that minimizes prediction error.
+
+---
+
+## Why Linear Regression?
+
+**Advantages**
+- Simple and interpretable  
+- Performs surprisingly well for many real-world problems  
+- Foundation for more advanced methods  
+
+**Limitations**
+- Assumes linearity and independence  
+- Sensitive to outliers  
+- Requires diagnostic checks  
+
+---
+
+## Prediction vs Inference
+
+**Inference** asks:  
+> Does education significantly affect income?  
+
+Focus: understanding mechanisms, testing hypotheses.
+
+**Prediction** asks:  
+> What will the income be for this county?  
+
+Focus: accuracy and reliability of forecasts.
+
+This session emphasizes **prediction**, while recognizing inference as a complementary goal.
+
+---
+
+## Example Applications
+
+### Prediction
+Used by governments to:
+- Estimate income for areas with incomplete census data  
+- Forecast population growth or public service needs  
+
+Accurate predictions improve decision-making even without full causal understanding.
+
+### Inference
+Used by researchers to:
+- Understand gentrification and inequality  
+- Identify which neighborhood characteristics explain income changes  
+- Evaluate the impact of education or policy interventions
+
+---
+
+## Connection to Week 2: Algorithmic Bias
+
+Statistical accuracy does not guarantee ethical fairness.  
+For example, a healthcare model once predicted medical needs using **costs** as a proxy — resulting in racial bias.  
+
+This highlights that **fit metrics (like R²)** cannot replace ethical evaluation.
+
+---
+
+## Interpreting Regression Results
+
+When fitting a simple model of **median income vs. population**:
+- The intercept (~\$62,855) represents baseline income when population = 0 (not practically meaningful).  
+- The slope (~\$0.02 per person) means that, on average, income rises \$20 for every additional 1,000 people.  
+- The relationship is statistically significant (*p* < 0.001).  
+- R² = 0.21 → about 21% of variation in income is explained by population.
+
+This shows population helps explain income differences, though other variables matter too.
+
+---
+
+## Model Evaluation: Key Ideas
+
+### The “True” vs. Estimated Relationship
+The real relationship (*f*) is unobservable.  
+Our model provides an **approximation** based on available data.  
+Each dataset produces slightly different estimates — uncertainty is measured by **standard errors**.
+
+### Statistical Significance
+- **Null hypothesis (H₀):** β₁ = 0 (no relationship)  
+- A small **p-value** means the observed effect is unlikely to be random → the relationship is real.
+
+### R² and Model Fit
+- R² measures the share of variance in *Y* explained by *X*.  
+- It indicates strength, not correctness, of the model.  
+- A model with low R² may still provide useful predictions.
+
+---
+
+## Overfitting and Model Validation
+
+A model can perform well on training data but fail on new data.  
+To avoid this, data are split into **training** and **testing** sets.
+
+- **Training error** measures fit on known data.  
+- **Testing error** measures predictive performance on unseen data.  
+
+Good models balance **bias and variance**, avoiding both underfitting and overfitting.
+
+---
+
+## Model Assumptions and Diagnostics
+
+1. **Linearity** — relationship between variables should be roughly linear.  
+   - Check with residual plots.  
+   - Curvature suggests model misspecification.  
+
+2. **Constant Variance (Homoscedasticity)** — residual spread should be even.  
+   - Violations make p-values unreliable.  
+   - Solutions: transform *Y*, add predictors, or use robust errors.  
+
+3. **Normality of Residuals** — important for hypothesis testing.  
+   - Use Q–Q plots to assess normal distribution.  
+
+4. **No Multicollinearity** — predictors should not be highly correlated.  
+   - High correlation makes coefficients unstable.  
+
+5. **No Influential Outliers** — avoid points that disproportionately shape the regression line.  
+   - Detect using Cook’s Distance.
+
+---
+
+## Improving the Model
+
+### Adding Predictors
+Including education and poverty rates typically improves explanatory power.  
+Example: Adjusted R² increases to around **0.57**, suggesting stronger fit.
+
+### Transformations
+If relationships are curved, use **log transformations**.  
+For instance, a log–population model may capture diminishing returns to scale.
+
+### Categorical Variables
+Include binary variables such as **metro vs. non-metro** areas.  
+In one model, metro counties earned about **\$30,000 more** on average.
+
+---
+
+## Summary: The Regression Workflow
+
+1. **Understand** the conceptual model (*f(X)*).  
+2. **Visualize** relationships before modeling.  
+3. **Fit** the regression model carefully.  
+4. **Evaluate** performance using validation methods.  
+5. **Check** key assumptions.  
+6. **Refine** with new variables or transformations.  
+7. **Reflect** on the **ethical and social implications** of modeling.
+
+---
+
+## Key Takeaways
+
+- **Statistical learning** is about estimating *f(X)*, the systematic link between predictors and outcomes.  
+- Two central goals:
+  - **Inference** – understand relationships  
+  - **Prediction** – forecast new outcomes  
+- **Good fit ≠ good model**: always assess assumptions and fairness.  
+- **Diagnostics matter**: plots and reasoning reveal what statistics can hide.  
+- **Ethical awareness** is essential in all modeling decisions.

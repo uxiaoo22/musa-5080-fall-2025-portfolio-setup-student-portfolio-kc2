@@ -5,19 +5,32 @@ date: "2025-09-08"
 
 ## Key Concepts Learned
 - [List main concepts from lecture]
+Repository (repo): Folder containing your project files
+Commit: Snapshot of your work at a point in time
+Push: Send your changes to GitHub cloud
+Pull: Get latest changes from GitHub cloud
 - [Technical skills covered]
 
 ## Coding Techniques
 - [New R functions or approaches]
+
+
 - [Quarto features learned]
+
 
 ## Questions & Challenges
 - [What I didn't fully understand]
+
+
 - [Areas needing more practice]
+
 
 ## Connections to Policy
 - [How this week's content applies to real policy work]
 
+
 ## Reflection
 - [What was most interesting]
+
+
 - [How I'll apply this knowledge]

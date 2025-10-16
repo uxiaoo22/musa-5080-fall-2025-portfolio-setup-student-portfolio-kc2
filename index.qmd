@@ -15,8 +15,8 @@ Advanced spatial analysis and data science for urban planning and public policy.
 - **Final Project:** Capstone modeling challenge
 
 ## About Me
-[Students will customize this section]
+- My name is Xiao Yu, you can call me Cathy. I am a MUSA student. I completed my undergraduate degree in Urban Studies and Planning at the University of Sheffield.
 
 ## Contact
-- Email: [your.email@upenn.edu]
-- GitHub: [@your-username]
+- Email: [uxiaoo22@upenn.edu]
+- GitHub: [@uxiaoo22]

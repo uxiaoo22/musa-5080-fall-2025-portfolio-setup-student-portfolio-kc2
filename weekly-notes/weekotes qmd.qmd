@@ -1,0 +1,145 @@
+---
+title: "Week 5 Notes"
+date: "2025-10-06"
+---
+
+## The General Problem
+
+We observe data such as **counties, income, population, education**, etc.  
+We believe there’s some relationship between these variables.
+
+**Statistical learning** = a set of approaches for estimating that relationship.
+
+---
+
+## Formalizing the Relationship
+
+For any quantitative response *Y* and predictors *X₁, X₂, … Xₚ*:
+
+$$
+Y = f(X) + \epsilon
+$$
+
+Where:
+
+- **f** = the systematic information X provides about Y  
+- **ε** = random error (irreducible)
+
+---
+
+## What is *f*?
+
+*f* represents the **true relationship** between predictors and the outcome.
+
+- It’s **fixed but unknown** — what we’re trying to estimate.  
+- Different *X* values produce different *Y* values through *f*.
+
+**Example:**
+
+- *Y* = median income  
+- *X* = population, education, poverty rate  
+- *f* = the way these factors systematically relate to income
+
+---
+
+## Why Estimate *f*?
+
+Two main reasons:
+
+1. **Prediction**
+   - Estimate *Y* for new observations  
+   - Focus on **accuracy**, not interpretation  
+
+2. **Inference**
+   - Understand **how X affects Y**  
+   - Identify which predictors matter  
+   - Focus on **interpretation**
+
+---
+
+## How Do We Estimate *f*?
+
+### Parametric Methods
+- Assume a specific functional form (e.g., linear)
+- Easier to interpret and compute
+- Focus of this week’s session
+
+### Non-Parametric Methods
+- Make fewer assumptions  
+- More flexible but require more data and are harder to interpret  
+
+**Key difference:**  
+- *Parametric (blue):* Assume *f* is linear → estimate coefficients  
+- *Non-parametric (green):* Let data determine the shape of *f*
+
+---
+
+## Parametric Approach: Linear Regression
+
+Assumption: Relationship between *X* and *Y* is **linear**  
+
+$$
+Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
+$$
+
+We estimate the β coefficients using **Ordinary Least Squares (OLS)**.
+
+---
+
+## Why Linear Regression?
+
+**Advantages**
+- Simple and interpretable  
+- Foundation for many other models  
+- Performs well in practice  
+
+**Limitations**
+- Assumes linearity  
+- Sensitive to outliers  
+- Relies on several assumptions (we’ll check them)
+
+---
+
+## Prediction vs Inference
+
+**Inference**
+- “Does education affect income?”  
+- Focus: coefficients, significance, mechanisms  
+
+**Prediction**
+- “What’s County Y’s income?”  
+- Focus: accuracy, prediction intervals  
+
+Today: we’ll do both, but emphasize **prediction**.
+
+---
+
+## Example: Prediction (Policy)
+
+Government use case:
+
+- Census may miss people in hard-to-count areas  
+- Predict income or population for **planning resources**
+
+Even if the model doesn’t explain *why*, good predictions help policy.
+
+---
+
+## Example: Inference (Research)
+
+Research use case:  
+- Understanding **gentrification**  
+- Which neighborhood characteristics explain income change?  
+- How much does education matter vs. proximity to downtown?  
+- Are policy interventions associated with outcomes?
+
+---
+
+## Connection to Week 2: Algorithmic Bias
+
+Remember the **healthcare algorithm** that discriminated?
+
+- It predicted healthcare needs using **costs** as a proxy.  
+- Technically accurate (good R²) but ethically biased.  
+- **Lesson:** A good fit ≠ a fair model.
+

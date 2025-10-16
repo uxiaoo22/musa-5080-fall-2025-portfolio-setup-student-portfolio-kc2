@@ -1,0 +1,39 @@
+---
+title: "Week 2 Notes"
+date: "2025-09-15"
+---
+
+## Key Concepts Learned
+- [List main concepts from lecture]
+Repository (repo): Folder containing your project files
+Commit: Snapshot of your work at a point in time
+Push: Send your changes to GitHub cloud
+Pull: Get latest changes from GitHub cloud
+- [Technical skills covered]
+
+## Coding Techniques
+- [New R functions or approaches]
+Powerful for spatial analysis and policy-focused statistics
+
+- [Quarto features learned]
+Quarto is the “next generation”
+Better website creation
+Works with multiple programming languages
+Same basic concept, improved features
+
+## Questions & Challenges
+- [What I didn't fully understand]
+
+- [Areas needing more practice]
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+Free and open source
+Excellent for spatial data
+Strong statistical capabilities
+Large community in urban planning/policy
+Reproducible research workflows
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]

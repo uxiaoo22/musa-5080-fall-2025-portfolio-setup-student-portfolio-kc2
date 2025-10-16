@@ -1,0 +1,544 @@
+---
+title: "Assignment 1: Census Data Quality for Policy Decisions"
+subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
+author: "Xiao Yu"
+date: today
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-location: left
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Assignment Overview
+
+## Scenario
+
+You are a data analyst for the **Texas Department of Human Services**. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.
+
+Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.
+
+## Learning Objectives
+
+- Apply dplyr functions to real census data for policy analysis
+- Evaluate data quality using margins of error 
+- Connect technical analysis to algorithmic decision-making
+- Identify potential equity implications of data reliability issues
+- Create professional documentation for policy stakeholders
+
+## Submission Instructions
+
+**Submit by posting your updated portfolio link on Canvas.** Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/`
+
+Make sure to update your `_quarto.yml` navigation to include this assignment under an "Assignments" menu.
+
+# Part 1: Portfolio Integration
+
+Create this assignment in your portfolio repository under an `assignments/assignment_1/` folder structure. Update your navigation menu to include:
+
+```
+- text: Assignments
+  menu:
+    - href: assignments/assignment_1/your_file_name.qmd
+      text: "Assignment 1: Census Data Exploration"
+```
+If there is a special character like comma, you need use double quote mark so that the quarto can identify this as text
+
+# Setup
+
+```{r setup}
+# Load required packages (hint: you need tidycensus, tidyverse, and knitr)
+library(tidycensus)
+library(tidyverse)
+library(knitr)
+# Set your Census API key
+census_api_key("ec702835845a134b4376c60759aa72ce62f6df59")
+# Choose your state for analysis - assign it to a variable called my_state
+my_state <- "Texas"
+```
+
+**State Selection:** I have chosen **Texas** for this analysis because it is a large and diverse state with both urban and rural counties. This mix allows me to compare how data quality varies across different community types, which is important for evaluating equity and potential algorithmic bias.
+
+# Part 2: County-Level Resource Assessment
+
+## 2.1 Data Retrieval
+
+**Your Task:** Use `get_acs()` to retrieve county-level data for your chosen state.
+
+**Requirements:**
+- Geography: county level
+- Variables: median household income (B19013_001) and total population (B01003_001)  
+- Year: 2022
+- Survey: acs5
+- Output format: wide
+
+**Hint:** Remember to give your variables descriptive names using the `variables = c(name = "code")` syntax.
+
+```{r county-data}
+# Write your get_acs() code here
+county_data_2022 <- get_acs(
+  geography = "county",
+  variables = c(
+    total_pop = "B01003_001",       # Total population
+    med_household_income = "B19013_001"   # Median household income
+    ),
+  state = "TX",
+  year = 2022,
+  output = "wide"
+)
+# Clean the county names to remove state name and "County" 
+county_data_2022 <- county_data_2022 %>%
+  mutate(county_name = str_remove(NAME, ", Texas"))
+
+# Display the first few rows
+head(county_data_2022)
+```
+
+## 2.2 Data Quality Assessment
+
+**Your Task:** Calculate margin of error percentages and create reliability categories.
+
+**Requirements:**
+- Calculate MOE percentage: (margin of error / estimate) * 100
+- Create reliability categories:
+  - High Confidence: MOE < 5%
+  - Moderate Confidence: MOE 5-10%  
+  - Low Confidence: MOE > 10%
+- Create a flag for unreliable estimates (MOE > 10%)
+
+**Hint:** Use `mutate()` with `case_when()` for the categories.
+
+```{r income-reliability}
+
+library(scales)
+library(knitr)
+library(kableExtra)
+
+# Calculate MOE percentage and reliability categories using mutate()
+TX_county_reliability <- county_data_2022 %>%
+  mutate(
+    med_income_moe_pct = (med_household_incomeM / med_household_incomeE) * 100,
+    med_income_confi = case_when(
+      med_income_moe_pct < 5 ~ "High Confidence (<5%)",
+      med_income_moe_pct > 5 & med_income_moe_pct <10 ~ "Moderate Confidence (5% - 10%)",
+      med_income_moe_pct > 10  ~ "Low Confidence (>10%)"
+ ),
+    unreliable_income = med_income_moe_pct >= 10
+  )
+# Create a summary showing count of counties in each reliability category
+TX_reliability_summary <- TX_county_reliability %>%
+  count(med_income_confi) %>%
+  mutate(percent = round(100 * n / sum(n), 1))
+
+# Display the summary table
+kable(
+  TX_reliability_summary,
+  caption = "Texas county-level median household income reliability (ACS 2022)",
+  col.names = c("Reliability Category", "Count", "Percentage"),
+  align = c("l", "r", "r")
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE,
+    position = "center"
+  )
+# Hint: use count() and mutate() to add percentages
+```
+
+## 2.3 High Uncertainty Counties
+
+**Your Task:** Identify the 5 counties with the highest MOE percentages.
+
+**Requirements:**
+- Sort by MOE percentage (highest first)
+- Select the top 5 counties
+- Display: county name, median income, margin of error, MOE percentage, reliability category
+- Format as a professional table using `kable()`
+
+**Hint:** Use `arrange()`, `slice()`, and `select()` functions.
+
+```{r high-uncertainty}
+library(scales)
+library(kableExtra)
+
+# Create table of top 5 counties by MOE percentage
+TX_high_uncertainty <- TX_county_reliability %>%
+  arrange(desc(med_income_moe_pct)) %>%
+  slice(1:5) %>%
+  select(
+    County = county_name,
+    `Median Income ($)` = med_household_incomeE,
+    `Margin of Error ($)` = med_household_incomeM,
+    `MOE (%)` = med_income_moe_pct,
+    Reliability = med_income_confi
+  ) %>%
+  # Format numbers for professional output
+  mutate(
+    `Median Income ($)` = dollar(`Median Income ($)`),
+    `Margin of Error ($)` = dollar(`Margin of Error ($)`),
+    `MOE (%)` = paste0(round(`MOE (%)`, 1), "%")
+  )
+
+# Format as table with kable() - include appropriate column names and caption
+kable(
+  TX_high_uncertainty,
+  caption = "Top 5 Texas Counties by Margin of Error in Median Household Income (ACS 2022)",
+  align = c("l", "r", "r", "r", "l")  # set column alignment
+) %>%
+  kable_styling(full_width = FALSE, position = "center")
+```
+
+**Data Quality Commentary:**
+
+The five Texas counties with the highest margins of error in median household income estimates—Jeff Davis, Culberson, King, Kinney, and Dimmit—show MOE percentages ranging from 45% to 66%. Such extreme levels indicate that ACS estimates for these areas are highly unreliable. The primary causes are small populations, limited survey samples, and income variability that magnifies error. If used directly in algorithmic decision-making, these data could misclassify community needs and distort funding priorities. Policymakers should instead supplement ACS data with administrative or tax records, or require manual review, to ensure fair and accurate resource allocation.
+
+# Part 3: Neighborhood-Level Analysis
+
+## 3.1 Focus Area Selection
+
+**Your Task:** Select 2-3 counties from your reliability analysis for detailed tract-level study.
+
+**Strategy:** Choose counties that represent different reliability levels (e.g., 1 high confidence, 1 moderate, 1 low confidence) to compare how data quality varies.
+
+```{r select-counties}
+library(scales)
+
+# Use filter() to select 2-3 counties from your county_reliability data
+# Store the selected counties in a variable called selected_counties
+selected_counties <- TX_county_reliability %>%
+  filter(med_household_incomeE %in% c(35924, 27374)) %>%
+  mutate(`MOE (%)` = round(med_income_moe_pct, 1)) %>%
+  select(
+    County = county_name,
+    `Median Income ($)` = med_household_incomeE,
+    `MOE (%)`,
+    Reliability = med_income_confi
+  )
+# Display the selected counties with their key characteristics
+# Show: county name, median income, MOE percentage, reliability category
+# Display the selected counties
+kable(
+  selected_counties,
+  caption = "Selected Texas Counties for Tract-Level Analysis",
+  align = c("l", "r", "r", "r", "l")
+) %>%
+  kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+```
+
+**Comment on the output:**Culberson and Dimmit Counties were selected as examples of Low Confidence data. Their high MOE values reflect the challenges of using ACS estimates in small, rural counties.
+
+## 3.2 Tract-Level Demographics
+
+**Your Task:** Get demographic data for census tracts in your selected counties.
+
+**Requirements:**
+- Geography: tract level
+- Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001)
+- Use the same state and year as before
+- Output format: wide
+- **Challenge:** You'll need county codes, not names. Look at the GEOID patterns in your county data for hints.
+
+```{r tract-demographics}
+# Define your race/ethnicity variables with descriptive names
+race_vars <- get_acs(
+  geography = "tract",
+  survey = "acs5",
+  variables = c(
+    white = "B03002_003", 
+    black = "B03002_004",
+    hisp_latinx = "B03002_012",
+    total_pop = "B03002_001"
+  ),
+  year = 2022,
+  state = "TX",
+  county = c("109", "127"),  # Culberson = 48109, Dimmit = 48127
+  output = "wide"
+)
+
+# Use get_acs() to retrieve tract-level data
+# Hint: You may need to specify county codes in the county parameter
+
+# Calculate percentage of each group using mutate()
+# Create percentages for white, Black, and Hispanic populations
+race_vars <- race_vars %>%
+  mutate(
+    pct_white = 100 * whiteE / total_popE,
+    pct_black = 100 * blackE / total_popE,
+    pct_hispanic = 100 * hisp_latinxE / total_popE,
+    
+    # Split NAME on semicolon to extract tract and county
+    tract_name = sapply(strsplit(NAME, ";"), function(x) trimws(x[1])),
+    county_name = sapply(strsplit(NAME, ";"), function(x) trimws(x[2])) %>%
+                  str_remove(" County")
+  )
+# Inspect first few rows
+head(race_vars %>%
+       select(tract_name, county_name, pct_white, pct_black, pct_hispanic))
+
+# Add readable tract and county name columns using str_extract() or similar
+```
+
+## 3.3 Demographic Analysis
+
+**Your Task:** Analyze the demographic patterns in your selected areas.
+
+```{r demographic-analysis}
+library(dplyr)
+library(knitr)
+# Find the tract with the highest percentage of Hispanic/Latino residents
+# Hint: use arrange() and slice() to get the top tract
+top_hispanic_tract <- race_vars %>%
+  arrange(desc(pct_hispanic)) %>%
+  slice(1) %>%
+  transmute(
+    Tract = tract_name,
+    County = county_name,
+    `Hispanic %` = percent(pct_hispanic / 100, accuracy = 0.1)
+  )
+
+kable(top_hispanic_tract,
+      caption = "Tract with Highest Hispanic/Latino Population",
+      align = c("l", "l", "r")) %>%
+  kable_styling(full_width = FALSE, position = "center",
+                bootstrap_options = c("striped", "hover"))
+
+
+# Calculate average demographics by county using group_by() and summarize()
+# Show: number of tracts, average percentage for each racial/ethnic group
+county_summary <- race_vars %>%
+  group_by(county_name) %>%
+  summarise(
+    `Number of Tracts` = n(),
+    `Avg. White %` = percent(mean(pct_white, na.rm = TRUE) / 100, accuracy = 0.1),
+    `Avg. Black %` = percent(mean(pct_black, na.rm = TRUE) / 100, accuracy = 0.1),
+    `Avg. Hispanic %` = percent(mean(pct_hispanic, na.rm = TRUE) / 100, accuracy = 0.1)
+  )
+# Create a nicely formatted table of your results using kable()
+kable(
+  county_summary,
+  caption = "Average Demographic Composition by County",
+  align = c("l", "r", "r", "r", "r")
+) %>%
+  kable_styling(full_width = FALSE, position = "center",
+                bootstrap_options = c("striped", "hover"))
+
+
+```
+
+# Part 4: Comprehensive Data Quality Evaluation
+
+## 4.1 MOE Analysis for Demographic Variables
+
+**Your Task:** Examine margins of error for demographic variables to see if some communities have less reliable data.
+
+**Requirements:**
+- Calculate MOE percentages for each demographic variable
+- Flag tracts where any demographic variable has MOE > 15%
+- Create summary statistics
+
+```{r demographic-moe}
+# Calculate MOE percentages for white, Black, and Hispanic variables
+# Hint: use the same formula as before (margin/estimate * 100)
+# Create a flag for tracts with high MOE on any demographic variable
+# Use logical operators (| for OR) in an ifelse() statement
+demo_moe <- race_vars %>%
+  mutate(
+    white_moe_pct = (whiteM / whiteE) * 100,
+    black_moe_pct = (blackM / blackE) * 100,
+    hispanic_moe_pct = (hisp_latinxM / hisp_latinxE) * 100,
+    
+    # Flag tracts where any demographic MOE > 15%
+    high_moe_flag = ifelse(
+      white_moe_pct > 15 | black_moe_pct > 15 | hispanic_moe_pct > 15,
+      TRUE, FALSE
+    )
+  )
+# Create summary statistics showing how many tracts have data quality issues
+moe_summary_county <- demo_moe %>%
+  group_by(county_name) %>%
+  summarise(
+    total_tracts = n(),
+    high_moe_tracts = sum(high_moe_flag, na.rm = TRUE),
+    percent_high_moe = round(100 * mean(high_moe_flag, na.rm = TRUE), 1)
+  )
+
+kable(
+  moe_summary_county,
+  caption = "**MOE Summary by County (ACS 2022)**",
+  row.names = FALSE,
+  col.names = c("County", "Total Tracts", "High MOE Tracts", "Percent High MOE (%)"),
+  align = c("l", "c", "c", "r")
+) %>%
+  kable_styling(full_width = FALSE, position = "center",
+                bootstrap_options = c("striped", "hover"))
+
+```
+
+## 4.2 Pattern Analysis
+
+**Your Task:** Investigate whether data quality problems are randomly distributed or concentrated in certain types of communities.
+
+```{r pattern-analysis}
+# Group tracts by whether they have high MOE issues
+# Calculate average characteristics for each group:
+# - population size, demographic percentages
+# Group tracts by whether they have high MOE issues
+moe_patterns <- demo_moe %>%
+  filter(high_moe_flag == TRUE) %>%   # keep only high-MOE tracts
+  group_by(county_name) %>%
+  summarise(
+    `Population Average` = round(mean(total_popE, na.rm = TRUE), 0),
+    `% White Avg` = round(mean(pct_white, na.rm = TRUE), 2),
+    `% Black Avg` = round(mean(pct_black, na.rm = TRUE), 2),
+    `% LatinX Avg` = round(mean(pct_hispanic, na.rm = TRUE), 2),
+    `Tracts Quantity` = n(),
+    .groups = "drop"
+  )
+
+kable(
+  moe_patterns,
+  caption = "**High-MOE Tracts by County (ACS 2022)**",
+  align = c("l", "c", "c", "c", "c", "r"),
+  col.names = c("County", "Population Average", "% White Avg", "% Black Avg", "% LatinX Avg", "Tracts Quantity"),
+  digits = 2
+) %>%
+  kable_styling(full_width = FALSE, position = "center",
+                bootstrap_options = c("striped", "hover", "condensed"))
+
+
+# Use group_by() and summarize() to create this comparison
+# Create a professional table showing the patterns
+```
+
+**Pattern Analysis:** High MOE tracts are found in small, rural counties with low populations and high Hispanic/Latino shares.These factors reduce ACS reliability, meaning minority and rural communities face greater risk of being misrepresented in algorithmic decisions.
+
+
+# Part 5: Policy Recommendations
+
+## 5.1 Analysis Integration and Professional Summary
+
+**Your Task:** Write an executive summary that integrates findings from all four analyses.
+
+**Executive Summary Requirements:**
+1. **Overall Pattern Identification**: What are the systematic patterns across all your analyses?
+2. **Equity Assessment**: Which communities face the greatest risk of algorithmic bias based on your findings?
+3. **Root Cause Analysis**: What underlying factors drive both data quality issues and bias risk?
+4. **Strategic Recommendations**: What should the Department implement to address these systematic issues?
+
+**Executive Summary:**
+
+Looking at ACS 2022 data for Texas, we see that data quality isn’t the same everywhere. Larger, urban counties usually have solid numbers, while smaller rural counties often have very high margins of error. In some places, the income data is so uncertain that it’s hard to use with confidence.
+
+The biggest risk shows up in rural, Hispanic-majority counties like Dimmit and Culberson. These areas often have the highest uncertainty, which means if an algorithm used this data directly, the results could shortchange the very communities that need the most support.
+
+The main reason for this problem is how the ACS survey works. Small populations naturally create bigger sampling errors, and rural or minority communities may also face challenges like language barriers or low response rates. That makes their numbers less reliable.
+
+To make decisions fairer, a tiered approach makes sense. Counties with strong data can go into the algorithm as-is. Counties with moderate-quality data should be monitored, and counties with weak data should get extra checks or even manual review. Over time, improving census participation in rural and minority communities would help fix the root of the problem.
+
+## 6.3 Specific Recommendations
+
+**Your Task:** Create a decision framework for algorithm implementation.
+
+```{r recommendations-data}
+library(scales)
+library(kableExtra)
+# Create a summary table using your county reliability data
+# Include: county name, median income, MOE percentage, reliability category
+
+# Add a new column with algorithm recommendations using case_when():
+# - High Confidence: "Safe for algorithmic decisions"
+# - Moderate Confidence: "Use with caution - monitor outcomes"  
+# - Low Confidence: "Requires manual review or additional data"
+
+TX_recommendations <- TX_county_reliability %>%
+  select(county_name, med_household_incomeE, med_income_moe_pct, med_income_confi) %>%
+  mutate(
+    `Median Income ($)` = dollar(med_household_incomeE),
+    `MOE (%)` = percent(med_income_moe_pct / 100, accuracy = 0.1),
+    Recommendation = case_when(
+      med_income_confi == "High Confidence (<5%)" ~ "✅ Safe for algorithmic decisions",
+      med_income_confi == "Moderate Confidence (5% - 10%)" ~ "⚠️ Use with caution – monitor outcomes",
+      med_income_confi == "Low Confidence (>10%)" ~ "❌ Requires manual review or extra data",
+      TRUE ~ "Check data"
+    )
+  ) %>%
+  select(county_name, `Median Income ($)`, `MOE (%)`, med_income_confi, Recommendation)
+
+
+# Format as a professional table with kable()
+kable(
+  TX_recommendations,
+  caption = "**County-Level Reliability and Algorithm Recommendations (ACS 2022)**",
+  col.names = c("County", "Median Income ($)", "MOE (%)", "Reliability", "Recommendation"),
+  escape = FALSE,
+  align = c("l", "r", "r", "l", "l")
+) %>%
+  kable_styling(full_width = FALSE, position = "center",
+                bootstrap_options = c("striped", "hover", "condensed")) %>%
+  column_spec(1, bold = TRUE)
+
+
+```
+
+**Key Recommendations:**
+
+**Your Task:** Use your analysis results to provide specific guidance to the department.
+
+1. **Counties suitable for immediate algorithmic implementation:** High-confidence counties such as Bexar, Dallas, Travis, Williamson, and Collin have strong data quality (MOE <5%). These counties are large, urban, and well-sampled, making them reliable for algorithm-driven funding and planning decisions.
+
+2. **Counties requiring additional oversight:** Moderate-confidence counties like Anderson, Bastrop, Caldwell, and Wise fall in the 5–10% MOE range. Algorithms may be used here, but outcomes should be monitored regularly with human oversight to check for misallocations.
+
+3. **Counties needing alternative approaches:** Low-confidence counties such as Dimmit, Culberson, Jeff Davis, King, and Kinney have very high MOEs (>10%, sometimes above 40–60%). These areas need manual review, supplemental surveys, or local administrative data to ensure fair resource distribution.
+
+## Questions for Further Investigation
+
+1. Are high-MOE counties geographically clustered (e.g., along the border or in rural west Texas), and does this spatial pattern affect equity?
+2. How do data quality issues change over time — are counties improving or declining in reliability across ACS cycles?
+3. Do certain demographic groups (Hispanic, Black, rural populations) consistently face higher MOEs, and what targeted outreach could improve data collection?
+
+# Technical Notes
+
+**Data Sources:** 
+
+- U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates
+- Retrieved via tidycensus R package on 09/29/2025
+
+**Reproducibility:** 
+
+- All analysis conducted in R version 2025.05.1+513 (2025.05.1+513)
+- Census API key required for replication
+- Complete code and documentation available at: https://musa-5080-fall-2025.github.io/portfolio-setup-uxiaoo22/
+
+**Methodology Notes:**
+
+- Focused on Texas counties using ACS 2022 5-year data. Variables selected: median household income, total population, and race/ethnicity (tract level). 
+- Cleaned county names by removing state suffixes for readability. 
+- Categorized margins of error (MOE) into High, Moderate, Low confidence levels for analysis clarity. 
+- Selected counties (Culberson and Dimmit) for tract-level study to highlight data reliability challenges
+
+**Limitations:**
+
+- ACS data for small, rural counties often carries large MOEs, limiting reliability. 
+- Analysis restricted to Texas counties; findings may not generalize to other states. 
+- Reliance on 5-year estimates improves stability but masks short-term trends. 
+- MOE thresholds (<5%, 5–10%, >10%) are heuristic and may oversimplify nuanced reliability issues
+
+---
+
+## Submission Checklist
+
+Before submitting your portfolio link on Canvas:
+
+- [☑ ] All code chunks run without errors
+- [☑ ] All "[Fill this in]" prompts have been completed
+- [☑ ] Tables are properly formatted and readable
+- [☑ ] Executive summary addresses all four required components
+- [☑ ] Portfolio navigation includes this assignment
+- [☑ ] Census API key is properly set 
+- [☑ ] Document renders correctly to HTML
+
+**Remember:** Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/your_file_name.html`
