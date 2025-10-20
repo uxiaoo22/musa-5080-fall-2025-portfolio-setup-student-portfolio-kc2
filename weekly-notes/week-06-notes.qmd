@@ -1,245 +1,193 @@
 ---
-title: "Week 5 Notes"
-date: "2025-10-06"
+title: "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression"
+date: "2025-10-19"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    theme: flatly
 ---
 
----
-title: "Week 5 Notes"
-date: "2025-10-06"
----
+# Limitations of Linear Models
 
-## The General Problem
+## What Does a Basic Linear Model Ignore?
+- **Location variation** (North End vs. Roxbury vs. Back Bay)
+- Proximity to:
+  - Downtown
+  - Waterfronts
+  - Parks
+- Neighborhood conditions:
+  - Crime rates
+  - School quality
+  - Socioeconomic characteristics
 
-We observe data such as **counties, income, population, and education**.  
-We believe there’s some relationship between these variables.
+::: callout-important
+**Location matters!**  
+A house’s price is determined not only by its physical attributes but by where it is located.
+:::
 
-**Statistical learning** refers to the set of methods for estimating that relationship.
+## Why Might It Fail?
+- 1,000 sq ft in **Back Bay ≠ Roxbury**
+- Same attributes, very different prices
+- Real estate adheres to the principle: **“Location, location, location!”**
 
----
+## How Can We Improve the Model?
+- Add **spatial features**
+- Use **neighborhood fixed effects**
+- Include **interaction terms** to reflect how variables behave differently across places
 
-## Formalizing the Relationship
-
-For any quantitative response *Y* and predictors *X₁, X₂, … Xₚ*:
-
-$$
-Y = f(X) + \epsilon
-$$
-
-Where:
-- **f** = the systematic information X provides about Y  
-- **ε** = random error (irreducible)
-
----
-
-## What is *f*?
-
-*f* represents the **true relationship** between predictors and the outcome.  
-It’s fixed but unknown — the core object we aim to estimate.
-
-**Example:**
-- *Y* = median income  
-- *X* = population, education, poverty rate  
-- *f* = how these factors systematically relate to income
+> 💡 *Key idea:* Spatial features allow regression models to capture real-world geography.
 
 ---
 
-## Why Estimate *f*?
+# Converting Data into Spatial Format
 
-Two key purposes of statistical learning:
+### Step 1: Create Spatial Data
+Convert tabular data with latitude/longitude into an `sf` object.
 
-1. **Prediction**
-   - Estimate *Y* for new or missing observations  
-   - Focus on **accuracy** rather than explanation  
-
-2. **Inference**
-   - Understand **how X affects Y**  
-   - Identify which predictors are most important  
-   - Focus on **interpreting relationships**
+### Step 2: Spatial Join
+Match each property to its neighborhood polygon.
 
 ---
 
-## How Do We Estimate *f*?
+# Types of Variables
 
-### Parametric Methods
-- Assume a specific form for *f* (e.g., linear)
-- Reduce the problem to estimating parameters
-- Easier to interpret but limited by assumptions  
-
-### Non-Parametric Methods
-- Make fewer assumptions about *f*
-- More flexible but harder to interpret and require more data
-
-**Key difference:**  
-Parametric = structure first, then estimate  
-Non-parametric = data first, let the shape emerge
+| Variable Type      | Examples |
+|--------------------|----------|
+| **Continuous**     | House size, Age, Income, Distance to CBD |
+| **Categorical**    | Neighborhood, School district, Building type |
+| **Binary**         | Has garage (Yes/No), Historic status (Yes/No) |
 
 ---
 
-## Parametric Approach: Linear Regression
+# Understanding Interaction Effects
 
-We assume a **linear relationship** between *X* and *Y*:
+### What Is an Interaction?
+> The effect of one variable depends on the value of another variable.
 
-$$
-Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
-$$
-
-Our goal is to estimate the coefficients (β’s) using **Ordinary Least Squares (OLS)** — the method that minimizes prediction error.
-
----
-
-## Why Linear Regression?
-
-**Advantages**
-- Simple and interpretable  
-- Performs surprisingly well for many real-world problems  
-- Foundation for more advanced methods  
-
-**Limitations**
-- Assumes linearity and independence  
-- Sensitive to outliers  
-- Requires diagnostic checks  
+### Example Questions:
+- Does square footage increase price *more* in wealthy neighborhoods?
+- Does pollution affect older people differently than younger people?
 
 ---
 
-## Prediction vs Inference
+# Policy Implications (Boston Case Study)
 
-**Inference** asks:  
-> Does education significantly affect income?  
+## 1. Market Segmentation
+Boston operates as two distinct housing markets:
+- **Luxury market:** ~$1081/sq ft
+- **Standard market:** ~$96/sq ft
 
-Focus: understanding mechanisms, testing hypotheses.
+## 2. Affordability Crisis
+- Interaction effects **amplify inequality**
+- Larger homes in wealthy areas become disproportionately expensive
 
-**Prediction** asks:  
-> What will the income be for this county?  
-
-Focus: accuracy and reliability of forecasts.
-
-This session emphasizes **prediction**, while recognizing inference as a complementary goal.
-
----
-
-## Example Applications
-
-### Prediction
-Used by governments to:
-- Estimate income for areas with incomplete census data  
-- Forecast population growth or public service needs  
-
-Accurate predictions improve decision-making even without full causal understanding.
-
-### Inference
-Used by researchers to:
-- Understand gentrification and inequality  
-- Identify which neighborhood characteristics explain income changes  
-- Evaluate the impact of education or policy interventions
+## 3. Policy Design Implications
+- Property taxes should reflect spatial variation
+- Housing policy must be neighborhood-specific (not one-size-fits-all)
 
 ---
 
-## Connection to Week 2: Algorithmic Bias
-
-Statistical accuracy does not guarantee ethical fairness.  
-For example, a healthcare model once predicted medical needs using **costs** as a proxy — resulting in racial bias.  
-
-This highlights that **fit metrics (like R²)** cannot replace ethical evaluation.
+# When *Not* to Use Interaction Terms
+- **Small sample sizes**
+- **Risk of overfitting**
+- **Model instability**
 
 ---
 
-## Interpreting Regression Results
+# Detecting Non-Linearity
 
-When fitting a simple model of **median income vs. population**:
-- The intercept (~\$62,855) represents baseline income when population = 0 (not practically meaningful).  
-- The slope (~\$0.02 per person) means that, on average, income rises \$20 for every additional 1,000 people.  
-- The relationship is statistically significant (*p* < 0.001).  
-- R² = 0.21 → about 21% of variation in income is explained by population.
+**Signs:**
+- Curved residual plots
+- Diminishing returns
+- U-shaped patterns
+- Theoretical justification
 
-This shows population helps explain income differences, though other variables matter too.
-
----
-
-## Model Evaluation: Key Ideas
-
-### The “True” vs. Estimated Relationship
-The real relationship (*f*) is unobservable.  
-Our model provides an **approximation** based on available data.  
-Each dataset produces slightly different estimates — uncertainty is measured by **standard errors**.
-
-### Statistical Significance
-- **Null hypothesis (H₀):** β₁ = 0 (no relationship)  
-- A small **p-value** means the observed effect is unlikely to be random → the relationship is real.
-
-### R² and Model Fit
-- R² measures the share of variance in *Y* explained by *X*.  
-- It indicates strength, not correctness, of the model.  
-- A model with low R² may still provide useful predictions.
+### Examples:
+- House age: depreciation → trough → historic premium
+- Advertising: diminishing returns
+- Crime prevention: early gains then plateau
 
 ---
 
-## Overfitting and Model Validation
+# U-Shaped Age Effect: Theory
 
-A model can perform well on training data but fail on new data.  
-To avoid this, data are split into **training** and **testing** sets.
+### Housing Lifecycle Stages
 
-- **Training error** measures fit on known data.  
-- **Testing error** measures predictive performance on unseen data.  
+| Stage | Description | Price Effect |
+|-------|-------------|--------------|
+| **New (0–20 yrs)** | Modern amenities, no repairs | High value, initial depreciation |
+| **Mid-aged (20–80 yrs)** | Maintenance required | Lowest value |
+| **Historic (80+ yrs)** | Vintage architecture, prestige | Rising value (vintage premium) |
 
-Good models balance **bias and variance**, avoiding both underfitting and overfitting.
 
----
+# Tobler’s First Law of Geography
+> “Everything is related to everything else, but near things are more related than distant things.”
 
-## Model Assumptions and Diagnostics
+## What This Means for Housing Prices
+- **Crime in nearby streets** influences a property's value more than crime occurring far away.
+- **Proximity to parks and green space** increases property desirability.
+- **Immediate neighborhood conditions** largely define the housing market segment a property belongs to.
 
-1. **Linearity** — relationship between variables should be roughly linear.  
-   - Check with residual plots.  
-   - Curvature suggests model misspecification.  
-
-2. **Constant Variance (Homoscedasticity)** — residual spread should be even.  
-   - Violations make p-values unreliable.  
-   - Solutions: transform *Y*, add predictors, or use robust errors.  
-
-3. **Normality of Residuals** — important for hypothesis testing.  
-   - Use Q–Q plots to assess normal distribution.  
-
-4. **No Multicollinearity** — predictors should not be highly correlated.  
-   - High correlation makes coefficients unstable.  
-
-5. **No Influential Outliers** — avoid points that disproportionately shape the regression line.  
-   - Detect using Cook’s Distance.
+::: callout-note
+Spatial relationship matters because households make decisions based on their *local* context, not the entire city.
+:::
 
 ---
 
-## Improving the Model
+# Three Approaches to Spatial Features
 
-### Adding Predictors
-Including education and poverty rates typically improves explanatory power.  
-Example: Adjusted R² increases to around **0.57**, suggesting stronger fit.
+### 1️⃣ Buffer Aggregation
+- Counts or sums events (e.g., number of crimes, schools) within a specified radius of the property.
+- Useful for modeling *local exposure*.
 
-### Transformations
-If relationships are curved, use **log transformations**.  
-For instance, a log–population model may capture diminishing returns to scale.
+### 2️⃣ k-Nearest Neighbors (kNN)
+- Calculates average distance to the *k closest* amenities or hazards.
+- Focuses on relative proximity instead of fixed boundaries.
 
-### Categorical Variables
-Include binary variables such as **metro vs. non-metro** areas.  
-In one model, metro counties earned about **\$30,000 more** on average.
+### 3️⃣ Distance to Specific Points
+- Computes straight-line (Euclidean) or network distance to specific features:
+  - Central Business District (CBD)
+  - Nearest park
+  - Public transport station
 
----
-
-## Summary: The Regression Workflow
-
-1. **Understand** the conceptual model (*f(X)*).  
-2. **Visualize** relationships before modeling.  
-3. **Fit** the regression model carefully.  
-4. **Evaluate** performance using validation methods.  
-5. **Check** key assumptions.  
-6. **Refine** with new variables or transformations.  
-7. **Reflect** on the **ethical and social implications** of modeling.
+::: callout-tip
+These spatial variables can be directly added to regression models to capture geographic influences.
+:::
 
 ---
 
-## Key Takeaways
+# What Are Fixed Effects?
 
-- **Statistical learning** is about estimating *f(X)*, the systematic link between predictors and outcomes.  
-- Two central goals:
-  - **Inference** – understand relationships  
-  - **Prediction** – forecast new outcomes  
-- **Good fit ≠ good model**: always assess assumptions and fairness.  
-- **Diagnostics matter**: plots and reasoning reveal what statistics can hide.  
-- **Ethical awareness** is essential in all modeling decisions.
+**Fixed Effects** are categorical variables representing groups (such as neighborhoods, districts, or cities) that absorb:
+- Social characteristics
+- Historical development patterns
+- Cultural differences
+- Policy environments
+
+They allow the model to:
+- Compare properties **within the same group**
+- Control for unobserved heterogeneity **between groups**
+
+> ✅ Example: Adding a “Neighborhood Fixed Effect” variable assigns a unique dummy for each neighborhood to control for location-specific influence.
+
+---
+
+# Cross-Validation (CV) Recap
+
+## Three Common Validation Approaches
+
+| Method            | Description | Advantages | Limitations |
+|------------------|-------------|------------|-------------|
+| **Train/Test Split** | Split data into 80% training, 20% testing | Simple and fast | Results depend heavily on single split (unstable) |
+| **k-Fold CV**     | Divide into *k* subsets; rotate test and train sets | More reliable performance estimate | More computation |
+| **LOOCV** (Leave-One-Out) | Special case of k-fold CV with k = n | Uses almost all data for training | Extremely slow for large datasets |
+
+## Why Use Cross-Validation?
+- Measures how well the model predicts **new, unseen data**
+- More objective than in-sample \( R^2 \)
+- Helps detect **overfitting** by testing generalizability
+
+::: callout-important
+Cross-validation ensures your model performs well in real-world scenarios, not just on the training dataset.
+:::

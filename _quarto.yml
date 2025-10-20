@@ -22,7 +22,8 @@ website:
             text: "Week 4 Notes"
           - href: weekly-notes/week-05-notes.qmd
             text: "Week 5 Notes"
-            
+          - href: weekly-notes/week-06-notes.qmd
+            Text: "Week 6 Notes"
       - text: "Labs"
         menu:
           - href: labs/lab_0/script
