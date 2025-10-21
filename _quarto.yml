@@ -25,7 +25,6 @@ website:
           - href: weekly-notes/tim.qmd
             text: "Week 6 Notes"
 
-
       - text: "Labs"
         menu:
           - href: labs/lab_0/script
