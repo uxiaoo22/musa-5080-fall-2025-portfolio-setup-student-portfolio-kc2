@@ -60,7 +60,8 @@ library(scales)
 library(readr)
 library(kableExtra)
 
-
+options(tigris_use_cache=TRUE)
+options(tigris_progress=FALSE)
 # Load spatial data
 pa_counties=st_read("/Users/cathy/GitHub/MUSA-5080-Fall-2025/lectures/week-04/data/Pennsylvania_County_Boundaries.shp")
 pa_hospital=st_read("/Users/cathy/GitHub/MUSA-5080-Fall-2025/lectures/week-04/data/hospitals.geojson")
@@ -621,11 +622,21 @@ school_buffer <- st_buffer(schools, dist = 500)
 bike_buffer <- st_buffer(bike_network, dist = 300)
 
 # Quick visualization
-tmap_mode("view")
-tm_shape(bike_buffer) + tm_borders(col = "steelblue") +
-  tm_shape(school_buffer) + tm_borders(col = "red") +
-  tm_shape(crime) + tm_dots(col = "black", size = 0.05) +
-  tm_layout(title = "School and Bike Lane Buffers with Crime Points")
+library(tmap)
+
+tmap_mode("plot")
+
+tm_shape(bike_buffer) + 
+  tm_borders(col = "steelblue", lwd = 1) +
+  tm_shape(school_buffer) + 
+  tm_borders(col = "red", lwd = 1) +
+  tm_shape(crime) + 
+  tm_dots(col = "black", size = 0.02) +
+  tm_layout(
+    title = "School and Bike Lane Buffers with Crime Points",
+    frame = FALSE,
+    legend.outside = TRUE
+  )
 
 ```
 
@@ -655,13 +666,30 @@ school_analysis <- school_bike_join %>%
          at_risk = if_else(crime_count > 50 & has_bike == 0, 1, 0))
 
 # 5. Filter and visualize
-at_risk_schools <- school_analysis %>% filter(at_risk == 1)
 
-tmap_mode("view")
-tm_shape(bike_network) + tm_lines(col = "steelblue") +
-  tm_shape(school_buffer) + tm_borders(col = "firebrick") +
-  tm_shape(at_risk_schools) + tm_dots(col = "black", size = 0.3) +
-  tm_layout(title = "At-Risk Schools: High Crime and No Nearby Bike Lanes")
+at_risk_schools <- school_analysis %>%
+  filter(at_risk == 1)
+
+# Optional: check how many schools
+nrow(at_risk_schools)
+
+
+library(tmap)
+
+tmap_mode("plot")  
+
+tm_shape(bike_network) +
+  tm_lines(col = "steelblue", lwd = 1) +
+  tm_shape(school_buffer) +
+  tm_borders(col = "firebrick", lwd = 1) +
+  tm_shape(at_risk_schools) +
+  tm_dots(col = "black", size = 0.3) +
+  tm_layout(
+    title = "At-Risk Schools: High Crime and No Nearby Bike Lanes",
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
 
 ```
 
