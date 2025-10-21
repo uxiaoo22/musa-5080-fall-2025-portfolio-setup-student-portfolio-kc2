@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-06">
+<meta name="dcterms.date" content="2025-09-29">
 
-<title>Week 5 Notes – Xiao Yu - MUSA 5080 Portfolio</title>
+<title>Week 4 Notes – Xiao Yu - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -131,31 +102,31 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
         <li>
-    <a class="dropdown-item" href="../weekly-notes/">
+    <a class="dropdown-item" href="../weeknotes/">
  <span class="dropdown-text">All Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-01-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-01-notes.html">
  <span class="dropdown-text">Week 1 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-02-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-02-notes.html">
  <span class="dropdown-text">Week 2 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-03-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-03-notes.html">
  <span class="dropdown-text">Week 3 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-04-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-04-notes.html">
  <span class="dropdown-text">Week 4 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-05-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-05-notes.html">
  <span class="dropdown-text">Week 5 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/tim.html">
+    <a class="dropdown-item" href="../weeknotes/tim.html">
  <span class="dropdown-text">Week 6 Notes</span></a>
   </li>  
     </ul>
@@ -206,21 +177,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-general-problem" id="toc-the-general-problem" class="nav-link active" data-scroll-target="#the-general-problem">The General Problem</a></li>
-  <li><a href="#formalizing-the-relationship" id="toc-formalizing-the-relationship" class="nav-link" data-scroll-target="#formalizing-the-relationship">Formalizing the Relationship</a></li>
-  <li><a href="#what-is-f" id="toc-what-is-f" class="nav-link" data-scroll-target="#what-is-f">What is <em>f</em>?</a></li>
-  <li><a href="#why-estimate-f" id="toc-why-estimate-f" class="nav-link" data-scroll-target="#why-estimate-f">Why Estimate <em>f</em>?</a></li>
-  <li><a href="#how-do-we-estimate-f" id="toc-how-do-we-estimate-f" class="nav-link" data-scroll-target="#how-do-we-estimate-f">How Do We Estimate <em>f</em>?</a>
-  <ul class="collapse">
-  <li><a href="#parametric-methods" id="toc-parametric-methods" class="nav-link" data-scroll-target="#parametric-methods">Parametric Methods</a></li>
-  <li><a href="#non-parametric-methods" id="toc-non-parametric-methods" class="nav-link" data-scroll-target="#non-parametric-methods">Non-Parametric Methods</a></li>
-  </ul></li>
-  <li><a href="#parametric-approach-linear-regression" id="toc-parametric-approach-linear-regression" class="nav-link" data-scroll-target="#parametric-approach-linear-regression">Parametric Approach: Linear Regression</a></li>
-  <li><a href="#why-linear-regression" id="toc-why-linear-regression" class="nav-link" data-scroll-target="#why-linear-regression">Why Linear Regression?</a></li>
-  <li><a href="#prediction-vs-inference" id="toc-prediction-vs-inference" class="nav-link" data-scroll-target="#prediction-vs-inference">Prediction vs Inference</a></li>
-  <li><a href="#example-prediction-policy" id="toc-example-prediction-policy" class="nav-link" data-scroll-target="#example-prediction-policy">Example: Prediction (Policy)</a></li>
-  <li><a href="#example-inference-research" id="toc-example-inference-research" class="nav-link" data-scroll-target="#example-inference-research">Example: Inference (Research)</a></li>
-  <li><a href="#connection-to-week-2-algorithmic-bias" id="toc-connection-to-week-2-algorithmic-bias" class="nav-link" data-scroll-target="#connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</a></li>
+  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
+  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
+  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
+  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
   </ul>
 </nav>
     </div>
@@ -229,7 +190,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 5 Notes</h1>
+<h1 class="title">Week 4 Notes</h1>
 </div>
 
 
@@ -240,7 +201,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 6, 2025</p>
+      <p class="date">September 29, 2025</p>
     </div>
   </div>
   
@@ -252,146 +213,38 @@ window.Quarto = {
 </header>
 
 
-<section id="the-general-problem" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-problem">The General Problem</h2>
-<p>We observe data such as <strong>counties, income, population, education</strong>, etc.<br>
-We believe there’s some relationship between these variables.</p>
-<p><strong>Statistical learning</strong> = a set of approaches for estimating that relationship.</p>
-<hr>
-</section>
-<section id="formalizing-the-relationship" class="level2">
-<h2 class="anchored" data-anchor-id="formalizing-the-relationship">Formalizing the Relationship</h2>
-<p>For any quantitative response <em>Y</em> and predictors <em>X₁, X₂, … Xₚ</em>:</p>
-<p><span class="math display">\[
-Y = f(X) + \epsilon
-\]</span></p>
-<p>Where:</p>
+<section id="key-concepts-learned" class="level2">
+<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
 <ul>
-<li><strong>f</strong> = the systematic information X provides about Y<br>
-</li>
-<li><strong>ε</strong> = random error (irreducible)</li>
-</ul>
-<hr>
-</section>
-<section id="what-is-f" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-f">What is <em>f</em>?</h2>
-<p><em>f</em> represents the <strong>true relationship</strong> between predictors and the outcome.</p>
-<ul>
-<li>It’s <strong>fixed but unknown</strong> — what we’re trying to estimate.<br>
-</li>
-<li>Different <em>X</em> values produce different <em>Y</em> values through <em>f</em>.</li>
-</ul>
-<p><strong>Example:</strong></p>
-<ul>
-<li><em>Y</em> = median income<br>
-</li>
-<li><em>X</em> = population, education, poverty rate<br>
-</li>
-<li><em>f</em> = the way these factors systematically relate to income</li>
-</ul>
-<hr>
-</section>
-<section id="why-estimate-f" class="level2">
-<h2 class="anchored" data-anchor-id="why-estimate-f">Why Estimate <em>f</em>?</h2>
-<p>Two main reasons:</p>
-<ol type="1">
-<li><strong>Prediction</strong>
-<ul>
-<li>Estimate <em>Y</em> for new observations<br>
-</li>
-<li>Focus on <strong>accuracy</strong>, not interpretation</li>
-</ul></li>
-<li><strong>Inference</strong>
-<ul>
-<li>Understand <strong>how X affects Y</strong><br>
-</li>
-<li>Identify which predictors matter<br>
-</li>
-<li>Focus on <strong>interpretation</strong></li>
-</ul></li>
-</ol>
-<hr>
-</section>
-<section id="how-do-we-estimate-f" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-we-estimate-f">How Do We Estimate <em>f</em>?</h2>
-<section id="parametric-methods" class="level3">
-<h3 class="anchored" data-anchor-id="parametric-methods">Parametric Methods</h3>
-<ul>
-<li>Assume a specific functional form (e.g., linear)</li>
-<li>Easier to interpret and compute</li>
-<li>Focus of this week’s session</li>
+<li><p>[List main concepts from lecture]</p></li>
+<li><p>[Technical skills covered]</p></li>
 </ul>
 </section>
-<section id="non-parametric-methods" class="level3">
-<h3 class="anchored" data-anchor-id="non-parametric-methods">Non-Parametric Methods</h3>
+<section id="coding-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
 <ul>
-<li>Make fewer assumptions<br>
-</li>
-<li>More flexible but require more data and are harder to interpret</li>
+<li><p>[New R functions or approaches]</p></li>
+<li><p>[Quarto features learned]</p></li>
 </ul>
-<p><strong>Key difference:</strong><br>
-- <em>Parametric (blue):</em> Assume <em>f</em> is linear → estimate coefficients<br>
-- <em>Non-parametric (green):</em> Let data determine the shape of <em>f</em></p>
-<hr>
 </section>
-</section>
-<section id="parametric-approach-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="parametric-approach-linear-regression">Parametric Approach: Linear Regression</h2>
-<p>Assumption: Relationship between <em>X</em> and <em>Y</em> is <strong>linear</strong></p>
-<p><span class="math display">\[
-Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
-\]</span></p>
-<p>We estimate the β coefficients using <strong>Ordinary Least Squares (OLS)</strong>.</p>
-<hr>
-</section>
-<section id="why-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="why-linear-regression">Why Linear Regression?</h2>
-<p><strong>Advantages</strong> - Simple and interpretable<br>
-- Foundation for many other models<br>
-- Performs well in practice</p>
-<p><strong>Limitations</strong> - Assumes linearity<br>
-- Sensitive to outliers<br>
-- Relies on several assumptions (we’ll check them)</p>
-<hr>
-</section>
-<section id="prediction-vs-inference" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-vs-inference">Prediction vs Inference</h2>
-<p><strong>Inference</strong> - “Does education affect income?”<br>
-- Focus: coefficients, significance, mechanisms</p>
-<p><strong>Prediction</strong> - “What’s County Y’s income?”<br>
-- Focus: accuracy, prediction intervals</p>
-<p>Today: we’ll do both, but emphasize <strong>prediction</strong>.</p>
-<hr>
-</section>
-<section id="example-prediction-policy" class="level2">
-<h2 class="anchored" data-anchor-id="example-prediction-policy">Example: Prediction (Policy)</h2>
-<p>Government use case:</p>
+<section id="questions-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
 <ul>
-<li>Census may miss people in hard-to-count areas<br>
-</li>
-<li>Predict income or population for <strong>planning resources</strong></li>
+<li><p>[What I didn’t fully understand]</p></li>
+<li><p>[Areas needing more practice]</p></li>
 </ul>
-<p>Even if the model doesn’t explain <em>why</em>, good predictions help policy.</p>
-<hr>
 </section>
-<section id="example-inference-research" class="level2">
-<h2 class="anchored" data-anchor-id="example-inference-research">Example: Inference (Research)</h2>
-<p>Research use case:<br>
-- Understanding <strong>gentrification</strong><br>
-- Which neighborhood characteristics explain income change?<br>
-- How much does education matter vs.&nbsp;proximity to downtown?<br>
-- Are policy interventions associated with outcomes?</p>
-<hr>
-</section>
-<section id="connection-to-week-2-algorithmic-bias" class="level2">
-<h2 class="anchored" data-anchor-id="connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</h2>
-<p>Remember the <strong>healthcare algorithm</strong> that discriminated?</p>
+<section id="connections-to-policy" class="level2">
+<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
 <ul>
-<li>It predicted healthcare needs using <strong>costs</strong> as a proxy.<br>
-</li>
-<li>Technically accurate (good R²) but ethically biased.<br>
-</li>
-<li><strong>Lesson:</strong> A good fit ≠ a fair model.</li>
+<li>[How this week’s content applies to real policy work]</li>
+</ul>
+</section>
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+<ul>
+<li><p>[What was most interesting]</p></li>
+<li><p>[How I’ll apply this knowledge]</p></li>
 </ul>
 
 

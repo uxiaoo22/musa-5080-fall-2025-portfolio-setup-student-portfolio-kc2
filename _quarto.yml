@@ -10,19 +10,19 @@ website:
         text: Home
       - text: "Weekly Notes"
         menu: 
-          - href: weekly-notes/
+          - href: weeknotes/
             text: "All Notes"
-          - href: weekly-notes/week-01-notes.qmd
+          - href: weeknotes/week-01-notes.qmd
             text: "Week 1 Notes"
-          - href: weekly-notes/week-02-notes.qmd
+          - href: weeknotes/week-02-notes.qmd
             text: "Week 2 Notes"
-          - href: weekly-notes/week-03-notes.qmd
+          - href: weeknotes/week-03-notes.qmd
             text: "Week 3 Notes"
-          - href: weekly-notes/week-04-notes.qmd
+          - href: weeknotes/week-04-notes.qmd
             text: "Week 4 Notes"
-          - href: weekly-notes/week-05-notes.qmd
+          - href: weeknotes/week-05-notes.qmd
             text: "Week 5 Notes"
-          - href: weekly-notes/tim.qmd
+          - href: weeknotes/tim.qmd
             text: "Week 6 Notes"
 
       - text: "Labs"

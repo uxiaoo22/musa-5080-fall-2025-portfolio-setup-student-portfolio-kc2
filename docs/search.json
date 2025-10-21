@@ -84,239 +84,239 @@
     "text": "Before submitting, make sure you’ve: - [ ] Customized _quarto.yml with your name - [ ] Updated index.qmd with your information - [ ] Completed Week 1 notes - [ ] Enabled GitHub Pages - [ ] Verified your website loads correctly - [ ] Submitted your URL to Canvas\n\nNeed help? Don’t struggle alone - reach out during office hours (mine + TAs) or in class!"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html",
-    "href": "weekly-notes/week-01-notes.html",
+    "objectID": "weeknotes/week-01-notes.html",
+    "href": "weeknotes/week-01-notes.html",
     "title": "Week 1 Notes - Course Introduction",
     "section": "",
     "text": "[List main concepts from lecture] Repository (repo): Folder containing your project files Commit: Snapshot of your work at a point in time Push: Send your changes to GitHub cloud Pull: Get latest changes from GitHub cloud\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "objectID": "weeknotes/week-01-notes.html#key-concepts-learned",
+    "href": "weeknotes/week-01-notes.html#key-concepts-learned",
     "title": "Week 1 Notes - Course Introduction",
     "section": "",
     "text": "[List main concepts from lecture] Repository (repo): Folder containing your project files Commit: Snapshot of your work at a point in time Push: Send your changes to GitHub cloud Pull: Get latest changes from GitHub cloud\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
-    "href": "weekly-notes/week-01-notes.html#coding-techniques",
+    "objectID": "weeknotes/week-01-notes.html#coding-techniques",
+    "href": "weeknotes/week-01-notes.html#coding-techniques",
     "title": "Week 1 Notes - Course Introduction",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n\n[New R functions or approaches]\n[Quarto features learned]"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
-    "href": "weekly-notes/week-01-notes.html#questions-challenges",
+    "objectID": "weeknotes/week-01-notes.html#questions-challenges",
+    "href": "weeknotes/week-01-notes.html#questions-challenges",
     "title": "Week 1 Notes - Course Introduction",
     "section": "Questions & Challenges",
     "text": "Questions & Challenges\n\n[What I didn’t fully understand]\n[Areas needing more practice]"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "objectID": "weeknotes/week-01-notes.html#connections-to-policy",
+    "href": "weeknotes/week-01-notes.html#connections-to-policy",
     "title": "Week 1 Notes - Course Introduction",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\n[How this week’s content applies to real policy work]"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#reflection",
-    "href": "weekly-notes/week-01-notes.html#reflection",
+    "objectID": "weeknotes/week-01-notes.html#reflection",
+    "href": "weeknotes/week-01-notes.html#reflection",
     "title": "Week 1 Notes - Course Introduction",
     "section": "Reflection",
     "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
   },
   {
-    "objectID": "weekly-notes/tim.html",
-    "href": "weekly-notes/tim.html",
+    "objectID": "weeknotes/tim.html",
+    "href": "weeknotes/tim.html",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "",
     "text": "Location variation (North End vs. Roxbury vs. Back Bay)\nProximity to:\n\nDowntown\nWaterfronts\nParks\n\nNeighborhood conditions:\n\nCrime rates\nSchool quality\nSocioeconomic characteristics\n\n\n\n\n\n\n\n\nImportant\n\n\n\nLocation matters!\nA house’s price is determined not only by its physical attributes but by where it is located.\n\n\n\n\n\n\n1,000 sq ft in Back Bay ≠ Roxbury\nSame attributes, very different prices\nReal estate adheres to the principle: “Location, location, location!”\n\n\n\n\n\nAdd spatial features\nUse neighborhood fixed effects\nInclude interaction terms to reflect how variables behave differently across places\n\n\n💡 Key idea: Spatial features allow regression models to capture real-world geography."
   },
   {
-    "objectID": "weekly-notes/tim.html#what-does-a-basic-linear-model-ignore",
-    "href": "weekly-notes/tim.html#what-does-a-basic-linear-model-ignore",
+    "objectID": "weeknotes/tim.html#what-does-a-basic-linear-model-ignore",
+    "href": "weeknotes/tim.html#what-does-a-basic-linear-model-ignore",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "",
     "text": "Location variation (North End vs. Roxbury vs. Back Bay)\nProximity to:\n\nDowntown\nWaterfronts\nParks\n\nNeighborhood conditions:\n\nCrime rates\nSchool quality\nSocioeconomic characteristics\n\n\n\n\n\n\n\n\nImportant\n\n\n\nLocation matters!\nA house’s price is determined not only by its physical attributes but by where it is located."
   },
   {
-    "objectID": "weekly-notes/tim.html#why-might-it-fail",
-    "href": "weekly-notes/tim.html#why-might-it-fail",
+    "objectID": "weeknotes/tim.html#why-might-it-fail",
+    "href": "weeknotes/tim.html#why-might-it-fail",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "",
     "text": "1,000 sq ft in Back Bay ≠ Roxbury\nSame attributes, very different prices\nReal estate adheres to the principle: “Location, location, location!”"
   },
   {
-    "objectID": "weekly-notes/tim.html#how-can-we-improve-the-model",
-    "href": "weekly-notes/tim.html#how-can-we-improve-the-model",
+    "objectID": "weeknotes/tim.html#how-can-we-improve-the-model",
+    "href": "weeknotes/tim.html#how-can-we-improve-the-model",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "",
     "text": "Add spatial features\nUse neighborhood fixed effects\nInclude interaction terms to reflect how variables behave differently across places\n\n\n💡 Key idea: Spatial features allow regression models to capture real-world geography."
   },
   {
-    "objectID": "weekly-notes/tim.html#market-segmentation",
-    "href": "weekly-notes/tim.html#market-segmentation",
+    "objectID": "weeknotes/tim.html#market-segmentation",
+    "href": "weeknotes/tim.html#market-segmentation",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "1. Market Segmentation",
     "text": "1. Market Segmentation\nBoston operates as two distinct housing markets: - Luxury market: ~$1081/sq ft - Standard market: ~$96/sq ft"
   },
   {
-    "objectID": "weekly-notes/tim.html#affordability-crisis",
-    "href": "weekly-notes/tim.html#affordability-crisis",
+    "objectID": "weeknotes/tim.html#affordability-crisis",
+    "href": "weeknotes/tim.html#affordability-crisis",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "2. Affordability Crisis",
     "text": "2. Affordability Crisis\n\nInteraction effects amplify inequality\nLarger homes in wealthy areas become disproportionately expensive"
   },
   {
-    "objectID": "weekly-notes/tim.html#policy-design-implications",
-    "href": "weekly-notes/tim.html#policy-design-implications",
+    "objectID": "weeknotes/tim.html#policy-design-implications",
+    "href": "weeknotes/tim.html#policy-design-implications",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "3. Policy Design Implications",
     "text": "3. Policy Design Implications\n\nProperty taxes should reflect spatial variation\nHousing policy must be neighborhood-specific (not one-size-fits-all)"
   },
   {
-    "objectID": "weekly-notes/tim.html#what-this-means-for-housing-prices",
-    "href": "weekly-notes/tim.html#what-this-means-for-housing-prices",
+    "objectID": "weeknotes/tim.html#what-this-means-for-housing-prices",
+    "href": "weeknotes/tim.html#what-this-means-for-housing-prices",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "What This Means for Housing Prices",
     "text": "What This Means for Housing Prices\n\nCrime in nearby streets influences a property’s value more than crime occurring far away.\nProximity to parks and green space increases property desirability.\nImmediate neighborhood conditions largely define the housing market segment a property belongs to.\n\n\n\n\n\n\n\nNote\n\n\n\nSpatial relationship matters because households make decisions based on their local context, not the entire city."
   },
   {
-    "objectID": "weekly-notes/tim.html#three-common-validation-approaches",
-    "href": "weekly-notes/tim.html#three-common-validation-approaches",
+    "objectID": "weeknotes/tim.html#three-common-validation-approaches",
+    "href": "weeknotes/tim.html#three-common-validation-approaches",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "Three Common Validation Approaches",
     "text": "Three Common Validation Approaches\n\n\n\n\n\n\n\n\n\nMethod\nDescription\nAdvantages\nLimitations\n\n\n\n\nTrain/Test Split\nSplit data into 80% training, 20% testing\nSimple and fast\nResults depend heavily on single split (unstable)\n\n\nk-Fold CV\nDivide into k subsets; rotate test and train sets\nMore reliable performance estimate\nMore computation\n\n\nLOOCV (Leave-One-Out)\nSpecial case of k-fold CV with k = n\nUses almost all data for training\nExtremely slow for large datasets"
   },
   {
-    "objectID": "weekly-notes/tim.html#why-use-cross-validation",
-    "href": "weekly-notes/tim.html#why-use-cross-validation",
+    "objectID": "weeknotes/tim.html#why-use-cross-validation",
+    "href": "weeknotes/tim.html#why-use-cross-validation",
     "title": "Xiao Yu - Week 6 Notes: Spatial Machine Learning & Advanced Regression",
     "section": "Why Use Cross-Validation?",
     "text": "Why Use Cross-Validation?\n\nMeasures how well the model predicts new, unseen data\nMore objective than in-sample ( R^2 )\nHelps detect overfitting by testing generalizability\n\n\n\n\n\n\n\nImportant\n\n\n\nCross-validation ensures your model performs well in real-world scenarios, not just on the training dataset."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html",
-    "href": "weekly-notes/week-05-notes.html",
+    "objectID": "weeknotes/week-05-notes.html",
+    "href": "weeknotes/week-05-notes.html",
     "title": "Week 5 Notes",
     "section": "",
     "text": "We observe data such as counties, income, population, and education.\nWe believe there’s some relationship between these variables.\nStatistical learning refers to the set of methods for estimating that relationship."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#the-general-problem",
-    "href": "weekly-notes/week-05-notes.html#the-general-problem",
+    "objectID": "weeknotes/week-05-notes.html#the-general-problem",
+    "href": "weeknotes/week-05-notes.html#the-general-problem",
     "title": "Week 5 Notes",
     "section": "",
     "text": "We observe data such as counties, income, population, and education.\nWe believe there’s some relationship between these variables.\nStatistical learning refers to the set of methods for estimating that relationship."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#formalizing-the-relationship",
-    "href": "weekly-notes/week-05-notes.html#formalizing-the-relationship",
+    "objectID": "weeknotes/week-05-notes.html#formalizing-the-relationship",
+    "href": "weeknotes/week-05-notes.html#formalizing-the-relationship",
     "title": "Week 5 Notes",
     "section": "Formalizing the Relationship",
     "text": "Formalizing the Relationship\nFor any quantitative response Y and predictors X₁, X₂, … Xₚ:\n\\[\nY = f(X) + \\epsilon\n\\]\nWhere: - f = the systematic information X provides about Y\n- ε = random error (irreducible)"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#what-is-f",
-    "href": "weekly-notes/week-05-notes.html#what-is-f",
+    "objectID": "weeknotes/week-05-notes.html#what-is-f",
+    "href": "weeknotes/week-05-notes.html#what-is-f",
     "title": "Week 5 Notes",
     "section": "What is f?",
     "text": "What is f?\nf represents the true relationship between predictors and the outcome.\nIt’s fixed but unknown — the core object we aim to estimate.\nExample: - Y = median income\n- X = population, education, poverty rate\n- f = how these factors systematically relate to income"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#why-estimate-f",
-    "href": "weekly-notes/week-05-notes.html#why-estimate-f",
+    "objectID": "weeknotes/week-05-notes.html#why-estimate-f",
+    "href": "weeknotes/week-05-notes.html#why-estimate-f",
     "title": "Week 5 Notes",
     "section": "Why Estimate f?",
     "text": "Why Estimate f?\nTwo key purposes of statistical learning:\n\nPrediction\n\nEstimate Y for new or missing observations\n\nFocus on accuracy rather than explanation\n\nInference\n\nUnderstand how X affects Y\n\nIdentify which predictors are most important\n\nFocus on interpreting relationships"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#how-do-we-estimate-f",
-    "href": "weekly-notes/week-05-notes.html#how-do-we-estimate-f",
+    "objectID": "weeknotes/week-05-notes.html#how-do-we-estimate-f",
+    "href": "weeknotes/week-05-notes.html#how-do-we-estimate-f",
     "title": "Week 5 Notes",
     "section": "How Do We Estimate f?",
     "text": "How Do We Estimate f?\n\nParametric Methods\n\nAssume a specific form for f (e.g., linear)\nReduce the problem to estimating parameters\nEasier to interpret but limited by assumptions\n\n\n\nNon-Parametric Methods\n\nMake fewer assumptions about f\nMore flexible but harder to interpret and require more data\n\nKey difference:\nParametric = structure first, then estimate\nNon-parametric = data first, let the shape emerge"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#parametric-approach-linear-regression",
-    "href": "weekly-notes/week-05-notes.html#parametric-approach-linear-regression",
+    "objectID": "weeknotes/week-05-notes.html#parametric-approach-linear-regression",
+    "href": "weeknotes/week-05-notes.html#parametric-approach-linear-regression",
     "title": "Week 5 Notes",
     "section": "Parametric Approach: Linear Regression",
     "text": "Parametric Approach: Linear Regression\nWe assume a linear relationship between X and Y:\n\\[\nY ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ\n\\]\nOur goal is to estimate the coefficients (β’s) using Ordinary Least Squares (OLS) — the method that minimizes prediction error."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#why-linear-regression",
-    "href": "weekly-notes/week-05-notes.html#why-linear-regression",
+    "objectID": "weeknotes/week-05-notes.html#why-linear-regression",
+    "href": "weeknotes/week-05-notes.html#why-linear-regression",
     "title": "Week 5 Notes",
     "section": "Why Linear Regression?",
     "text": "Why Linear Regression?\nAdvantages - Simple and interpretable\n- Performs surprisingly well for many real-world problems\n- Foundation for more advanced methods\nLimitations - Assumes linearity and independence\n- Sensitive to outliers\n- Requires diagnostic checks"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#prediction-vs-inference",
-    "href": "weekly-notes/week-05-notes.html#prediction-vs-inference",
+    "objectID": "weeknotes/week-05-notes.html#prediction-vs-inference",
+    "href": "weeknotes/week-05-notes.html#prediction-vs-inference",
     "title": "Week 5 Notes",
     "section": "Prediction vs Inference",
     "text": "Prediction vs Inference\nInference asks:\n&gt; Does education significantly affect income?\nFocus: understanding mechanisms, testing hypotheses.\nPrediction asks:\n&gt; What will the income be for this county?\nFocus: accuracy and reliability of forecasts.\nThis session emphasizes prediction, while recognizing inference as a complementary goal."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#example-applications",
-    "href": "weekly-notes/week-05-notes.html#example-applications",
+    "objectID": "weeknotes/week-05-notes.html#example-applications",
+    "href": "weeknotes/week-05-notes.html#example-applications",
     "title": "Week 5 Notes",
     "section": "Example Applications",
     "text": "Example Applications\n\nPrediction\nUsed by governments to: - Estimate income for areas with incomplete census data\n- Forecast population growth or public service needs\nAccurate predictions improve decision-making even without full causal understanding.\n\n\nInference\nUsed by researchers to: - Understand gentrification and inequality\n- Identify which neighborhood characteristics explain income changes\n- Evaluate the impact of education or policy interventions"
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#connection-to-week-2-algorithmic-bias",
-    "href": "weekly-notes/week-05-notes.html#connection-to-week-2-algorithmic-bias",
+    "objectID": "weeknotes/week-05-notes.html#connection-to-week-2-algorithmic-bias",
+    "href": "weeknotes/week-05-notes.html#connection-to-week-2-algorithmic-bias",
     "title": "Week 5 Notes",
     "section": "Connection to Week 2: Algorithmic Bias",
     "text": "Connection to Week 2: Algorithmic Bias\nStatistical accuracy does not guarantee ethical fairness.\nFor example, a healthcare model once predicted medical needs using costs as a proxy — resulting in racial bias.\nThis highlights that fit metrics (like R²) cannot replace ethical evaluation."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#interpreting-regression-results",
-    "href": "weekly-notes/week-05-notes.html#interpreting-regression-results",
+    "objectID": "weeknotes/week-05-notes.html#interpreting-regression-results",
+    "href": "weeknotes/week-05-notes.html#interpreting-regression-results",
     "title": "Week 5 Notes",
     "section": "Interpreting Regression Results",
     "text": "Interpreting Regression Results\nWhen fitting a simple model of median income vs. population: - The intercept (~$62,855) represents baseline income when population = 0 (not practically meaningful).\n- The slope (~$0.02 per person) means that, on average, income rises $20 for every additional 1,000 people.\n- The relationship is statistically significant (p &lt; 0.001).\n- R² = 0.21 → about 21% of variation in income is explained by population.\nThis shows population helps explain income differences, though other variables matter too."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#model-evaluation-key-ideas",
-    "href": "weekly-notes/week-05-notes.html#model-evaluation-key-ideas",
+    "objectID": "weeknotes/week-05-notes.html#model-evaluation-key-ideas",
+    "href": "weeknotes/week-05-notes.html#model-evaluation-key-ideas",
     "title": "Week 5 Notes",
     "section": "Model Evaluation: Key Ideas",
     "text": "Model Evaluation: Key Ideas\n\nThe “True” vs. Estimated Relationship\nThe real relationship (f) is unobservable.\nOur model provides an approximation based on available data.\nEach dataset produces slightly different estimates — uncertainty is measured by standard errors.\n\n\nStatistical Significance\n\nNull hypothesis (H₀): β₁ = 0 (no relationship)\n\nA small p-value means the observed effect is unlikely to be random → the relationship is real.\n\n\n\nR² and Model Fit\n\nR² measures the share of variance in Y explained by X.\n\nIt indicates strength, not correctness, of the model.\n\nA model with low R² may still provide useful predictions."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#overfitting-and-model-validation",
-    "href": "weekly-notes/week-05-notes.html#overfitting-and-model-validation",
+    "objectID": "weeknotes/week-05-notes.html#overfitting-and-model-validation",
+    "href": "weeknotes/week-05-notes.html#overfitting-and-model-validation",
     "title": "Week 5 Notes",
     "section": "Overfitting and Model Validation",
     "text": "Overfitting and Model Validation\nA model can perform well on training data but fail on new data.\nTo avoid this, data are split into training and testing sets.\n\nTraining error measures fit on known data.\n\nTesting error measures predictive performance on unseen data.\n\nGood models balance bias and variance, avoiding both underfitting and overfitting."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#model-assumptions-and-diagnostics",
-    "href": "weekly-notes/week-05-notes.html#model-assumptions-and-diagnostics",
+    "objectID": "weeknotes/week-05-notes.html#model-assumptions-and-diagnostics",
+    "href": "weeknotes/week-05-notes.html#model-assumptions-and-diagnostics",
     "title": "Week 5 Notes",
     "section": "Model Assumptions and Diagnostics",
     "text": "Model Assumptions and Diagnostics\n\nLinearity — relationship between variables should be roughly linear.\n\nCheck with residual plots.\n\nCurvature suggests model misspecification.\n\nConstant Variance (Homoscedasticity) — residual spread should be even.\n\nViolations make p-values unreliable.\n\nSolutions: transform Y, add predictors, or use robust errors.\n\nNormality of Residuals — important for hypothesis testing.\n\nUse Q–Q plots to assess normal distribution.\n\nNo Multicollinearity — predictors should not be highly correlated.\n\nHigh correlation makes coefficients unstable.\n\nNo Influential Outliers — avoid points that disproportionately shape the regression line.\n\nDetect using Cook’s Distance."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#improving-the-model",
-    "href": "weekly-notes/week-05-notes.html#improving-the-model",
+    "objectID": "weeknotes/week-05-notes.html#improving-the-model",
+    "href": "weeknotes/week-05-notes.html#improving-the-model",
     "title": "Week 5 Notes",
     "section": "Improving the Model",
     "text": "Improving the Model\n\nAdding Predictors\nIncluding education and poverty rates typically improves explanatory power.\nExample: Adjusted R² increases to around 0.57, suggesting stronger fit.\n\n\nTransformations\nIf relationships are curved, use log transformations.\nFor instance, a log–population model may capture diminishing returns to scale.\n\n\nCategorical Variables\nInclude binary variables such as metro vs. non-metro areas.\nIn one model, metro counties earned about $30,000 more on average."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#summary-the-regression-workflow",
-    "href": "weekly-notes/week-05-notes.html#summary-the-regression-workflow",
+    "objectID": "weeknotes/week-05-notes.html#summary-the-regression-workflow",
+    "href": "weeknotes/week-05-notes.html#summary-the-regression-workflow",
     "title": "Week 5 Notes",
     "section": "Summary: The Regression Workflow",
     "text": "Summary: The Regression Workflow\n\nUnderstand the conceptual model (f(X)).\n\nVisualize relationships before modeling.\n\nFit the regression model carefully.\n\nEvaluate performance using validation methods.\n\nCheck key assumptions.\n\nRefine with new variables or transformations.\n\nReflect on the ethical and social implications of modeling."
   },
   {
-    "objectID": "weekly-notes/week-05-notes.html#key-takeaways",
-    "href": "weekly-notes/week-05-notes.html#key-takeaways",
+    "objectID": "weeknotes/week-05-notes.html#key-takeaways",
+    "href": "weeknotes/week-05-notes.html#key-takeaways",
     "title": "Week 5 Notes",
     "section": "Key Takeaways",
     "text": "Key Takeaways\n\nStatistical learning is about estimating f(X), the systematic link between predictors and outcomes.\n\nTwo central goals:\n\nInference – understand relationships\n\nPrediction – forecast new outcomes\n\n\nGood fit ≠ good model: always assess assumptions and fairness.\n\nDiagnostics matter: plots and reasoning reveal what statistics can hide.\n\nEthical awareness is essential in all modeling decisions."
@@ -854,211 +854,211 @@
     "text": "Submission Requirements\nWhat to submit:\n\nRendered HTML document posted to your course portfolio with all code, outputs, maps, and text\n\nUse embed-resources: true in YAML so it’s a single file\nAll code should run without errors\nAll maps and charts should display correctly\n\n\nFile naming: LastName_FirstName_Assignment2.html and LastName_FirstName_Assignment2.qmd"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html",
-    "href": "weekly-notes/week-03-notes.html",
+    "objectID": "weeknotes/week-03-notes.html",
+    "href": "weeknotes/week-03-notes.html",
     "title": "Week 3 Notes",
     "section": "",
     "text": "[List main concepts from lecture] – Anscombe’s Quartet and the limits of summary statistics – Visualization in policy context – Connection to algorithmic bias and data ethics – ggplot2 fundamentals – Aesthetic mappings and geoms – Live demonstration – EDA workflow and principles – Understanding distributions and relationships – Critical focus: Data quality and uncertainty\n[Technical skills covered] ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-03-notes.html#key-concepts-learned",
+    "objectID": "weeknotes/week-03-notes.html#key-concepts-learned",
+    "href": "weeknotes/week-03-notes.html#key-concepts-learned",
     "title": "Week 3 Notes",
     "section": "",
     "text": "[List main concepts from lecture] – Anscombe’s Quartet and the limits of summary statistics – Visualization in policy context – Connection to algorithmic bias and data ethics – ggplot2 fundamentals – Aesthetic mappings and geoms – Live demonstration – EDA workflow and principles – Understanding distributions and relationships – Critical focus: Data quality and uncertainty\n[Technical skills covered] ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html#coding-techniques",
-    "href": "weekly-notes/week-03-notes.html#coding-techniques",
+    "objectID": "weeknotes/week-03-notes.html#coding-techniques",
+    "href": "weeknotes/week-03-notes.html#coding-techniques",
     "title": "Week 3 Notes",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n\n[New R functions or approaches]\n[Quarto features learned]"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html#questions-challenges",
-    "href": "weekly-notes/week-03-notes.html#questions-challenges",
+    "objectID": "weeknotes/week-03-notes.html#questions-challenges",
+    "href": "weeknotes/week-03-notes.html#questions-challenges",
     "title": "Week 3 Notes",
     "section": "Questions & Challenges",
     "text": "Questions & Challenges\n\n[What I didn’t fully understand]\n[Areas needing more practice]"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-03-notes.html#connections-to-policy",
+    "objectID": "weeknotes/week-03-notes.html#connections-to-policy",
+    "href": "weeknotes/week-03-notes.html#connections-to-policy",
     "title": "Week 3 Notes",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\n[How this week’s content applies to real policy work] – Summary statistics can hide critical patterns – Outliers may represent important communities – Relationships aren’t always linear – Visual inspection reveals data quality issues"
   },
   {
-    "objectID": "weekly-notes/week-03-notes.html#reflection",
-    "href": "weekly-notes/week-03-notes.html#reflection",
+    "objectID": "weeknotes/week-03-notes.html#reflection",
+    "href": "weeknotes/week-03-notes.html#reflection",
     "title": "Week 3 Notes",
     "section": "Reflection",
     "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html",
-    "href": "weekly-notes/week-02-notes.html",
+    "objectID": "weeknotes/week-02-notes.html",
+    "href": "weeknotes/week-02-notes.html",
     "title": "Week 2 Notes",
     "section": "",
     "text": "[List main concepts from lecture] Repository (repo): Folder containing your project files Commit: Snapshot of your work at a point in time Push: Send your changes to GitHub cloud Pull: Get latest changes from GitHub cloud\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-02-notes.html#key-concepts-learned",
+    "objectID": "weeknotes/week-02-notes.html#key-concepts-learned",
+    "href": "weeknotes/week-02-notes.html#key-concepts-learned",
     "title": "Week 2 Notes",
     "section": "",
     "text": "[List main concepts from lecture] Repository (repo): Folder containing your project files Commit: Snapshot of your work at a point in time Push: Send your changes to GitHub cloud Pull: Get latest changes from GitHub cloud\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#coding-techniques",
-    "href": "weekly-notes/week-02-notes.html#coding-techniques",
+    "objectID": "weeknotes/week-02-notes.html#coding-techniques",
+    "href": "weeknotes/week-02-notes.html#coding-techniques",
     "title": "Week 2 Notes",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n\n[New R functions or approaches] Powerful for spatial analysis and policy-focused statistics\n[Quarto features learned] Quarto is the “next generation” Better website creation Works with multiple programming languages Same basic concept, improved features"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#questions-challenges",
-    "href": "weekly-notes/week-02-notes.html#questions-challenges",
+    "objectID": "weeknotes/week-02-notes.html#questions-challenges",
+    "href": "weeknotes/week-02-notes.html#questions-challenges",
     "title": "Week 2 Notes",
     "section": "Questions & Challenges",
     "text": "Questions & Challenges\n\n[What I didn’t fully understand]\n[Areas needing more practice]"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-02-notes.html#connections-to-policy",
+    "objectID": "weeknotes/week-02-notes.html#connections-to-policy",
+    "href": "weeknotes/week-02-notes.html#connections-to-policy",
     "title": "Week 2 Notes",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\n[How this week’s content applies to real policy work] Free and open source Excellent for spatial data Strong statistical capabilities Large community in urban planning/policy Reproducible research workflows"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#reflection",
-    "href": "weekly-notes/week-02-notes.html#reflection",
+    "objectID": "weeknotes/week-02-notes.html#reflection",
+    "href": "weeknotes/week-02-notes.html#reflection",
     "title": "Week 2 Notes",
     "section": "Reflection",
     "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html",
-    "href": "weekly-notes/week-04-notes.html",
+    "objectID": "weeknotes/week-04-notes.html",
+    "href": "weeknotes/week-04-notes.html",
     "title": "Week 4 Notes",
     "section": "",
     "text": "[List main concepts from lecture]\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-04-notes.html#key-concepts-learned",
+    "objectID": "weeknotes/week-04-notes.html#key-concepts-learned",
+    "href": "weeknotes/week-04-notes.html#key-concepts-learned",
     "title": "Week 4 Notes",
     "section": "",
     "text": "[List main concepts from lecture]\n[Technical skills covered]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html#coding-techniques",
-    "href": "weekly-notes/week-04-notes.html#coding-techniques",
+    "objectID": "weeknotes/week-04-notes.html#coding-techniques",
+    "href": "weeknotes/week-04-notes.html#coding-techniques",
     "title": "Week 4 Notes",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n\n[New R functions or approaches]\n[Quarto features learned]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html#questions-challenges",
-    "href": "weekly-notes/week-04-notes.html#questions-challenges",
+    "objectID": "weeknotes/week-04-notes.html#questions-challenges",
+    "href": "weeknotes/week-04-notes.html#questions-challenges",
     "title": "Week 4 Notes",
     "section": "Questions & Challenges",
     "text": "Questions & Challenges\n\n[What I didn’t fully understand]\n[Areas needing more practice]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-04-notes.html#connections-to-policy",
+    "objectID": "weeknotes/week-04-notes.html#connections-to-policy",
+    "href": "weeknotes/week-04-notes.html#connections-to-policy",
     "title": "Week 4 Notes",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\n[How this week’s content applies to real policy work]"
   },
   {
-    "objectID": "weekly-notes/week-04-notes.html#reflection",
-    "href": "weekly-notes/week-04-notes.html#reflection",
+    "objectID": "weeknotes/week-04-notes.html#reflection",
+    "href": "weeknotes/week-04-notes.html#reflection",
     "title": "Week 4 Notes",
     "section": "Reflection",
     "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html",
-    "href": "weekly-notes/weekotes qmd.html",
+    "objectID": "weeknotes/weekotes qmd.html",
+    "href": "weeknotes/weekotes qmd.html",
     "title": "Week 5 Notes",
     "section": "",
     "text": "We observe data such as counties, income, population, education, etc.\nWe believe there’s some relationship between these variables.\nStatistical learning = a set of approaches for estimating that relationship."
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#the-general-problem",
-    "href": "weekly-notes/weekotes qmd.html#the-general-problem",
+    "objectID": "weeknotes/weekotes qmd.html#the-general-problem",
+    "href": "weeknotes/weekotes qmd.html#the-general-problem",
     "title": "Week 5 Notes",
     "section": "",
     "text": "We observe data such as counties, income, population, education, etc.\nWe believe there’s some relationship between these variables.\nStatistical learning = a set of approaches for estimating that relationship."
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#formalizing-the-relationship",
-    "href": "weekly-notes/weekotes qmd.html#formalizing-the-relationship",
+    "objectID": "weeknotes/weekotes qmd.html#formalizing-the-relationship",
+    "href": "weeknotes/weekotes qmd.html#formalizing-the-relationship",
     "title": "Week 5 Notes",
     "section": "Formalizing the Relationship",
     "text": "Formalizing the Relationship\nFor any quantitative response Y and predictors X₁, X₂, … Xₚ:\n\\[\nY = f(X) + \\epsilon\n\\]\nWhere:\n\nf = the systematic information X provides about Y\n\nε = random error (irreducible)"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#what-is-f",
-    "href": "weekly-notes/weekotes qmd.html#what-is-f",
+    "objectID": "weeknotes/weekotes qmd.html#what-is-f",
+    "href": "weeknotes/weekotes qmd.html#what-is-f",
     "title": "Week 5 Notes",
     "section": "What is f?",
     "text": "What is f?\nf represents the true relationship between predictors and the outcome.\n\nIt’s fixed but unknown — what we’re trying to estimate.\n\nDifferent X values produce different Y values through f.\n\nExample:\n\nY = median income\n\nX = population, education, poverty rate\n\nf = the way these factors systematically relate to income"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#why-estimate-f",
-    "href": "weekly-notes/weekotes qmd.html#why-estimate-f",
+    "objectID": "weeknotes/weekotes qmd.html#why-estimate-f",
+    "href": "weeknotes/weekotes qmd.html#why-estimate-f",
     "title": "Week 5 Notes",
     "section": "Why Estimate f?",
     "text": "Why Estimate f?\nTwo main reasons:\n\nPrediction\n\nEstimate Y for new observations\n\nFocus on accuracy, not interpretation\n\nInference\n\nUnderstand how X affects Y\n\nIdentify which predictors matter\n\nFocus on interpretation"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#how-do-we-estimate-f",
-    "href": "weekly-notes/weekotes qmd.html#how-do-we-estimate-f",
+    "objectID": "weeknotes/weekotes qmd.html#how-do-we-estimate-f",
+    "href": "weeknotes/weekotes qmd.html#how-do-we-estimate-f",
     "title": "Week 5 Notes",
     "section": "How Do We Estimate f?",
     "text": "How Do We Estimate f?\n\nParametric Methods\n\nAssume a specific functional form (e.g., linear)\nEasier to interpret and compute\nFocus of this week’s session\n\n\n\nNon-Parametric Methods\n\nMake fewer assumptions\n\nMore flexible but require more data and are harder to interpret\n\nKey difference:\n- Parametric (blue): Assume f is linear → estimate coefficients\n- Non-parametric (green): Let data determine the shape of f"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#parametric-approach-linear-regression",
-    "href": "weekly-notes/weekotes qmd.html#parametric-approach-linear-regression",
+    "objectID": "weeknotes/weekotes qmd.html#parametric-approach-linear-regression",
+    "href": "weeknotes/weekotes qmd.html#parametric-approach-linear-regression",
     "title": "Week 5 Notes",
     "section": "Parametric Approach: Linear Regression",
     "text": "Parametric Approach: Linear Regression\nAssumption: Relationship between X and Y is linear\n\\[\nY ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ\n\\]\nWe estimate the β coefficients using Ordinary Least Squares (OLS)."
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#why-linear-regression",
-    "href": "weekly-notes/weekotes qmd.html#why-linear-regression",
+    "objectID": "weeknotes/weekotes qmd.html#why-linear-regression",
+    "href": "weeknotes/weekotes qmd.html#why-linear-regression",
     "title": "Week 5 Notes",
     "section": "Why Linear Regression?",
     "text": "Why Linear Regression?\nAdvantages - Simple and interpretable\n- Foundation for many other models\n- Performs well in practice\nLimitations - Assumes linearity\n- Sensitive to outliers\n- Relies on several assumptions (we’ll check them)"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#prediction-vs-inference",
-    "href": "weekly-notes/weekotes qmd.html#prediction-vs-inference",
+    "objectID": "weeknotes/weekotes qmd.html#prediction-vs-inference",
+    "href": "weeknotes/weekotes qmd.html#prediction-vs-inference",
     "title": "Week 5 Notes",
     "section": "Prediction vs Inference",
     "text": "Prediction vs Inference\nInference - “Does education affect income?”\n- Focus: coefficients, significance, mechanisms\nPrediction - “What’s County Y’s income?”\n- Focus: accuracy, prediction intervals\nToday: we’ll do both, but emphasize prediction."
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#example-prediction-policy",
-    "href": "weekly-notes/weekotes qmd.html#example-prediction-policy",
+    "objectID": "weeknotes/weekotes qmd.html#example-prediction-policy",
+    "href": "weeknotes/weekotes qmd.html#example-prediction-policy",
     "title": "Week 5 Notes",
     "section": "Example: Prediction (Policy)",
     "text": "Example: Prediction (Policy)\nGovernment use case:\n\nCensus may miss people in hard-to-count areas\n\nPredict income or population for planning resources\n\nEven if the model doesn’t explain why, good predictions help policy."
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#example-inference-research",
-    "href": "weekly-notes/weekotes qmd.html#example-inference-research",
+    "objectID": "weeknotes/weekotes qmd.html#example-inference-research",
+    "href": "weeknotes/weekotes qmd.html#example-inference-research",
     "title": "Week 5 Notes",
     "section": "Example: Inference (Research)",
     "text": "Example: Inference (Research)\nResearch use case:\n- Understanding gentrification\n- Which neighborhood characteristics explain income change?\n- How much does education matter vs. proximity to downtown?\n- Are policy interventions associated with outcomes?"
   },
   {
-    "objectID": "weekly-notes/weekotes qmd.html#connection-to-week-2-algorithmic-bias",
-    "href": "weekly-notes/weekotes qmd.html#connection-to-week-2-algorithmic-bias",
+    "objectID": "weeknotes/weekotes qmd.html#connection-to-week-2-algorithmic-bias",
+    "href": "weeknotes/weekotes qmd.html#connection-to-week-2-algorithmic-bias",
     "title": "Week 5 Notes",
     "section": "Connection to Week 2: Algorithmic Bias",
     "text": "Connection to Week 2: Algorithmic Bias\nRemember the healthcare algorithm that discriminated?\n\nIt predicted healthcare needs using costs as a proxy.\n\nTechnically accurate (good R²) but ethically biased.\n\nLesson: A good fit ≠ a fair model."

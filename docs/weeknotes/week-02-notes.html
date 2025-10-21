@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-06">
+<meta name="dcterms.date" content="2025-09-15">
 
-<title>Week 5 Notes – Xiao Yu - MUSA 5080 Portfolio</title>
+<title>Week 2 Notes – Xiao Yu - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -131,31 +102,31 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
         <li>
-    <a class="dropdown-item" href="../weekly-notes/">
+    <a class="dropdown-item" href="../weeknotes/">
  <span class="dropdown-text">All Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-01-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-01-notes.html">
  <span class="dropdown-text">Week 1 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-02-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-02-notes.html">
  <span class="dropdown-text">Week 2 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-03-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-03-notes.html">
  <span class="dropdown-text">Week 3 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-04-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-04-notes.html">
  <span class="dropdown-text">Week 4 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-05-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-05-notes.html">
  <span class="dropdown-text">Week 5 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/tim.html">
+    <a class="dropdown-item" href="../weeknotes/tim.html">
  <span class="dropdown-text">Week 6 Notes</span></a>
   </li>  
     </ul>
@@ -206,41 +177,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-general-problem" id="toc-the-general-problem" class="nav-link active" data-scroll-target="#the-general-problem">The General Problem</a></li>
-  <li><a href="#formalizing-the-relationship" id="toc-formalizing-the-relationship" class="nav-link" data-scroll-target="#formalizing-the-relationship">Formalizing the Relationship</a></li>
-  <li><a href="#what-is-f" id="toc-what-is-f" class="nav-link" data-scroll-target="#what-is-f">What is <em>f</em>?</a></li>
-  <li><a href="#why-estimate-f" id="toc-why-estimate-f" class="nav-link" data-scroll-target="#why-estimate-f">Why Estimate <em>f</em>?</a></li>
-  <li><a href="#how-do-we-estimate-f" id="toc-how-do-we-estimate-f" class="nav-link" data-scroll-target="#how-do-we-estimate-f">How Do We Estimate <em>f</em>?</a>
-  <ul class="collapse">
-  <li><a href="#parametric-methods" id="toc-parametric-methods" class="nav-link" data-scroll-target="#parametric-methods">Parametric Methods</a></li>
-  <li><a href="#non-parametric-methods" id="toc-non-parametric-methods" class="nav-link" data-scroll-target="#non-parametric-methods">Non-Parametric Methods</a></li>
-  </ul></li>
-  <li><a href="#parametric-approach-linear-regression" id="toc-parametric-approach-linear-regression" class="nav-link" data-scroll-target="#parametric-approach-linear-regression">Parametric Approach: Linear Regression</a></li>
-  <li><a href="#why-linear-regression" id="toc-why-linear-regression" class="nav-link" data-scroll-target="#why-linear-regression">Why Linear Regression?</a></li>
-  <li><a href="#prediction-vs-inference" id="toc-prediction-vs-inference" class="nav-link" data-scroll-target="#prediction-vs-inference">Prediction vs Inference</a></li>
-  <li><a href="#example-applications" id="toc-example-applications" class="nav-link" data-scroll-target="#example-applications">Example Applications</a>
-  <ul class="collapse">
-  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction">Prediction</a></li>
-  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a></li>
-  </ul></li>
-  <li><a href="#connection-to-week-2-algorithmic-bias" id="toc-connection-to-week-2-algorithmic-bias" class="nav-link" data-scroll-target="#connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</a></li>
-  <li><a href="#interpreting-regression-results" id="toc-interpreting-regression-results" class="nav-link" data-scroll-target="#interpreting-regression-results">Interpreting Regression Results</a></li>
-  <li><a href="#model-evaluation-key-ideas" id="toc-model-evaluation-key-ideas" class="nav-link" data-scroll-target="#model-evaluation-key-ideas">Model Evaluation: Key Ideas</a>
-  <ul class="collapse">
-  <li><a href="#the-true-vs.-estimated-relationship" id="toc-the-true-vs.-estimated-relationship" class="nav-link" data-scroll-target="#the-true-vs.-estimated-relationship">The “True” vs.&nbsp;Estimated Relationship</a></li>
-  <li><a href="#statistical-significance" id="toc-statistical-significance" class="nav-link" data-scroll-target="#statistical-significance">Statistical Significance</a></li>
-  <li><a href="#r²-and-model-fit" id="toc-r²-and-model-fit" class="nav-link" data-scroll-target="#r²-and-model-fit">R² and Model Fit</a></li>
-  </ul></li>
-  <li><a href="#overfitting-and-model-validation" id="toc-overfitting-and-model-validation" class="nav-link" data-scroll-target="#overfitting-and-model-validation">Overfitting and Model Validation</a></li>
-  <li><a href="#model-assumptions-and-diagnostics" id="toc-model-assumptions-and-diagnostics" class="nav-link" data-scroll-target="#model-assumptions-and-diagnostics">Model Assumptions and Diagnostics</a></li>
-  <li><a href="#improving-the-model" id="toc-improving-the-model" class="nav-link" data-scroll-target="#improving-the-model">Improving the Model</a>
-  <ul class="collapse">
-  <li><a href="#adding-predictors" id="toc-adding-predictors" class="nav-link" data-scroll-target="#adding-predictors">Adding Predictors</a></li>
-  <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
-  <li><a href="#categorical-variables" id="toc-categorical-variables" class="nav-link" data-scroll-target="#categorical-variables">Categorical Variables</a></li>
-  </ul></li>
-  <li><a href="#summary-the-regression-workflow" id="toc-summary-the-regression-workflow" class="nav-link" data-scroll-target="#summary-the-regression-workflow">Summary: The Regression Workflow</a></li>
-  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
+  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
+  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
+  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
   </ul>
 </nav>
     </div>
@@ -249,7 +190,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 5 Notes</h1>
+<h1 class="title">Week 2 Notes</h1>
 </div>
 
 
@@ -260,7 +201,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-10-06</p>
+      <p class="date">September 15, 2025</p>
     </div>
   </div>
   
@@ -272,262 +213,38 @@ window.Quarto = {
 </header>
 
 
-<section id="the-general-problem" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-problem">The General Problem</h2>
-<p>We observe data such as <strong>counties, income, population, and education</strong>.<br>
-We believe there’s some relationship between these variables.</p>
-<p><strong>Statistical learning</strong> refers to the set of methods for estimating that relationship.</p>
-<hr>
-</section>
-<section id="formalizing-the-relationship" class="level2">
-<h2 class="anchored" data-anchor-id="formalizing-the-relationship">Formalizing the Relationship</h2>
-<p>For any quantitative response <em>Y</em> and predictors <em>X₁, X₂, … Xₚ</em>:</p>
-<p><span class="math display">\[
-Y = f(X) + \epsilon
-\]</span></p>
-<p>Where: - <strong>f</strong> = the systematic information X provides about Y<br>
-- <strong>ε</strong> = random error (irreducible)</p>
-<hr>
-</section>
-<section id="what-is-f" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-f">What is <em>f</em>?</h2>
-<p><em>f</em> represents the <strong>true relationship</strong> between predictors and the outcome.<br>
-It’s fixed but unknown — the core object we aim to estimate.</p>
-<p><strong>Example:</strong> - <em>Y</em> = median income<br>
-- <em>X</em> = population, education, poverty rate<br>
-- <em>f</em> = how these factors systematically relate to income</p>
-<hr>
-</section>
-<section id="why-estimate-f" class="level2">
-<h2 class="anchored" data-anchor-id="why-estimate-f">Why Estimate <em>f</em>?</h2>
-<p>Two key purposes of statistical learning:</p>
-<ol type="1">
-<li><strong>Prediction</strong>
+<section id="key-concepts-learned" class="level2">
+<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
 <ul>
-<li>Estimate <em>Y</em> for new or missing observations<br>
-</li>
-<li>Focus on <strong>accuracy</strong> rather than explanation</li>
-</ul></li>
-<li><strong>Inference</strong>
-<ul>
-<li>Understand <strong>how X affects Y</strong><br>
-</li>
-<li>Identify which predictors are most important<br>
-</li>
-<li>Focus on <strong>interpreting relationships</strong></li>
-</ul></li>
-</ol>
-<hr>
-</section>
-<section id="how-do-we-estimate-f" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-we-estimate-f">How Do We Estimate <em>f</em>?</h2>
-<section id="parametric-methods" class="level3">
-<h3 class="anchored" data-anchor-id="parametric-methods">Parametric Methods</h3>
-<ul>
-<li>Assume a specific form for <em>f</em> (e.g., linear)</li>
-<li>Reduce the problem to estimating parameters</li>
-<li>Easier to interpret but limited by assumptions</li>
+<li>[List main concepts from lecture] Repository (repo): Folder containing your project files Commit: Snapshot of your work at a point in time Push: Send your changes to GitHub cloud Pull: Get latest changes from GitHub cloud</li>
+<li>[Technical skills covered]</li>
 </ul>
 </section>
-<section id="non-parametric-methods" class="level3">
-<h3 class="anchored" data-anchor-id="non-parametric-methods">Non-Parametric Methods</h3>
+<section id="coding-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
 <ul>
-<li>Make fewer assumptions about <em>f</em></li>
-<li>More flexible but harder to interpret and require more data</li>
-</ul>
-<p><strong>Key difference:</strong><br>
-Parametric = structure first, then estimate<br>
-Non-parametric = data first, let the shape emerge</p>
-<hr>
-</section>
-</section>
-<section id="parametric-approach-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="parametric-approach-linear-regression">Parametric Approach: Linear Regression</h2>
-<p>We assume a <strong>linear relationship</strong> between <em>X</em> and <em>Y</em>:</p>
-<p><span class="math display">\[
-Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
-\]</span></p>
-<p>Our goal is to estimate the coefficients (β’s) using <strong>Ordinary Least Squares (OLS)</strong> — the method that minimizes prediction error.</p>
-<hr>
-</section>
-<section id="why-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="why-linear-regression">Why Linear Regression?</h2>
-<p><strong>Advantages</strong> - Simple and interpretable<br>
-- Performs surprisingly well for many real-world problems<br>
-- Foundation for more advanced methods</p>
-<p><strong>Limitations</strong> - Assumes linearity and independence<br>
-- Sensitive to outliers<br>
-- Requires diagnostic checks</p>
-<hr>
-</section>
-<section id="prediction-vs-inference" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-vs-inference">Prediction vs Inference</h2>
-<p><strong>Inference</strong> asks:<br>
-&gt; Does education significantly affect income?</p>
-<p>Focus: understanding mechanisms, testing hypotheses.</p>
-<p><strong>Prediction</strong> asks:<br>
-&gt; What will the income be for this county?</p>
-<p>Focus: accuracy and reliability of forecasts.</p>
-<p>This session emphasizes <strong>prediction</strong>, while recognizing inference as a complementary goal.</p>
-<hr>
-</section>
-<section id="example-applications" class="level2">
-<h2 class="anchored" data-anchor-id="example-applications">Example Applications</h2>
-<section id="prediction" class="level3">
-<h3 class="anchored" data-anchor-id="prediction">Prediction</h3>
-<p>Used by governments to: - Estimate income for areas with incomplete census data<br>
-- Forecast population growth or public service needs</p>
-<p>Accurate predictions improve decision-making even without full causal understanding.</p>
-</section>
-<section id="inference" class="level3">
-<h3 class="anchored" data-anchor-id="inference">Inference</h3>
-<p>Used by researchers to: - Understand gentrification and inequality<br>
-- Identify which neighborhood characteristics explain income changes<br>
-- Evaluate the impact of education or policy interventions</p>
-<hr>
-</section>
-</section>
-<section id="connection-to-week-2-algorithmic-bias" class="level2">
-<h2 class="anchored" data-anchor-id="connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</h2>
-<p>Statistical accuracy does not guarantee ethical fairness.<br>
-For example, a healthcare model once predicted medical needs using <strong>costs</strong> as a proxy — resulting in racial bias.</p>
-<p>This highlights that <strong>fit metrics (like R²)</strong> cannot replace ethical evaluation.</p>
-<hr>
-</section>
-<section id="interpreting-regression-results" class="level2">
-<h2 class="anchored" data-anchor-id="interpreting-regression-results">Interpreting Regression Results</h2>
-<p>When fitting a simple model of <strong>median income vs.&nbsp;population</strong>: - The intercept (~$62,855) represents baseline income when population = 0 (not practically meaningful).<br>
-- The slope (~$0.02 per person) means that, on average, income rises $20 for every additional 1,000 people.<br>
-- The relationship is statistically significant (<em>p</em> &lt; 0.001).<br>
-- R² = 0.21 → about 21% of variation in income is explained by population.</p>
-<p>This shows population helps explain income differences, though other variables matter too.</p>
-<hr>
-</section>
-<section id="model-evaluation-key-ideas" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation-key-ideas">Model Evaluation: Key Ideas</h2>
-<section id="the-true-vs.-estimated-relationship" class="level3">
-<h3 class="anchored" data-anchor-id="the-true-vs.-estimated-relationship">The “True” vs.&nbsp;Estimated Relationship</h3>
-<p>The real relationship (<em>f</em>) is unobservable.<br>
-Our model provides an <strong>approximation</strong> based on available data.<br>
-Each dataset produces slightly different estimates — uncertainty is measured by <strong>standard errors</strong>.</p>
-</section>
-<section id="statistical-significance" class="level3">
-<h3 class="anchored" data-anchor-id="statistical-significance">Statistical Significance</h3>
-<ul>
-<li><strong>Null hypothesis (H₀):</strong> β₁ = 0 (no relationship)<br>
-</li>
-<li>A small <strong>p-value</strong> means the observed effect is unlikely to be random → the relationship is real.</li>
+<li><p>[New R functions or approaches] Powerful for spatial analysis and policy-focused statistics</p></li>
+<li><p>[Quarto features learned] Quarto is the “next generation” Better website creation Works with multiple programming languages Same basic concept, improved features</p></li>
 </ul>
 </section>
-<section id="r²-and-model-fit" class="level3">
-<h3 class="anchored" data-anchor-id="r²-and-model-fit">R² and Model Fit</h3>
+<section id="questions-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
 <ul>
-<li>R² measures the share of variance in <em>Y</em> explained by <em>X</em>.<br>
-</li>
-<li>It indicates strength, not correctness, of the model.<br>
-</li>
-<li>A model with low R² may still provide useful predictions.</li>
+<li><p>[What I didn’t fully understand]</p></li>
+<li><p>[Areas needing more practice]</p></li>
 </ul>
-<hr>
 </section>
-</section>
-<section id="overfitting-and-model-validation" class="level2">
-<h2 class="anchored" data-anchor-id="overfitting-and-model-validation">Overfitting and Model Validation</h2>
-<p>A model can perform well on training data but fail on new data.<br>
-To avoid this, data are split into <strong>training</strong> and <strong>testing</strong> sets.</p>
+<section id="connections-to-policy" class="level2">
+<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
 <ul>
-<li><strong>Training error</strong> measures fit on known data.<br>
-</li>
-<li><strong>Testing error</strong> measures predictive performance on unseen data.</li>
+<li>[How this week’s content applies to real policy work] Free and open source Excellent for spatial data Strong statistical capabilities Large community in urban planning/policy Reproducible research workflows</li>
 </ul>
-<p>Good models balance <strong>bias and variance</strong>, avoiding both underfitting and overfitting.</p>
-<hr>
 </section>
-<section id="model-assumptions-and-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="model-assumptions-and-diagnostics">Model Assumptions and Diagnostics</h2>
-<ol type="1">
-<li><strong>Linearity</strong> — relationship between variables should be roughly linear.
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
 <ul>
-<li>Check with residual plots.<br>
-</li>
-<li>Curvature suggests model misspecification.</li>
-</ul></li>
-<li><strong>Constant Variance (Homoscedasticity)</strong> — residual spread should be even.
-<ul>
-<li>Violations make p-values unreliable.<br>
-</li>
-<li>Solutions: transform <em>Y</em>, add predictors, or use robust errors.</li>
-</ul></li>
-<li><strong>Normality of Residuals</strong> — important for hypothesis testing.
-<ul>
-<li>Use Q–Q plots to assess normal distribution.</li>
-</ul></li>
-<li><strong>No Multicollinearity</strong> — predictors should not be highly correlated.
-<ul>
-<li>High correlation makes coefficients unstable.</li>
-</ul></li>
-<li><strong>No Influential Outliers</strong> — avoid points that disproportionately shape the regression line.
-<ul>
-<li>Detect using Cook’s Distance.</li>
-</ul></li>
-</ol>
-<hr>
-</section>
-<section id="improving-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="improving-the-model">Improving the Model</h2>
-<section id="adding-predictors" class="level3">
-<h3 class="anchored" data-anchor-id="adding-predictors">Adding Predictors</h3>
-<p>Including education and poverty rates typically improves explanatory power.<br>
-Example: Adjusted R² increases to around <strong>0.57</strong>, suggesting stronger fit.</p>
-</section>
-<section id="transformations" class="level3">
-<h3 class="anchored" data-anchor-id="transformations">Transformations</h3>
-<p>If relationships are curved, use <strong>log transformations</strong>.<br>
-For instance, a log–population model may capture diminishing returns to scale.</p>
-</section>
-<section id="categorical-variables" class="level3">
-<h3 class="anchored" data-anchor-id="categorical-variables">Categorical Variables</h3>
-<p>Include binary variables such as <strong>metro vs.&nbsp;non-metro</strong> areas.<br>
-In one model, metro counties earned about <strong>$30,000 more</strong> on average.</p>
-<hr>
-</section>
-</section>
-<section id="summary-the-regression-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="summary-the-regression-workflow">Summary: The Regression Workflow</h2>
-<ol type="1">
-<li><strong>Understand</strong> the conceptual model (<em>f(X)</em>).<br>
-</li>
-<li><strong>Visualize</strong> relationships before modeling.<br>
-</li>
-<li><strong>Fit</strong> the regression model carefully.<br>
-</li>
-<li><strong>Evaluate</strong> performance using validation methods.<br>
-</li>
-<li><strong>Check</strong> key assumptions.<br>
-</li>
-<li><strong>Refine</strong> with new variables or transformations.<br>
-</li>
-<li><strong>Reflect</strong> on the <strong>ethical and social implications</strong> of modeling.</li>
-</ol>
-<hr>
-</section>
-<section id="key-takeaways" class="level2">
-<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
-<ul>
-<li><strong>Statistical learning</strong> is about estimating <em>f(X)</em>, the systematic link between predictors and outcomes.<br>
-</li>
-<li>Two central goals:
-<ul>
-<li><strong>Inference</strong> – understand relationships<br>
-</li>
-<li><strong>Prediction</strong> – forecast new outcomes<br>
-</li>
-</ul></li>
-<li><strong>Good fit ≠ good model</strong>: always assess assumptions and fairness.<br>
-</li>
-<li><strong>Diagnostics matter</strong>: plots and reasoning reveal what statistics can hide.<br>
-</li>
-<li><strong>Ethical awareness</strong> is essential in all modeling decisions.</li>
+<li>[What was most interesting]</li>
+<li>[How I’ll apply this knowledge]</li>
 </ul>
 
 

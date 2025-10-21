@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-19">
+<meta name="dcterms.date" content="2025-10-06">
 
-<title>Xiao Yu - Week 6 Notes: Spatial Machine Learning &amp; Advanced Regression – Xiao Yu - MUSA 5080 Portfolio</title>
+<title>Week 5 Notes – Xiao Yu - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f93c2b1f3f0577f377aefa4848a86a36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,6 +70,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -102,31 +131,31 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
         <li>
-    <a class="dropdown-item" href="../weekly-notes/">
+    <a class="dropdown-item" href="../weeknotes/">
  <span class="dropdown-text">All Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-01-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-01-notes.html">
  <span class="dropdown-text">Week 1 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-02-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-02-notes.html">
  <span class="dropdown-text">Week 2 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-03-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-03-notes.html">
  <span class="dropdown-text">Week 3 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-04-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-04-notes.html">
  <span class="dropdown-text">Week 4 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-05-notes.html">
+    <a class="dropdown-item" href="../weeknotes/week-05-notes.html">
  <span class="dropdown-text">Week 5 Notes</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/tim.html">
+    <a class="dropdown-item" href="../weeknotes/tim.html">
  <span class="dropdown-text">Week 6 Notes</span></a>
   </li>  
     </ul>
@@ -177,54 +206,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#limitations-of-linear-models" id="toc-limitations-of-linear-models" class="nav-link active" data-scroll-target="#limitations-of-linear-models">Limitations of Linear Models</a>
+  <li><a href="#the-general-problem" id="toc-the-general-problem" class="nav-link active" data-scroll-target="#the-general-problem">The General Problem</a></li>
+  <li><a href="#formalizing-the-relationship" id="toc-formalizing-the-relationship" class="nav-link" data-scroll-target="#formalizing-the-relationship">Formalizing the Relationship</a></li>
+  <li><a href="#what-is-f" id="toc-what-is-f" class="nav-link" data-scroll-target="#what-is-f">What is <em>f</em>?</a></li>
+  <li><a href="#why-estimate-f" id="toc-why-estimate-f" class="nav-link" data-scroll-target="#why-estimate-f">Why Estimate <em>f</em>?</a></li>
+  <li><a href="#how-do-we-estimate-f" id="toc-how-do-we-estimate-f" class="nav-link" data-scroll-target="#how-do-we-estimate-f">How Do We Estimate <em>f</em>?</a>
   <ul class="collapse">
-  <li><a href="#what-does-a-basic-linear-model-ignore" id="toc-what-does-a-basic-linear-model-ignore" class="nav-link" data-scroll-target="#what-does-a-basic-linear-model-ignore">What Does a Basic Linear Model Ignore?</a></li>
-  <li><a href="#why-might-it-fail" id="toc-why-might-it-fail" class="nav-link" data-scroll-target="#why-might-it-fail">Why Might It Fail?</a></li>
-  <li><a href="#how-can-we-improve-the-model" id="toc-how-can-we-improve-the-model" class="nav-link" data-scroll-target="#how-can-we-improve-the-model">How Can We Improve the Model?</a></li>
+  <li><a href="#parametric-methods" id="toc-parametric-methods" class="nav-link" data-scroll-target="#parametric-methods">Parametric Methods</a></li>
+  <li><a href="#non-parametric-methods" id="toc-non-parametric-methods" class="nav-link" data-scroll-target="#non-parametric-methods">Non-Parametric Methods</a></li>
   </ul></li>
-  <li><a href="#converting-data-into-spatial-format" id="toc-converting-data-into-spatial-format" class="nav-link" data-scroll-target="#converting-data-into-spatial-format">Converting Data into Spatial Format</a>
-  <ul class="collapse">
-  <li><a href="#step-1-create-spatial-data" id="toc-step-1-create-spatial-data" class="nav-link" data-scroll-target="#step-1-create-spatial-data">Step 1: Create Spatial Data</a></li>
-  <li><a href="#step-2-spatial-join" id="toc-step-2-spatial-join" class="nav-link" data-scroll-target="#step-2-spatial-join">Step 2: Spatial Join</a></li>
-  </ul></li>
-  <li><a href="#types-of-variables" id="toc-types-of-variables" class="nav-link" data-scroll-target="#types-of-variables">Types of Variables</a></li>
-  <li><a href="#understanding-interaction-effects" id="toc-understanding-interaction-effects" class="nav-link" data-scroll-target="#understanding-interaction-effects">Understanding Interaction Effects</a>
-  <ul class="collapse">
-  <li><a href="#what-is-an-interaction" id="toc-what-is-an-interaction" class="nav-link" data-scroll-target="#what-is-an-interaction">What Is an Interaction?</a></li>
-  <li><a href="#example-questions" id="toc-example-questions" class="nav-link" data-scroll-target="#example-questions">Example Questions:</a></li>
-  </ul></li>
-  <li><a href="#policy-implications-boston-case-study" id="toc-policy-implications-boston-case-study" class="nav-link" data-scroll-target="#policy-implications-boston-case-study">Policy Implications (Boston Case Study)</a>
-  <ul class="collapse">
-  <li><a href="#market-segmentation" id="toc-market-segmentation" class="nav-link" data-scroll-target="#market-segmentation">1. Market Segmentation</a></li>
-  <li><a href="#affordability-crisis" id="toc-affordability-crisis" class="nav-link" data-scroll-target="#affordability-crisis">2. Affordability Crisis</a></li>
-  <li><a href="#policy-design-implications" id="toc-policy-design-implications" class="nav-link" data-scroll-target="#policy-design-implications">3. Policy Design Implications</a></li>
-  </ul></li>
-  <li><a href="#when-not-to-use-interaction-terms" id="toc-when-not-to-use-interaction-terms" class="nav-link" data-scroll-target="#when-not-to-use-interaction-terms">When <em>Not</em> to Use Interaction Terms</a></li>
-  <li><a href="#detecting-non-linearity" id="toc-detecting-non-linearity" class="nav-link" data-scroll-target="#detecting-non-linearity">Detecting Non-Linearity</a>
-  <ul class="collapse">
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples:</a></li>
-  </ul></li>
-  <li><a href="#u-shaped-age-effect-theory" id="toc-u-shaped-age-effect-theory" class="nav-link" data-scroll-target="#u-shaped-age-effect-theory">U-Shaped Age Effect: Theory</a>
-  <ul class="collapse">
-  <li><a href="#housing-lifecycle-stages" id="toc-housing-lifecycle-stages" class="nav-link" data-scroll-target="#housing-lifecycle-stages">Housing Lifecycle Stages</a></li>
-  </ul></li>
-  <li><a href="#toblers-first-law-of-geography" id="toc-toblers-first-law-of-geography" class="nav-link" data-scroll-target="#toblers-first-law-of-geography">Tobler’s First Law of Geography</a>
-  <ul class="collapse">
-  <li><a href="#what-this-means-for-housing-prices" id="toc-what-this-means-for-housing-prices" class="nav-link" data-scroll-target="#what-this-means-for-housing-prices">What This Means for Housing Prices</a></li>
-  </ul></li>
-  <li><a href="#three-approaches-to-spatial-features" id="toc-three-approaches-to-spatial-features" class="nav-link" data-scroll-target="#three-approaches-to-spatial-features">Three Approaches to Spatial Features</a>
-  <ul class="collapse">
-  <li><a href="#buffer-aggregation" id="toc-buffer-aggregation" class="nav-link" data-scroll-target="#buffer-aggregation">1️⃣ Buffer Aggregation</a></li>
-  <li><a href="#k-nearest-neighbors-knn" id="toc-k-nearest-neighbors-knn" class="nav-link" data-scroll-target="#k-nearest-neighbors-knn">2️⃣ k-Nearest Neighbors (kNN)</a></li>
-  <li><a href="#distance-to-specific-points" id="toc-distance-to-specific-points" class="nav-link" data-scroll-target="#distance-to-specific-points">3️⃣ Distance to Specific Points</a></li>
-  </ul></li>
-  <li><a href="#what-are-fixed-effects" id="toc-what-are-fixed-effects" class="nav-link" data-scroll-target="#what-are-fixed-effects">What Are Fixed Effects?</a></li>
-  <li><a href="#cross-validation-cv-recap" id="toc-cross-validation-cv-recap" class="nav-link" data-scroll-target="#cross-validation-cv-recap">Cross-Validation (CV) Recap</a>
-  <ul class="collapse">
-  <li><a href="#three-common-validation-approaches" id="toc-three-common-validation-approaches" class="nav-link" data-scroll-target="#three-common-validation-approaches">Three Common Validation Approaches</a></li>
-  <li><a href="#why-use-cross-validation" id="toc-why-use-cross-validation" class="nav-link" data-scroll-target="#why-use-cross-validation">Why Use Cross-Validation?</a></li>
-  </ul></li>
+  <li><a href="#parametric-approach-linear-regression" id="toc-parametric-approach-linear-regression" class="nav-link" data-scroll-target="#parametric-approach-linear-regression">Parametric Approach: Linear Regression</a></li>
+  <li><a href="#why-linear-regression" id="toc-why-linear-regression" class="nav-link" data-scroll-target="#why-linear-regression">Why Linear Regression?</a></li>
+  <li><a href="#prediction-vs-inference" id="toc-prediction-vs-inference" class="nav-link" data-scroll-target="#prediction-vs-inference">Prediction vs Inference</a></li>
+  <li><a href="#example-prediction-policy" id="toc-example-prediction-policy" class="nav-link" data-scroll-target="#example-prediction-policy">Example: Prediction (Policy)</a></li>
+  <li><a href="#example-inference-research" id="toc-example-inference-research" class="nav-link" data-scroll-target="#example-inference-research">Example: Inference (Research)</a></li>
+  <li><a href="#connection-to-week-2-algorithmic-bias" id="toc-connection-to-week-2-algorithmic-bias" class="nav-link" data-scroll-target="#connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</a></li>
   </ul>
 </nav>
     </div>
@@ -233,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Xiao Yu - Week 6 Notes: Spatial Machine Learning &amp; Advanced Regression</h1>
+<h1 class="title">Week 5 Notes</h1>
 </div>
 
 
@@ -244,7 +240,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 19, 2025</p>
+      <p class="date">October 6, 2025</p>
     </div>
   </div>
   
@@ -256,340 +252,149 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="limitations-of-linear-models" class="level1">
-<h1>Limitations of Linear Models</h1>
-<section id="what-does-a-basic-linear-model-ignore" class="level2">
-<h2 class="anchored" data-anchor-id="what-does-a-basic-linear-model-ignore">What Does a Basic Linear Model Ignore?</h2>
+<section id="the-general-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-problem">The General Problem</h2>
+<p>We observe data such as <strong>counties, income, population, education</strong>, etc.<br>
+We believe there’s some relationship between these variables.</p>
+<p><strong>Statistical learning</strong> = a set of approaches for estimating that relationship.</p>
+<hr>
+</section>
+<section id="formalizing-the-relationship" class="level2">
+<h2 class="anchored" data-anchor-id="formalizing-the-relationship">Formalizing the Relationship</h2>
+<p>For any quantitative response <em>Y</em> and predictors <em>X₁, X₂, … Xₚ</em>:</p>
+<p><span class="math display">\[
+Y = f(X) + \epsilon
+\]</span></p>
+<p>Where:</p>
 <ul>
-<li><strong>Location variation</strong> (North End vs.&nbsp;Roxbury vs.&nbsp;Back Bay)</li>
-<li>Proximity to:
+<li><strong>f</strong> = the systematic information X provides about Y<br>
+</li>
+<li><strong>ε</strong> = random error (irreducible)</li>
+</ul>
+<hr>
+</section>
+<section id="what-is-f" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-f">What is <em>f</em>?</h2>
+<p><em>f</em> represents the <strong>true relationship</strong> between predictors and the outcome.</p>
 <ul>
-<li>Downtown</li>
-<li>Waterfronts</li>
-<li>Parks</li>
+<li>It’s <strong>fixed but unknown</strong> — what we’re trying to estimate.<br>
+</li>
+<li>Different <em>X</em> values produce different <em>Y</em> values through <em>f</em>.</li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul>
+<li><em>Y</em> = median income<br>
+</li>
+<li><em>X</em> = population, education, poverty rate<br>
+</li>
+<li><em>f</em> = the way these factors systematically relate to income</li>
+</ul>
+<hr>
+</section>
+<section id="why-estimate-f" class="level2">
+<h2 class="anchored" data-anchor-id="why-estimate-f">Why Estimate <em>f</em>?</h2>
+<p>Two main reasons:</p>
+<ol type="1">
+<li><strong>Prediction</strong>
+<ul>
+<li>Estimate <em>Y</em> for new observations<br>
+</li>
+<li>Focus on <strong>accuracy</strong>, not interpretation</li>
 </ul></li>
-<li>Neighborhood conditions:
+<li><strong>Inference</strong>
 <ul>
-<li>Crime rates</li>
-<li>School quality</li>
-<li>Socioeconomic characteristics</li>
+<li>Understand <strong>how X affects Y</strong><br>
+</li>
+<li>Identify which predictors matter<br>
+</li>
+<li>Focus on <strong>interpretation</strong></li>
 </ul></li>
-</ul>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Location matters!</strong><br>
-A house’s price is determined not only by its physical attributes but by where it is located.</p>
-</div>
-</div>
+</ol>
+<hr>
 </section>
-<section id="why-might-it-fail" class="level2">
-<h2 class="anchored" data-anchor-id="why-might-it-fail">Why Might It Fail?</h2>
+<section id="how-do-we-estimate-f" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-we-estimate-f">How Do We Estimate <em>f</em>?</h2>
+<section id="parametric-methods" class="level3">
+<h3 class="anchored" data-anchor-id="parametric-methods">Parametric Methods</h3>
 <ul>
-<li>1,000 sq ft in <strong>Back Bay ≠ Roxbury</strong></li>
-<li>Same attributes, very different prices</li>
-<li>Real estate adheres to the principle: <strong>“Location, location, location!”</strong></li>
+<li>Assume a specific functional form (e.g., linear)</li>
+<li>Easier to interpret and compute</li>
+<li>Focus of this week’s session</li>
 </ul>
 </section>
-<section id="how-can-we-improve-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="how-can-we-improve-the-model">How Can We Improve the Model?</h2>
+<section id="non-parametric-methods" class="level3">
+<h3 class="anchored" data-anchor-id="non-parametric-methods">Non-Parametric Methods</h3>
 <ul>
-<li>Add <strong>spatial features</strong></li>
-<li>Use <strong>neighborhood fixed effects</strong></li>
-<li>Include <strong>interaction terms</strong> to reflect how variables behave differently across places</li>
+<li>Make fewer assumptions<br>
+</li>
+<li>More flexible but require more data and are harder to interpret</li>
 </ul>
-<blockquote class="blockquote">
-<p>💡 <em>Key idea:</em> Spatial features allow regression models to capture real-world geography.</p>
-</blockquote>
+<p><strong>Key difference:</strong><br>
+- <em>Parametric (blue):</em> Assume <em>f</em> is linear → estimate coefficients<br>
+- <em>Non-parametric (green):</em> Let data determine the shape of <em>f</em></p>
 <hr>
 </section>
 </section>
-<section id="converting-data-into-spatial-format" class="level1">
-<h1>Converting Data into Spatial Format</h1>
-<section id="step-1-create-spatial-data" class="level3">
-<h3 class="anchored" data-anchor-id="step-1-create-spatial-data">Step 1: Create Spatial Data</h3>
-<p>Convert tabular data with latitude/longitude into an <code>sf</code> object.</p>
-</section>
-<section id="step-2-spatial-join" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-spatial-join">Step 2: Spatial Join</h3>
-<p>Match each property to its neighborhood polygon.</p>
+<section id="parametric-approach-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="parametric-approach-linear-regression">Parametric Approach: Linear Regression</h2>
+<p>Assumption: Relationship between <em>X</em> and <em>Y</em> is <strong>linear</strong></p>
+<p><span class="math display">\[
+Y ≈ β₀ + β₁X₁ + β₂X₂ + … + βₚXₚ
+\]</span></p>
+<p>We estimate the β coefficients using <strong>Ordinary Least Squares (OLS)</strong>.</p>
 <hr>
 </section>
-</section>
-<section id="types-of-variables" class="level1">
-<h1>Types of Variables</h1>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Variable Type</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Continuous</strong></td>
-<td>House size, Age, Income, Distance to CBD</td>
-</tr>
-<tr class="even">
-<td><strong>Categorical</strong></td>
-<td>Neighborhood, School district, Building type</td>
-</tr>
-<tr class="odd">
-<td><strong>Binary</strong></td>
-<td>Has garage (Yes/No), Historic status (Yes/No)</td>
-</tr>
-</tbody>
-</table>
+<section id="why-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="why-linear-regression">Why Linear Regression?</h2>
+<p><strong>Advantages</strong> - Simple and interpretable<br>
+- Foundation for many other models<br>
+- Performs well in practice</p>
+<p><strong>Limitations</strong> - Assumes linearity<br>
+- Sensitive to outliers<br>
+- Relies on several assumptions (we’ll check them)</p>
 <hr>
 </section>
-<section id="understanding-interaction-effects" class="level1">
-<h1>Understanding Interaction Effects</h1>
-<section id="what-is-an-interaction" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-an-interaction">What Is an Interaction?</h3>
-<blockquote class="blockquote">
-<p>The effect of one variable depends on the value of another variable.</p>
-</blockquote>
-</section>
-<section id="example-questions" class="level3">
-<h3 class="anchored" data-anchor-id="example-questions">Example Questions:</h3>
-<ul>
-<li>Does square footage increase price <em>more</em> in wealthy neighborhoods?</li>
-<li>Does pollution affect older people differently than younger people?</li>
-</ul>
+<section id="prediction-vs-inference" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-vs-inference">Prediction vs Inference</h2>
+<p><strong>Inference</strong> - “Does education affect income?”<br>
+- Focus: coefficients, significance, mechanisms</p>
+<p><strong>Prediction</strong> - “What’s County Y’s income?”<br>
+- Focus: accuracy, prediction intervals</p>
+<p>Today: we’ll do both, but emphasize <strong>prediction</strong>.</p>
 <hr>
 </section>
-</section>
-<section id="policy-implications-boston-case-study" class="level1">
-<h1>Policy Implications (Boston Case Study)</h1>
-<section id="market-segmentation" class="level2">
-<h2 class="anchored" data-anchor-id="market-segmentation">1. Market Segmentation</h2>
-<p>Boston operates as two distinct housing markets: - <strong>Luxury market:</strong> ~$1081/sq ft - <strong>Standard market:</strong> ~$96/sq ft</p>
-</section>
-<section id="affordability-crisis" class="level2">
-<h2 class="anchored" data-anchor-id="affordability-crisis">2. Affordability Crisis</h2>
+<section id="example-prediction-policy" class="level2">
+<h2 class="anchored" data-anchor-id="example-prediction-policy">Example: Prediction (Policy)</h2>
+<p>Government use case:</p>
 <ul>
-<li>Interaction effects <strong>amplify inequality</strong></li>
-<li>Larger homes in wealthy areas become disproportionately expensive</li>
+<li>Census may miss people in hard-to-count areas<br>
+</li>
+<li>Predict income or population for <strong>planning resources</strong></li>
 </ul>
-</section>
-<section id="policy-design-implications" class="level2">
-<h2 class="anchored" data-anchor-id="policy-design-implications">3. Policy Design Implications</h2>
-<ul>
-<li>Property taxes should reflect spatial variation</li>
-<li>Housing policy must be neighborhood-specific (not one-size-fits-all)</li>
-</ul>
+<p>Even if the model doesn’t explain <em>why</em>, good predictions help policy.</p>
 <hr>
 </section>
-</section>
-<section id="when-not-to-use-interaction-terms" class="level1">
-<h1>When <em>Not</em> to Use Interaction Terms</h1>
-<ul>
-<li><strong>Small sample sizes</strong></li>
-<li><strong>Risk of overfitting</strong></li>
-<li><strong>Model instability</strong></li>
-</ul>
+<section id="example-inference-research" class="level2">
+<h2 class="anchored" data-anchor-id="example-inference-research">Example: Inference (Research)</h2>
+<p>Research use case:<br>
+- Understanding <strong>gentrification</strong><br>
+- Which neighborhood characteristics explain income change?<br>
+- How much does education matter vs.&nbsp;proximity to downtown?<br>
+- Are policy interventions associated with outcomes?</p>
 <hr>
 </section>
-<section id="detecting-non-linearity" class="level1">
-<h1>Detecting Non-Linearity</h1>
-<p><strong>Signs:</strong> - Curved residual plots - Diminishing returns - U-shaped patterns - Theoretical justification</p>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples:</h3>
+<section id="connection-to-week-2-algorithmic-bias" class="level2">
+<h2 class="anchored" data-anchor-id="connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</h2>
+<p>Remember the <strong>healthcare algorithm</strong> that discriminated?</p>
 <ul>
-<li>House age: depreciation → trough → historic premium</li>
-<li>Advertising: diminishing returns</li>
-<li>Crime prevention: early gains then plateau</li>
+<li>It predicted healthcare needs using <strong>costs</strong> as a proxy.<br>
+</li>
+<li>Technically accurate (good R²) but ethically biased.<br>
+</li>
+<li><strong>Lesson:</strong> A good fit ≠ a fair model.</li>
 </ul>
-<hr>
-</section>
-</section>
-<section id="u-shaped-age-effect-theory" class="level1">
-<h1>U-Shaped Age Effect: Theory</h1>
-<section id="housing-lifecycle-stages" class="level3">
-<h3 class="anchored" data-anchor-id="housing-lifecycle-stages">Housing Lifecycle Stages</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 38%">
-<col style="width: 41%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Stage</th>
-<th>Description</th>
-<th>Price Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>New (0–20 yrs)</strong></td>
-<td>Modern amenities, no repairs</td>
-<td>High value, initial depreciation</td>
-</tr>
-<tr class="even">
-<td><strong>Mid-aged (20–80 yrs)</strong></td>
-<td>Maintenance required</td>
-<td>Lowest value</td>
-</tr>
-<tr class="odd">
-<td><strong>Historic (80+ yrs)</strong></td>
-<td>Vintage architecture, prestige</td>
-<td>Rising value (vintage premium)</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="toblers-first-law-of-geography" class="level1">
-<h1>Tobler’s First Law of Geography</h1>
-<blockquote class="blockquote">
-<p>“Everything is related to everything else, but near things are more related than distant things.”</p>
-</blockquote>
-<section id="what-this-means-for-housing-prices" class="level2">
-<h2 class="anchored" data-anchor-id="what-this-means-for-housing-prices">What This Means for Housing Prices</h2>
-<ul>
-<li><strong>Crime in nearby streets</strong> influences a property’s value more than crime occurring far away.</li>
-<li><strong>Proximity to parks and green space</strong> increases property desirability.</li>
-<li><strong>Immediate neighborhood conditions</strong> largely define the housing market segment a property belongs to.</li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Spatial relationship matters because households make decisions based on their <em>local</em> context, not the entire city.</p>
-</div>
-</div>
-<hr>
-</section>
-</section>
-<section id="three-approaches-to-spatial-features" class="level1">
-<h1>Three Approaches to Spatial Features</h1>
-<section id="buffer-aggregation" class="level3">
-<h3 class="anchored" data-anchor-id="buffer-aggregation">1️⃣ Buffer Aggregation</h3>
-<ul>
-<li>Counts or sums events (e.g., number of crimes, schools) within a specified radius of the property.</li>
-<li>Useful for modeling <em>local exposure</em>.</li>
-</ul>
-</section>
-<section id="k-nearest-neighbors-knn" class="level3">
-<h3 class="anchored" data-anchor-id="k-nearest-neighbors-knn">2️⃣ k-Nearest Neighbors (kNN)</h3>
-<ul>
-<li>Calculates average distance to the <em>k closest</em> amenities or hazards.</li>
-<li>Focuses on relative proximity instead of fixed boundaries.</li>
-</ul>
-</section>
-<section id="distance-to-specific-points" class="level3">
-<h3 class="anchored" data-anchor-id="distance-to-specific-points">3️⃣ Distance to Specific Points</h3>
-<ul>
-<li>Computes straight-line (Euclidean) or network distance to specific features:
-<ul>
-<li>Central Business District (CBD)</li>
-<li>Nearest park</li>
-<li>Public transport station</li>
-</ul></li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These spatial variables can be directly added to regression models to capture geographic influences.</p>
-</div>
-</div>
-<hr>
-</section>
-</section>
-<section id="what-are-fixed-effects" class="level1">
-<h1>What Are Fixed Effects?</h1>
-<p><strong>Fixed Effects</strong> are categorical variables representing groups (such as neighborhoods, districts, or cities) that absorb: - Social characteristics - Historical development patterns - Cultural differences - Policy environments</p>
-<p>They allow the model to: - Compare properties <strong>within the same group</strong> - Control for unobserved heterogeneity <strong>between groups</strong></p>
-<blockquote class="blockquote">
-<p>✅ Example: Adding a “Neighborhood Fixed Effect” variable assigns a unique dummy for each neighborhood to control for location-specific influence.</p>
-</blockquote>
-<hr>
-</section>
-<section id="cross-validation-cv-recap" class="level1">
-<h1>Cross-Validation (CV) Recap</h1>
-<section id="three-common-validation-approaches" class="level2">
-<h2 class="anchored" data-anchor-id="three-common-validation-approaches">Three Common Validation Approaches</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 32%">
-<col style="width: 23%">
-<col style="width: 21%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Description</th>
-<th>Advantages</th>
-<th>Limitations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Train/Test Split</strong></td>
-<td>Split data into 80% training, 20% testing</td>
-<td>Simple and fast</td>
-<td>Results depend heavily on single split (unstable)</td>
-</tr>
-<tr class="even">
-<td><strong>k-Fold CV</strong></td>
-<td>Divide into <em>k</em> subsets; rotate test and train sets</td>
-<td>More reliable performance estimate</td>
-<td>More computation</td>
-</tr>
-<tr class="odd">
-<td><strong>LOOCV</strong> (Leave-One-Out)</td>
-<td>Special case of k-fold CV with k = n</td>
-<td>Uses almost all data for training</td>
-<td>Extremely slow for large datasets</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="why-use-cross-validation" class="level2">
-<h2 class="anchored" data-anchor-id="why-use-cross-validation">Why Use Cross-Validation?</h2>
-<ul>
-<li>Measures how well the model predicts <strong>new, unseen data</strong></li>
-<li>More objective than in-sample ( R^2 )</li>
-<li>Helps detect <strong>overfitting</strong> by testing generalizability</li>
-</ul>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cross-validation ensures your model performs well in real-world scenarios, not just on the training dataset.</p>
-</div>
-</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
