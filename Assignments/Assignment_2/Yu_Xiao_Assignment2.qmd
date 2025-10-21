@@ -117,7 +117,6 @@ d1=get_acs(
 # Join to tract boundaries
 d1 <- left_join(census_tracts, st_drop_geometry(d1), by = "GEOID")
 
-head(d1)
 st_geometry_type(d1)
 
 ```
