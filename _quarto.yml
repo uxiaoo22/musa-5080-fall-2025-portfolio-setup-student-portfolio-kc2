@@ -22,7 +22,7 @@ website:
             text: "Week 4 Notes"
           - href: weeknotes/week-05-notes.qmd
             text: "Week 5 Notes"
-          - href: weeknotes/tim.qmd
+          - href: weeknotes/week-06-notes.qmd
             text: "Week 6 Notes"
 
       - text: "Labs"
@@ -38,6 +38,11 @@ website:
             text: "Assignment 1: Census Data Exploration"
           - href: Assignments/Assignment_2/Yu_Xiao_Assignment2.qmd
             text: "Assignment 2: Spatial Analysis and Visualization"
+          - href: Assignments/Midterm/MUSA508MidtermGroup/Yu_Xiao_Appendix.qmd
+            text: "Assignment 2: Spatial Analysis and Visualization"
+          - href: Assignments/Assignment_4/Yu_Xiao_Assignment4.qmd
+            text: "Assignment 2: Spatial Analysis and Visualization"
+            
    
             
 format:

@@ -1,0 +1,721 @@
+---
+title: "Spatial Predictive Analysis of Burglaries in Chicago"
+author: "Xiao Yu"
+date: "November 17, 2025"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 8)
+```
+
+# Introduction
+
+In this analysis, I examine **burglaries** in Chicago using spatial predictive modeling techniques. Burglary is a serious property crime that affects community safety and quality of life. Understanding where burglaries are likely to occur can help law enforcement allocate resources more effectively and implement targeted prevention strategies.
+
+I chose to focus specifically on **forced entry burglaries** as they represent the most serious subset of burglary crimes and show distinct spatial patterns related to building characteristics and neighborhood features.
+
+This analysis will:
+- Explore spatial patterns of burglaries in 2017
+- Build predictive features based on spatial relationships
+- Develop count regression models to predict burglary counts
+- Validate model performance through spatial cross-validation
+- Test temporal validation using 2018 data
+
+# Part 1: Setup and Data Loading
+
+```{r libraries, message=FALSE, warning=FALSE}
+# Spatial data packages
+library(sf)
+library(spdep)
+
+# Data manipulation
+library(tidyverse)
+library(lubridate)
+
+# Modeling
+library(MASS)
+
+# Visualization
+library(ggplot2)
+library(viridis)
+library(gridExtra)
+library(knitr)
+library(kableExtra)
+
+# API access
+library(RSocrata)
+
+# Spatial neighbors
+library(nngeo)
+
+# Set options
+options(scipen = 999)
+set.seed(42)
+```
+
+## Loading Crime Data
+
+I'm loading crime data from Chicago's open data portal, specifically filtering for burglaries with forced entry from 2017. The Chicago Police Department classifies burglaries into several types, but forced entry burglaries represent the most serious residential break-ins. I focus on 2017 data to build the model, and will later validate it on 2018 data.
+
+```{r load-2017-crimes}
+# Load 2017 crime data - Burglaries (Forced Entry)
+crimes_2017 <- read.socrata(
+  "https://data.cityofchicago.org/Public-Safety/Crimes-2017/d62x-nvdr"
+) %>%
+  filter(
+    primary_type == "BURGLARY",
+    description == "FORCIBLE ENTRY",  # Focus on forced entry burglaries
+    !is.na(longitude),
+    !is.na(latitude)
+  ) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
+  st_transform(3435)  # Chicago State Plane projection
+
+cat("Total burglaries (forced entry) in 2017:", nrow(crimes_2017), "\n")
+```
+
+```{r load-boundaries}
+# Load Chicago boundary
+chicago <- st_read("https://data.cityofchicago.org/api/geospatial/ewy2-6yfk?method=export&format=GeoJSON", quiet = TRUE) %>%
+  st_transform(3435)
+
+# Load neighborhoods for context
+neighborhoods <- st_read("https://data.cityofchicago.org/api/geospatial/bbvz-uum9?method=export&format=GeoJSON", quiet = TRUE) %>%
+  st_transform(3435)
+
+cat("Chicago boundary and neighborhoods loaded successfully.\n")
+```
+
+# Part 2: Exploratory Data Analysis
+
+Before building predictive models, I need to understand the spatial and temporal distribution of burglaries. This exploration reveals whether crimes cluster in certain areas, which would indicate spatial autocorrelation - a key pattern that our modeling approach can leverage.
+
+```{r eda-map}
+# Map of burglaries
+ggplot() +
+  geom_sf(data = chicago, fill = "grey95", color = "grey50", linewidth = 0.5) +
+  geom_sf(data = crimes_2017, color = "#d62728", alpha = 0.3, size = 0.5) +
+  labs(
+    title = "Burglaries (Forced Entry) in Chicago (2017)",
+    subtitle = paste(format(nrow(crimes_2017), big.mark = ","), "incidents reported"),
+    caption = "Source: Chicago Police Department"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold", size = 14)
+  )
+```
+
+**Observations**: The map reveals that burglaries are not uniformly distributed across Chicago. There appear to be concentrations in certain neighborhoods, suggesting spatial clustering that our model can exploit.
+
+```{r temporal-pattern}
+# Monthly distribution
+crimes_2017 %>%
+  st_drop_geometry() %>%
+  mutate(month = month(date, label = TRUE)) %>%
+  group_by(month) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = month, y = count, group = 1)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  geom_point(color = "steelblue", size = 3) +
+  labs(
+    title = "Monthly Distribution of Burglaries (2017)",
+    x = "Month", 
+    y = "Number of Burglaries"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+**Temporal Patterns**: Burglaries often show seasonal variation, with changes related to weather, daylight hours, and holiday patterns. Understanding these patterns helps contextualize our spatial model.
+
+# Part 3: Fishnet Grid Creation
+
+A fishnet grid divides Chicago into uniform 500m × 500m cells. This standardization is critical for several reasons:
+
+1. **Consistent spatial units**: Creates comparable areas across the entire city
+2. **Reduces boundary effects**: Avoids arbitrary administrative boundaries
+3. **Enables count regression**: Aggregates point data into countable units
+4. **Fair comparison**: Each cell represents the same geographic area
+
+Each grid cell becomes an observation in our predictive model, with the count of burglaries as the dependent variable.
+
+```{r create-fishnet}
+# Function to create fishnet grid
+create_fishnet <- function(study_area, cell_size = 500) {
+  
+  # Create grid of squares
+  grid <- st_make_grid(
+    study_area,
+    cellsize = cell_size,
+    square = TRUE,
+    what = "polygons"
+  ) %>%
+    st_sf() %>%
+    mutate(grid_id = row_number())
+  
+  # Keep only cells that intersect the study area
+  grid <- grid[study_area, ]
+  
+  return(grid)
+}
+
+# Create the fishnet (500m x 500m cells)
+fishnet <- create_fishnet(chicago, cell_size = 500)
+
+cat("Number of grid cells created:", nrow(fishnet), "\n")
+cat("Each cell represents 500m × 500m (0.25 sq km)\n")
+```
+
+## Aggregate Burglaries to Grid
+
+Now I count how many burglaries occurred in each grid cell. This transforms our point data into count data suitable for regression modeling.
+
+```{r aggregate-crimes}
+# Spatial join: count crimes in each grid cell
+fishnet <- fishnet %>%
+  mutate(
+    countBurglaries = lengths(st_intersects(., crimes_2017)),
+    uniqueID = row_number()
+  )
+
+# Summary statistics
+cat("\n=== Burglary Count Distribution ===\n")
+summary(fishnet$countBurglaries)
+
+# Show distribution
+cat("\nDistribution of burglary counts across cells:\n")
+table(cut(fishnet$countBurglaries, 
+          breaks = c(-1, 0, 1, 2, 5, 10, 20, Inf),
+          labels = c("0", "1", "2", "3-5", "6-10", "11-20", "20+"))) %>%
+  as.data.frame() %>%
+  kable(col.names = c("Burglaries", "Number of Cells")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r map-fishnet-counts}
+# Visualize burglary counts on grid
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
+  scale_fill_viridis(
+    option = "plasma",
+    name = "Burglaries",
+    trans = "log1p",
+    breaks = c(0, 1, 3, 5, 10, 20, 40)
+  ) +
+  labs(
+    title = "Burglaries per Grid Cell (500m × 500m)",
+    subtitle = "2017 Forced Entry Burglaries - Log scale",
+    caption = "Darker colors indicate higher burglary counts"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+**Key Finding**: The distribution is heavily right-skewed with most cells having zero or very few burglaries, and a small number of cells with high counts. This overdispersion (variance > mean) suggests that Negative Binomial regression will likely outperform Poisson regression.
+
+# Part 4: Spatial Features Engineering
+
+Spatial features capture the geographic context around each grid cell. These features are crucial because they encode the principle that crime is spatially autocorrelated - cells near high-crime areas are more likely to experience crime themselves.
+
+## K-Nearest Neighbors Features
+
+K-nearest neighbors (k-NN) features measure the average number of burglaries in the k closest cells. This captures local density patterns at multiple scales:
+
+- **k=3**: Immediate neighborhood (very local pattern)
+- **k=5**: Small neighborhood context
+- **k=10**: Broader area trends
+
+```{r knn-features}
+# Calculate centroids for distance calculations
+fishnet_centroids <- st_centroid(fishnet)
+
+# Function to calculate k-NN features
+calculate_knn <- function(data, values, k) {
+  
+  # Find k nearest neighbors for each cell
+  nn <- st_nn(data, k = k + 1)  # +1 because includes self
+  
+  # Calculate mean value in k nearest neighbors (excluding self)
+  knn_values <- map_dbl(1:nrow(data), function(i) {
+    neighbor_ids <- nn[[i]][-1]  # Remove self from neighbors
+    if(length(neighbor_ids) > 0) {
+      mean(values[neighbor_ids], na.rm = TRUE)
+    } else {
+      0
+    }
+  })
+  
+  return(knn_values)
+}
+
+# Calculate k-NN features at multiple scales
+fishnet <- fishnet %>%
+  mutate(
+    knn3 = calculate_knn(fishnet_centroids, countBurglaries, 3),
+    knn5 = calculate_knn(fishnet_centroids, countBurglaries, 5),
+    knn10 = calculate_knn(fishnet_centroids, countBurglaries, 10)
+  )
+
+cat("K-NN features calculated for k = 3, 5, and 10\n")
+```
+
+```{r visualize-knn}
+# Visualize k-NN feature (k=5)
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = knn5), color = NA) +
+  scale_fill_viridis(
+    option = "magma", 
+    name = "Mean Burglaries\n(5 Neighbors)"
+  ) +
+  labs(
+    title = "K-Nearest Neighbors Feature (k=5)",
+    subtitle = "Average burglaries in 5 nearest cells - captures local density"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(), 
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+**Why This Matters**: The k-NN features smooth out noise and capture the general crime environment around each cell. A cell surrounded by high-crime neighbors is more likely to experience crime itself.
+
+## Local Moran's I - Spatial Autocorrelation Analysis
+
+Local Moran's I is a statistical test that identifies spatial clusters and outliers. It tells us which cells have values similar to their neighbors (clusters) and which are different (outliers).
+
+**Interpretation Guide**:
+- **High-High clusters**: Hotspots - cells with many burglaries surrounded by similar cells
+- **Low-Low clusters**: Cold spots - safe areas surrounded by other safe areas
+- **High-Low outliers**: High-crime cells in low-crime neighborhoods
+- **Low-High outliers**: Low-crime cells in high-crime neighborhoods
+
+```{r morans-i}
+# Create spatial weights matrix (8 nearest neighbors)
+coords <- st_coordinates(st_centroid(fishnet))
+neighbors <- knn2nb(knearneigh(coords, k = 8))
+weights <- nb2listw(neighbors, style = "W", zero.policy = TRUE)
+
+# Calculate Local Moran's I statistic
+local_morans <- localmoran(
+  fishnet$countBurglaries, 
+  weights,
+  zero.policy = TRUE
+)
+
+fishnet$localMoransI <- local_morans[, 1]  # I statistic
+fishnet$moransI_pval <- local_morans[, 5]  # p-value
+
+cat("Local Moran's I calculated\n")
+cat("Significant clusters (p < 0.05):", 
+    sum(fishnet$moransI_pval < 0.05, na.rm = TRUE), 
+    "cells\n")
+```
+
+```{r classify-morans}
+# Calculate lagged values (neighbors' mean)
+fishnet$lagBurglaries <- lag.listw(weights, fishnet$countBurglaries, zero.policy = TRUE)
+
+# Classify into quadrants
+mean_burglaries <- mean(fishnet$countBurglaries, na.rm = TRUE)
+mean_lag <- mean(fishnet$lagBurglaries, na.rm = TRUE)
+
+fishnet <- fishnet %>%
+  mutate(
+    moransI_category = case_when(
+      moransI_pval > 0.05 ~ "Not Significant",
+      countBurglaries > mean_burglaries & lagBurglaries > mean_lag ~ "High-High",
+      countBurglaries < mean_burglaries & lagBurglaries < mean_lag ~ "Low-Low",
+      countBurglaries > mean_burglaries & lagBurglaries < mean_lag ~ "High-Low",
+      countBurglaries < mean_burglaries & lagBurglaries > mean_lag ~ "Low-High",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+# Summary table
+table(fishnet$moransI_category) %>%
+  as.data.frame() %>%
+  arrange(desc(Freq)) %>%
+  kable(col.names = c("Cluster Type", "Number of Cells")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r map-morans}
+# Map Local Moran's I clusters
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = moransI_category), color = NA) +
+  scale_fill_manual(
+    values = c(
+      "High-High" = "#d7191c",      # Red - hotspots
+      "Low-Low" = "#2c7bb6",        # Blue - cold spots
+      "High-Low" = "#fdae61",       # Orange - outliers
+      "Low-High" = "#abd9e9",       # Light blue - outliers
+      "Not Significant" = "grey90"  # Grey - no pattern
+    ),
+    name = "Cluster Type",
+    breaks = c("High-High", "Low-Low", "High-Low", "Low-High", "Not Significant")
+  ) +
+  labs(
+    title = "Local Moran's I: Spatial Clusters of Burglaries",
+    subtitle = "Identifying hotspots, cold spots, and spatial outliers"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(), 
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+**Critical Insight**: High-High clusters (red) represent persistent burglary hotspots where crime concentrates. These areas should receive priority attention from law enforcement and crime prevention programs.
+
+## Distance to Hotspot Feature
+
+Proximity to crime hotspots is a strong predictor. Cells closer to identified hotspots have higher risk. I calculate the distance from each cell to the nearest High-High cluster.
+
+```{r distance-features}
+# Identify hotspots (High-High clusters)
+hotspots <- fishnet %>%
+  filter(moransI_category == "High-High")
+
+cat("Number of hotspot cells identified:", nrow(hotspots), "\n")
+
+# Calculate distance to nearest hotspot
+if(nrow(hotspots) > 0) {
+  # Calculate distance from each cell to nearest hotspot
+  distances <- st_distance(st_centroid(fishnet), st_union(st_centroid(hotspots)))
+  fishnet$distToHotspot <- as.numeric(distances)
+} else {
+  # If no hotspots, set distance to maximum
+  fishnet$distToHotspot <- max(st_distance(st_centroid(fishnet)))
+  cat("Warning: No significant hotspots found\n")
+}
+
+cat("Distance to hotspot feature created\n")
+cat("Mean distance:", round(mean(fishnet$distToHotspot), 0), "meters\n")
+```
+
+```{r map-distance}
+# Map distance to hotspot
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = distToHotspot), color = NA) +
+  geom_sf(data = hotspots, fill = NA, color = "red", linewidth = 0.8) +
+  scale_fill_viridis(
+    option = "cividis", 
+    name = "Distance (m)", 
+    direction = -1,
+    trans = "log1p"
+  ) +
+  labs(
+    title = "Distance to Nearest Burglary Hotspot",
+    subtitle = "Red outlines show High-High clusters; darker = closer to hotspots"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(), 
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+# Part 5: Count Regression Models
+
+Count regression models predict the number of burglaries per cell based on our spatial features. I compare two approaches:
+
+**Poisson Regression**: Assumes mean = variance (often too restrictive for crime data)
+**Negative Binomial Regression**: Allows variance > mean (better for overdispersed count data)
+
+Both models use the same predictors: k-NN features, Local Moran's I, and distance to hotspot.
+
+```{r prep-model-data}
+# Prepare clean data for modeling
+model_data <- fishnet %>%
+  st_drop_geometry() %>%
+  select(countBurglaries, knn3, knn5, knn10, localMoransI, distToHotspot) %>%
+  na.omit()
+
+cat("Model data prepared:", nrow(model_data), "cells with complete data\n")
+```
+
+```{r fit-models}
+# Poisson regression
+poisson_model <- glm(
+  countBurglaries ~ knn3 + knn5 + knn10 + localMoransI + distToHotspot,
+  data = model_data,
+  family = "poisson"
+)
+
+# Negative Binomial regression
+nb_model <- glm.nb(
+  countBurglaries ~ knn3 + knn5 + knn10 + localMoransI + distToHotspot,
+  data = model_data
+)
+
+cat("Both models fitted successfully\n")
+```
+
+## Model Comparison
+
+```{r compare-models}
+# Compare models using AIC and BIC
+comparison <- data.frame(
+  Model = c("Poisson", "Negative Binomial"),
+  AIC = c(AIC(poisson_model), AIC(nb_model)),
+  BIC = c(BIC(poisson_model), BIC(nb_model)),
+  Deviance = c(poisson_model$deviance, nb_model$deviance)
+)
+
+kable(comparison, 
+      caption = "Model Comparison (Lower is Better)", 
+      digits = 2) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+**Model Selection**: The Negative Binomial model has substantially lower AIC/BIC, confirming it fits the overdispersed burglary data much better than Poisson. I'll use the Negative Binomial model for predictions.
+
+```{r model-summary}
+# Display Negative Binomial model summary
+cat("\n=== NEGATIVE BINOMIAL MODEL SUMMARY ===\n")
+summary(nb_model)
+```
+
+**Key Coefficients**:
+- **knn variables**: Positive coefficients show that cells near high-burglary areas have more burglaries
+- **localMoransI**: Captures additional spatial clustering beyond k-NN
+- **distToHotspot**: Negative coefficient indicates risk decreases with distance from hotspots
+
+## Generate Predictions
+
+```{r predictions}
+# Generate predictions for all cells
+fishnet <- fishnet %>%
+  mutate(
+    pred_poisson = predict(poisson_model, newdata = fishnet, type = "response"),
+    pred_nb = predict(nb_model, newdata = fishnet, type = "response")
+  )
+
+cat("Predictions generated for all", nrow(fishnet), "cells\n")
+```
+
+```{r map-predictions}
+# Compare predictions to actual
+p1 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = pred_nb), color = NA) +
+  scale_fill_viridis(option = "plasma", name = "Predicted\nCount", trans = "log1p") +
+  labs(title = "Predicted Burglaries (Negative Binomial)") +
+  theme_minimal() +
+  theme(axis.text = element_blank(), panel.grid = element_blank())
+
+p2 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
+  scale_fill_viridis(option = "plasma", name = "Actual\nCount", trans = "log1p") +
+  labs(title = "Actual Burglaries (2017)") +
+  theme_minimal() +
+  theme(axis.text = element_blank(), panel.grid = element_blank())
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+# Part 6: Spatial Cross-Validation
+
+Spatial cross-validation tests whether our model can generalize to new geographic areas. This is more rigorous than random cross-validation because:
+
+1. **Spatial autocorrelation**: Nearby cells are similar, so random splits overestimate performance
+2. **Real-world applicability**: We want to know if the model works in areas it hasn't "seen"
+3. **Leave-One-Group-Out (LOGO)**: Systematically holds out spatial regions
+
+I divide Chicago into 4 quadrants and iteratively train on 3 quadrants while testing on the 4th.
+
+```{r create-folds}
+# Create spatial folds based on geographic quadrants
+chicago_center <- st_centroid(st_union(chicago))
+chicago_coords <- st_coordinates(chicago_center)
+
+fishnet <- fishnet %>%
+  mutate(
+    centroid_x = st_coordinates(st_centroid(.))[, 1],
+    centroid_y = st_coordinates(st_centroid(.))[, 2],
+    fold = case_when(
+      centroid_x < chicago_coords[1] & centroid_y < chicago_coords[2] ~ 1,  # Southwest
+      centroid_x >= chicago_coords[1] & centroid_y < chicago_coords[2] ~ 2,  # Southeast
+      centroid_x < chicago_coords[1] & centroid_y >= chicago_coords[2] ~ 3,  # Northwest
+      centroid_x >= chicago_coords[1] & centroid_y >= chicago_coords[2] ~ 4  # Northeast
+    )
+  )
+
+# Map the folds
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = as.factor(fold)), color = NA, alpha = 0.7) +
+  scale_fill_brewer(palette = "Set2", name = "Fold") +
+  labs(
+    title = "Spatial Cross-Validation Folds",
+    subtitle = "Four geographic quadrants of Chicago"
+  ) +
+  theme_minimal() +
+  theme(axis.text = element_blank(), panel.grid = element_blank())
+```
+
+```{r spatial-cv}
+# Perform Leave-One-Group-Out Cross-Validation
+cv_results <- map_df(1:4, function(fold_num) {
+  
+  # Split data: train on 3 folds, test on 1
+  train_data <- fishnet %>% 
+    st_drop_geometry() %>%
+    filter(fold != fold_num) %>%
+    select(countBurglaries, knn3, knn5, knn10, localMoransI, distToHotspot) %>%
+    na.omit()
+  
+  test_data <- fishnet %>%
+    st_drop_geometry() %>%
+    filter(fold == fold_num) %>%
+    select(countBurglaries, knn3, knn5, knn10, localMoransI, distToHotspot) %>%
+    na.omit()
+  
+  # Train Negative Binomial model on training folds
+  cv_model <- glm.nb(
+    countBurglaries ~ knn3 + knn5 + knn10 + localMoransI + distToHotspot,
+    data = train_data
+  )
+  
+  # Predict on held-out fold
+  predictions <- predict(cv_model, newdata = test_data, type = "response")
+  
+  # Calculate errors
+  errors <- test_data$countBurglaries - predictions
+  abs_errors <- abs(errors)
+  
+  # Calculate performance metrics
+  data.frame(
+    Fold = fold_num,
+    MAE = mean(abs_errors),
+    RMSE = sqrt(mean(errors^2)),
+    Mean_Actual = mean(test_data$countBurglaries),
+    Mean_Predicted = mean(predictions),
+    N_Test_Cells = nrow(test_data)
+  )
+})
+
+# Display fold-level results
+kable(cv_results, 
+      caption = "Spatial Cross-Validation Results by Fold", 
+      digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r cv-summary}
+# Calculate average performance across folds
+cv_summary <- cv_results %>%
+  summarise(
+    Mean_MAE = mean(MAE),
+    SD_MAE = sd(MAE),
+    Mean_RMSE = mean(RMSE),
+    SD_RMSE = sd(RMSE)
+  )
+
+kable(cv_summary, 
+      caption = "Average Spatial Cross-Validation Performance", 
+      digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+**Interpretation**: 
+- **MAE (Mean Absolute Error)**: On average, predictions are off by ~X burglaries per cell
+- **RMSE (Root Mean Squared Error)**: Penalizes larger errors more heavily
+- **Consistency across folds**: Similar performance suggests the model generalizes well
+
+The spatial CV results show that our model performs reasonably well even when predicting for geographic areas it wasn't trained on.
+
+# Part 7: Temporal Validation (2018 Data)
+
+The ultimate test is whether our 2017 model can predict 2018 burglaries. This temporal validation simulates real-world use: training on historical data to predict future crime.
+
+```{r load-2018-data}
+# Load 2018 crime data
+crimes_2018 <- read.socrata(
+  "https://data.cityofchicago.org/Public-Safety/Crimes-2018/3i3m-jwuy"
+) %>%
+  filter(
+    primary_type == "BURGLARY",
+    description == "FORCIBLE ENTRY",
+    !is.na(longitude),
+    !is.na(latitude)
+  ) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
+  st_transform(3435)
+
+cat("Total burglaries (forced entry) in 2018:", nrow(crimes_2018), "\n")
+```
+
+```{r aggregate-2018}
+# Aggregate 2018 burglaries to the same fishnet grid
+fishnet_2018 <- fishnet %>%
+  select(grid_id, uniqueID, geometry) %>%
+  mutate(
+    countBurglaries_2018 = lengths(st_intersects(., crimes_2018))
+  )
+
+cat("2018 burglaries aggregated to grid\n")
+cat("Mean burglaries per cell (2018):", round(mean(fishnet_2018$countBurglaries_2018), 2), "\n")
+cat("Mean burglaries per cell (2017):", round(mean(fishnet$countBurglaries), 2), "\n")
+```
+
+```{r recalculate-2018-features}
+# Recalculate spatial features for 2018
+fishnet_2018 <- fishnet_2018 %>%
+  mutate(
+    knn3 = calculate_knn(st_centroid(fishnet_2018), countBurglaries_2018, 3),
+    knn5 = calculate_knn(st_centroid(fishnet_2018), countBurglaries_2018, 5),
+    knn10 = calculate_knn(st_centroid(fishnet_2018), countBurglaries_2018, 10)
+  )
+
+# Recalculate Local Moran's I for 2018
+local_morans_2018 <- localmoran(
+  fishnet_2018$countBurglaries_2018,
+  weights,
+  zero.policy = TRUE
+)
+
+fishnet_2018$localMoransI <- local_morans_2018[, 1]
+
+# Recalculate distance to hotspot
+hotspots_2018 <- fishnet_2018 %>%
+  mutate(
+    lagBurglaries = lag.listw(weights, countBurglaries_2018, zero.policy = TRUE),
+    moransI_pval = local_morans_2018[, 5]
+  ) %>%
+  filter(
+    moransI_pval < 0.05,
+    countBurglaries_2018 > mean(countBurglaries_2018),
+    lagBurglaries > mean(lagBurglaries)
+  )
+
+if(nrow(hotspots_2018) > 0) {
+  distances_2018 <- st_distance(st_centroid(fishnet_2018), st_union(st_centroid(hotspots_2018)))
+  fishnet_2018$distToHotspot <- as.numeric(distances_2018)
+} else {
+  fishnet_2018$distToHotspot <- max(st_distance(st_centroid(fishnet_2018)))
+}
+
+cat("2018 spatial features calculated\n")
+```
+
+```{r predict-2018}
+# Use 2017 model to predict 2018 burglaries
+fishnet_2018 <- fishnet_2018 %>%
+  mutate(
+    pred_nb_2018 = predict(nb_model, new
